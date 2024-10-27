@@ -1,0 +1,535 @@
+/* financemanagement.css */
+
+/* =========================================
+   1. Global Styles
+========================================= */
+
+/* Global styles */
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    color: #808080;
+    /* Removed overflow: hidden; to allow scrolling */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* Removed height: 100vh; to allow container to grow with content */
+    min-height: 100vh; /* Ensures the container covers the viewport height */
+    position: relative;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    position: fixed; /* Changed from relative to fixed */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 80px 20px 20px; /* Adjusted top padding to account for fixed header */
+    overflow-y: auto; /* Allows vertical scrolling */
+}
+
+/* =========================================
+   2. Finance Management Search Bar Styles
+========================================= */
+
+/* Global Search Bar */
+.global-search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.finance-search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 800px; /* Adjust as needed for larger screens */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px 20px; /* Padding for spacing inside the search bar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative; /* For positioning the clear search icon */
+}
+
+.finance-search .search-icon {
+    color: #808080;
+    margin-right: 12px; /* Space between icon and input */
+    font-size: 20px;
+}
+
+.finance-search input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 16px;
+    color: #555;
+}
+
+.finance-search input::placeholder {
+    color: #aaa;
+}
+
+/* Clear Search Icon */
+.clear-search {
+    color: #aaa;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.clear-search:hover {
+    color: #555;
+}
+
+/* Responsive Adjustments for Finance Search Bar */
+@media (max-width: 768px) {
+    .finance-search {
+        max-width: 100%;
+        padding: 8px 12px;
+    }
+
+    .finance-search .search-icon {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+
+    .finance-search input {
+        font-size: 14px;
+    }
+
+    .clear-search {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .finance-search {
+        padding: 6px 10px;
+    }
+
+    .finance-search .search-icon {
+        margin-right: 6px;
+        font-size: 16px;
+    }
+
+    .finance-search input {
+        font-size: 12px;
+    }
+
+    .clear-search {
+        font-size: 16px;
+    }
+}
+
+/* =========================================
+   3. Search Results Section Styles
+========================================= */
+
+/* Search Results Section */
+#search-results {
+    display: none; /* Hidden by default */
+    margin-bottom: 20px;
+}
+
+#search-results.active {
+    display: block;
+}
+
+#search-results h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Search Results Cards */
+#search-results .card {
+    width: 300px; /* Adjust as needed */
+}
+
+/* =========================================
+   4. Tabs Section
+========================================= */
+
+/* Tabs section */
+.tabs {
+    display: flex;
+    justify-content: center; /* Center the tabs horizontally */
+    background-color: #f5f5f5;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 0 10px; /* Adds horizontal padding for better spacing */
+}
+
+.tabs::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar for a cleaner look */
+}
+
+.tabs {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.tab-link {
+    flex: 0 0 auto; /* Prevents tabs from stretching */
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    border-bottom: 2px solid transparent;
+    transition:
+        border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.tab-link:hover {
+    color: #333;
+}
+
+.tab-link.active {
+    color: #333;
+    border-bottom: 2px solid #808080;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Responsive Design for Tabs */
+@media (max-width: 600px) {
+    .tabs {
+        padding-bottom: 10px; /* Adds some spacing below tabs */
+    }
+
+    .tab-link {
+        padding: 10px 15px; /* Adjust padding for smaller screens */
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabs {
+        flex-direction: column;
+        gap: 8px;
+        padding: 6px 0;
+    }
+
+    .tab-link {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+/* =========================================
+   5. Filter Buttons
+========================================= */
+
+/* Filter buttons */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.filter-btn {
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #808080;
+    cursor: pointer;
+    border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background-color: #e0e0e0;
+    color: #555;
+}
+
+/* Responsive Adjustments for Filter Buttons */
+@media (max-width: 768px) {
+    .filter-container {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-btn {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+}
+
+/* =========================================
+   6. Cards
+========================================= */
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.account-info p,
+.income-info p,
+.expense-info p,
+.debt-info p,
+.saving-info p,
+.budget-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+/* Search Results Cards */
+.search-cards .card {
+    width: 300px; /* Adjust as needed */
+}
+
+/* =========================================
+   7. View All Link
+========================================= */
+
+/* View All Link */
+.view-all-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.view-all-link a {
+    color: #808080;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.view-all-link a:hover {
+    color: #555;
+}
+
+/* Hide the view-all-link by default; it will be shown when needed */
+#view-all-accounts-link,
+#view-all-income-link,
+#view-all-expenses-link,
+#view-all-debts-link,
+#view-all-savings-link,
+#view-all-budgets-link {
+    display: none;
+}
+
+/* =========================================
+   8. Nothing Here Illustration
+========================================= */
+
+/* Nothing Here Illustration */
+.nothing-here {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh; /* Ensures adequate space */
+    color: #808080;
+}
+
+.nothing-here img {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.nothing-here p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* =========================================
+   9. Floating Action Button
+========================================= */
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #808080;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fab:hover {
+    background-color: #555;
+}
+
+.fab i {
+    font-size: 24px;
+}
+
+.fab-options {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 999;
+}
+
+.fab-options.show {
+    display: block;
+}
+
+.fab-option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fab-option i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.fab-option:hover {
+    background-color: #e0e0e0;
+}
+
+/* =========================================
+   10. Search Results Styling
+========================================= */
+
+/* Search Results Cards */
+#search-results .card {
+    width: 300px; /* Adjust as needed */
+}
+
+/* =========================================
+   11. Responsive Design
+========================================= */
+
+/* Responsive Design for Very Small Devices */
+@media (max-width: 480px) {
+    .account-cards,
+    .income-cards,
+    .expense-cards,
+    .debt-cards,
+    .saving-cards,
+    .budget-cards,
+    .search-cards {
+        /* Ensure cards take full width */
+        width: 100%;
+    }
+
+    .card-content {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+
+    .account-info p,
+    .income-info p,
+    .expense-info p,
+    .debt-info p,
+    .saving-info p,
+    .budget-info p,
+    .card-content p {
+        font-size: 14px;
+    }
+
+    /* Adjust Search Results */
+    #search-results h2 {
+        font-size: 20px;
+    }
+}

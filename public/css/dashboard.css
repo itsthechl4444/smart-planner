@@ -1,0 +1,676 @@
+/* Global styles for the body */
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    color: #808080;
+    overflow: hidden;
+}
+
+/* =========================================
+   2. Layout
+========================================= */
+
+/* Container for the entire layout */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+}
+
+/* =========================================
+   3. Header Styles
+========================================= */
+
+/* Header Styles */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 56px; /* Fixed height to avoid dynamic changes */
+    box-sizing: border-box; /* Ensure padding does not add extra height */
+}
+
+/* Header Elements */
+.menu-icon,
+.profile-icon i,
+.notification-icon i {
+    font-size: 24px;
+    flex-shrink: 0; /* Prevent elements from shrinking */
+    color: #808080;
+}
+
+.title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    color: #555;
+    margin: 0; /* Ensure no extra margin adds to height */
+    line-height: 1; /* Consistent line height */
+}
+
+/* Notification Icon Styles */
+.notification-icon {
+    margin-right: 15px; /* Space between notification and profile icons */
+}
+
+.notification-icon a {
+    color: #808080; /* Match the color with other icons */
+    position: relative;
+}
+
+/* Optional: Notification Badge */
+.notification-icon a .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ff4d4f;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    display: none; /* Hidden by default */
+}
+
+/* Show badge if there are unread notifications */
+.notification-icon a.has-notifications .notification-badge {
+    display: block;
+}
+
+/* =========================================
+   4. Main Content Styles
+========================================= */
+
+/* Main content */
+.main-content {
+    margin-top: 96px; /* Adjusted margin to account for both the header and tabs */
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* =========================================
+   5. Tabs Section
+========================================= */
+
+/* Tabs Section */
+.tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #f5f5f5;
+    position: fixed;
+    top: 56px; /* Fixed position just below the header */
+    left: 0;
+    right: 0;
+    z-index: 999;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 0; /* Padding for tabs to stay consistent */
+    margin-top: 10px;
+}
+
+.tabs .material-icons.tab-icon {
+    vertical-align: middle;
+    margin-right: 8px; /* Space between icon and text */
+    font-size: 16px; /* Adjust icon size as needed */
+    color: #808080; /* Match the color with the tab text */
+}
+
+.tab-link {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    transition:
+        border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.tab-link:hover {
+    color: #333;
+}
+
+.tab-link.active {
+    color: #333;
+    border-bottom: 2px solid #808080;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 20px; /* Space between tabs and content */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* =========================================
+   6. Task Management Styles
+========================================= */
+
+/* Removed Task Search Bar Styles */
+
+/* Task Filter Buttons */
+.task-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.filter-btn.active {
+    background-color: #808080; /* Highlight active button */
+    color: #fff; /* Change text color */
+    border-color: #808080; /* Match border color to active background */
+}
+
+.filter-btn:hover {
+    background-color: #e0e0e0; /* Light hover effect */
+}
+
+/* Add hover effect for the other buttons */
+.filter-btn:not(.active):hover {
+    background-color: #f0f0f0; /* Slightly darker when hovered */
+}
+
+/* Task Cards */
+.task-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.task-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.task-label {
+    display: inline-block;
+    background-color: #f5f5f5;
+    color: #555;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* No Data Message Styles */
+.no-data-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    color: #888;
+}
+
+.no-data-message img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.no-data-message p {
+    font-size: 1.2em;
+}
+
+/* =========================================
+   7. Finance Management Styles
+========================================= */
+
+/* Illustrations */
+.illustration-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.illustration {
+    max-width: 100%;
+    height: auto;
+    max-height: 200px; /* Adjust the maximum height */
+}
+
+/* Finance Section */
+.finance-summary {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.finance-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 45%;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.finance-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.finance-card p {
+    margin: 10px 0 0;
+    font-size: 1.5rem;
+    color: #555;
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+/* Expense Tracker */
+.tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Style for the chart container */
+.chart-wrapper {
+    display: flex; /* Added to ensure Flexbox centering */
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Center the chart or message */
+.chart-container,
+.no-data-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Style for the no-data message */
+.no-data-message {
+    text-align: center;
+    color: #888;
+}
+
+.no-data-illustration {
+    width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Dropdown */
+#expense-filter {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Change border color on focus */
+#expense-filter:focus {
+    border-color: #888;
+}
+
+/* Budget Planner Section */
+.budget-planner-section {
+    margin-top: 20px;
+}
+
+.budget-planner-section h2 {
+    color: #808080; /* Change to gray to match Expense Distribution */
+}
+
+.budget-list {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.budget-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 0;
+}
+
+.budget-item:last-child {
+    border-bottom: none;
+}
+
+.budget-item h3 {
+    margin: 0 0 10px;
+    color: #007bff; /* Optional: Add some color to the category heading */
+}
+
+.budget-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.budget-item p strong {
+    color: #333;
+}
+
+/* Financial Goals Section */
+.financial-goals-section {
+    margin-top: 20px;
+}
+
+.financial-goals-section h2 {
+    color: #808080; /* Change to gray to match Expense Distribution */
+}
+
+.goals-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Center the cards */
+}
+
+.goal-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px; /* Fixed width for cards */
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box; /* Include padding in the width */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.goal-card h3 {
+    margin: 0 0 10px;
+    color: #007bff; /* Optional: Add color to the goal name */
+}
+
+.goal-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* =========================================
+   8. Floating Action Button (FAB) Styles
+========================================= */
+
+/* Floating Action Button (FAB) */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #808080;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fab:hover {
+    background-color: #555;
+}
+
+.fab i {
+    font-size: 24px;
+}
+
+/* FAB Options */
+.fab-options {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 999;
+}
+
+.fab-options.show {
+    display: block;
+}
+
+.fab-option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fab-option i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.fab-option:hover {
+    background-color: #e0e0e0;
+}
+
+/* =========================================
+   9. No Data Illustration Styles
+========================================= */
+
+/* Style for no-data illustration in expense distribution */
+.no-data-illustration-container {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Make it take full height of the parent */
+    text-align: center;
+    color: #6c757d;
+}
+
+.no-data-illustration-container img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   10. Chart Styles
+========================================= */
+
+/* Ensure the chart-wrapper uses Flexbox to center its content */
+.chart-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Center the canvas within the chart-wrapper */
+#expenseChart {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Style for the chart title */
+.chart-wrapper .chart-title {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.25rem;
+    color: #333;
+}
+
+/* =========================================
+    11. Responsive Adjustments
+========================================= */
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+    /* Existing adjustments */
+    .chart-container {
+        max-width: 100%; /* Full width for mobile */
+        height: auto;
+    }
+
+    .chart-wrapper {
+        height: 250px; /* Reduced height for mobile */
+    }
+
+    /* 1. Increase space between tabs and filter buttons */
+    .task-filter {
+        margin-top: 20px; /* Increased from 20px to 30px */
+        margin-bottom: 20px; /* Maintain existing bottom margin */
+    }
+
+    /* Optional: Adjust main-content's top margin to accommodate fixed header and tabs */
+    .main-content {
+        margin-top: 130px; /* Increased from 96px to 130px */
+        padding: 15px; /* Adjust padding for better spacing */
+    }
+
+    /* Optional: Remove or adjust margin-top for .tabs if it's causing layout issues */
+    .tabs {
+        padding: 15px 0; /* Increase vertical padding for better touch targets */
+        /* Remove margin-top if it's not effective due to fixed positioning */
+        margin-top: 0;
+    }
+
+    /* 2. Adjust font sizes for titles */
+
+    /* Header Title */
+    .title {
+        font-size: 18px; /* Reduced from 20px */
+    }
+
+    /* Section Titles */
+    .tracker-header h2,
+    .budget-planner-section h2,
+    .financial-goals-section h2 {
+        font-size: 1.4rem; /* Reduced from 1.5rem to fit better on mobile */
+    }
+
+    /* Finance Card Titles */
+    .finance-card h3,
+    .budget-item h3,
+    .goal-card h3 {
+        font-size: 1.1rem; /* Reduced from 1.25rem */
+    }
+
+    /* Task Card Titles */
+    .task-card h3 {
+        font-size: 16px; /* Reduced from 18px */
+    }
+
+    /* 3. Enhance touch areas for buttons */
+
+    /* Tab Links */
+    .tab-link {
+        padding: 12px 15px; /* Increased padding for easier tapping */
+        font-size: 14px; /* Slightly reduced font size */
+    }
+
+    /* Filter Buttons */
+    .filter-btn {
+        padding: 10px 14px; /* Increased padding */
+        font-size: 14px; /* Reduced font size for better fit */
+    }
+
+    /* FAB Button */
+    .fab {
+        width: 50px; /* Slightly smaller on mobile */
+        height: 50px;
+    }
+
+    .fab i {
+        font-size: 20px; /* Adjust icon size accordingly */
+    }
+
+    /* Notification and Profile Icons */
+    .notification-icon i,
+    .profile-icon i,
+    .menu-icon i {
+        font-size: 20px; /* Reduced from 24px */
+    }
+
+    /* Chart Title */
+    .chart-wrapper .chart-title {
+        font-size: 1rem; /* Reduced from 1.25rem */
+    }
+
+    /* Budget and Goal Card Text */
+    .budget-item p,
+    .goal-card p {
+        font-size: 14px; /* Ensure readability */
+    }
+
+    /* Additional Adjustments for Better Layout */
+
+    /* Ensure the tabs stay on top without overlapping content */
+    .tabs {
+        position: fixed;
+        top: 56px; /* Below the header */
+        left: 0;
+        right: 0;
+        z-index: 999;
+        border-bottom: 1px solid #e0e0e0;
+        background-color: #f5f5f5;
+    }
+
+    /* Adjust main-content to start below tabs */
+    .main-content {
+        padding-top: 10px; /* Additional padding if necessary */
+    }
+}

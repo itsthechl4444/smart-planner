@@ -1,0 +1,186 @@
+/* Body styles */
+body {
+    background-color: #f5f5f5;
+    color: #808080;
+    font-family: "Open Sans", sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Container styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Fixed header styles */
+.fixed-header {
+    margin-bottom: 20px;
+}
+
+/* Heading styles */
+.fixed-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Lead paragraph styles */
+.fixed-header p.lead {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #666;
+}
+
+/* Onboarding section styles */
+.onboarding {
+    margin-top: 20px;
+}
+
+/* Image styles */
+.onboarding img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+}
+
+/* Regular paragraph styles */
+.onboarding p {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Get Started button styles */
+.btn-get-started {
+    margin-top: 20px;
+    background-color: #666;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 265px;
+    height: 56px;
+    font-family: "Open Sans", sans-serif;
+}
+
+/* Hover state for Get Started button */
+.btn-get-started:hover {
+    background-color: #555;
+    color: white;
+}
+
+/* Carousel inner container styles */
+.carousel-inner {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+/* Carousel indicators styles */
+.carousel-indicators.custom-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-top: 20px; /* Added more spacing above */
+    margin-bottom: 30px; /* Added more spacing below */
+    position: relative;
+}
+
+/* Individual indicator styles */
+.carousel-indicators.custom-indicators li {
+    width: 12px;
+    height: 12px;
+    background-color: #666;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+/* Active indicator styles */
+.carousel-indicators.custom-indicators .active {
+    background-color: #333;
+    opacity: 1;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 767px) {
+    /* Mobile styles */
+    .fixed-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .fixed-header p.lead {
+        font-size: 0.9rem;
+    }
+
+    .onboarding p {
+        font-size: 1rem;
+    }
+
+    .btn-get-started {
+        width: 220px;
+        font-size: 1rem;
+    }
+
+    .carousel-inner {
+        max-width: 300px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Tablet styles */
+    .fixed-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .fixed-header p.lead {
+        font-size: 1rem;
+    }
+
+    .onboarding p {
+        font-size: 1.1rem;
+    }
+
+    .btn-get-started {
+        width: 240px;
+        font-size: 1.15rem;
+    }
+
+    .carousel-inner {
+        max-width: 350px;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Desktop styles */
+    .fixed-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .fixed-header p.lead {
+        font-size: 1.2rem;
+    }
+
+    .onboarding p {
+        font-size: 1.25rem;
+    }
+
+    .btn-get-started {
+        width: 265px;
+        font-size: 1.25rem;
+    }
+
+    .carousel-inner {
+        max-width: 400px;
+    }
+}

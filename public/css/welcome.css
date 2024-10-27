@@ -1,0 +1,99 @@
+/* Body styles */
+html, body {
+    height: 100%;
+    margin: 0;
+        padding: 0;
+    background-color: #F5F5F5;
+    /* Background color for the body */
+    color: #808080;
+    /* Default text color */
+    font-family: 'Open Sans', sans-serif;
+    /* Default font family */
+    display: flex;
+    justify-content: center;
+
+}
+
+/* Container styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%; /* Full viewport height */
+}
+
+/* Heading styles */
+.container h1 {
+    font-size: 30px;
+    font-weight: 700;
+    /* Font weight for the main heading */
+    color: #333;
+    /* Heading text color */
+    margin-bottom: 0;
+    justify-content: center;
+}
+
+/* Subheading */
+.container p.lead {
+    font-size: 14px;
+    font-weight: 600;
+    /* Font weight for lead paragraphs */
+    color: #666;
+    /* Lead paragraph text color */
+    margin-bottom: 5px;
+}
+
+.container p.login {
+    font-size: 12px;
+}
+
+/* Illustration styles */
+.illustration {
+    max-width: 100%;
+    height: 276px;
+        /* Maximum width for images */
+        margin: 10px 0;
+        /* Margin around the image */
+}
+
+/* Regular paragraph styles */
+.container p {
+    font-size: 20px;
+        font-weight: 600;
+        /* Font size for regular paragraphs */
+        color: #666;
+        /* Regular paragraph text color */
+        margin-bottom: 20px;
+}
+
+/* Sign Up button styles */
+.btn-signup {
+    font-family: 'Open Sans', sans-serif;
+        margin-top: 20px;
+        background-color: #666;
+        /* Button background color */
+        border: none;
+        /* Remove default button border */
+        color: white;
+        /* Button text color */
+        padding: 10px 20px;
+        /* Padding inside the button */
+        font-size: 20px;
+        /* Button text font size */
+        font-weight: bold;
+        /* Button text font weight */
+        border-radius: 10px;
+        /* Button border radius */
+        text-transform: none;
+        /* Uppercase text */
+        width: 265px;
+        height: 56px;
+}
+
+/* Hover state for Sign Up button */
+.btn-signup:hover {
+    background-color: #555;
+    color: white;
+}

@@ -1,0 +1,653 @@
+/* =========================================
+   1. Global Styles
+========================================= */
+
+/* Global styles */
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    color: #808080;
+}
+
+/* Header Section */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+}
+
+/* Sidebar Item (Assuming it's handled in sidebar.css) */
+
+/* Divider */
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+/* Main Content Section */
+.main-content {
+    padding: 80px 20px 20px; /* Adjusted top padding to account for fixed header */
+    overflow-y: auto; /* Allows vertical scrolling */
+    min-height: 100vh; /* Ensures the container covers the viewport height */
+}
+
+/* =========================================
+   2. Custom Tabs Styles
+========================================= */
+
+/* Tabs section */
+.tabs {
+    display: flex;
+    justify-content: center; /* Center the tabs horizontally */
+    background-color: #f5f5f5;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 0 10px; /* Adds horizontal padding for better spacing */
+}
+
+.tabs::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar for a cleaner look */
+}
+
+.tabs {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.tab-link {
+    flex: 0 0 auto; /* Prevents tabs from stretching */
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    border-bottom: 2px solid transparent;
+    transition:
+        border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.tab-link:hover {
+    color: #333;
+}
+
+.tab-link.active {
+    color: #333;
+    border-bottom: 2px solid #808080;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Responsive Design for Tabs */
+@media (max-width: 600px) {
+    .tabs {
+        padding-bottom: 10px; /* Adds some spacing below tabs */
+    }
+
+    .tab-link {
+        padding: 10px 15px; /* Adjust padding for smaller screens */
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabs {
+        flex-direction: column;
+        gap: 8px;
+        padding: 6px 0;
+    }
+
+    .tab-link {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+/* =========================================
+   3. Task Summary Cards
+========================================= */
+
+.task-summary {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    flex-wrap: nowrap; /* Keep cards in a row */
+    scrollbar-width: none; /* For Firefox, hide scrollbar */
+    -ms-overflow-style: none; /* For IE and Edge */
+}
+
+.task-summary::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+}
+
+.card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    cursor: default;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h5 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Specific Card Styles */
+.completed-card {
+    background-color: #e0f7fa;
+}
+
+.pending-card {
+    background-color: #fff3e0;
+}
+
+.overdue-card {
+    background-color: #ffebee;
+}
+
+/* =========================================
+   4. Divider
+========================================= */
+
+.divider {
+    margin: 30px 0;
+    border-top: 1px solid #ddd;
+    width: 100%;
+}
+
+/* =========================================
+   5. Other Sections (Expense, Income, Budget)
+========================================= */
+
+.other-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.income-overview,
+.budget-progress-report {
+    margin-top: 20px;
+}
+
+/* =========================================
+   6. Filter Buttons
+========================================= */
+
+/* Filter buttons */
+.filter-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-options .btn {
+    background-color: #808080;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    font-size: 14px;
+}
+
+.filter-options .btn:hover {
+    background-color: #555;
+}
+
+.filter-options .btn:focus {
+    outline: none;
+}
+
+.filter-options .btn.active {
+    background-color: #333;
+}
+
+/* Responsive Adjustments for Filter Buttons */
+@media (max-width: 768px) {
+    .filter-options .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-options .btn {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+}
+
+/* =========================================
+   7. Tables
+========================================= */
+
+/* Expense Summary Table, Income Overview Table, Budget Progress Table */
+table.highlight {
+    background-color: #fff;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+table.highlight th,
+table.highlight td {
+    padding: 15px;
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+table.highlight th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+table.highlight td {
+    background-color: #ffffff;
+}
+
+table.highlight tr.total-row td {
+    font-weight: bold;
+}
+
+/* Responsive Adjustments for Tables */
+@media (max-width: 768px) {
+    table.highlight th,
+    table.highlight td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    table.highlight th,
+    table.highlight td {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+
+/* =========================================
+   8. Loading Spinners
+========================================= */
+
+/* Preloader Wrapper */
+.preloader-wrapper {
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+.preloader-wrapper.active .spinner-layer {
+    animation: spin 1.4s linear infinite;
+}
+
+.spinner-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #808080;
+}
+
+.spinner-layer.spinner-blue-only {
+    border-top-color: #2196f3;
+}
+
+.spinner-layer.spinner-green-only {
+    border-top-color: #4caf50;
+}
+
+.spinner-layer.spinner-orange-only {
+    border-top-color: #ff9800;
+}
+
+.circle-clipper {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.circle-clipper.left {
+    left: 0;
+}
+
+.circle-clipper.right {
+    right: 0;
+}
+
+.circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: inherit;
+}
+
+.gap-patch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.gap-patch .circle {
+    width: 200%;
+    height: 100%;
+    border-left-color: inherit;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+   9. Cards
+========================================= */
+
+/* Card Hover Effect */
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   10. View All Link
+========================================= */
+
+/* View All Link */
+.view-all-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.view-all-link a {
+    color: #808080;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.view-all-link a:hover {
+    color: #555;
+}
+
+/* =========================================
+   11. Nothing Here Illustration
+========================================= */
+
+/* Nothing Here Illustration */
+.nothing-here {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh; /* Ensures adequate space */
+    color: #808080;
+}
+
+.nothing-here img {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.nothing-here p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* =========================================
+   12. Floating Action Button (FAB)
+========================================= */
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #808080;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1001; /* Ensure it stays above other elements */
+}
+
+.fab:hover {
+    background-color: #555;
+}
+
+.fab i {
+    font-size: 24px;
+}
+
+.fab-options {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1001;
+}
+
+.fab-options.show {
+    display: block;
+}
+
+.fab-option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fab-option i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.fab-option:hover {
+    background-color: #e0e0e0;
+}
+
+/* =========================================
+   13. Responsive Design
+========================================= */
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .task-summary {
+        flex-wrap: nowrap; /* Prevent wrapping on smaller screens */
+    }
+
+    .card {
+        flex: 0 0 45%; /* Make sure two cards fit side by side on smaller screens */
+        max-width: 200px; /* Limit the card width to avoid overflow */
+    }
+
+    .tabs {
+        padding-bottom: 10px; /* Adds some spacing below tabs */
+    }
+
+    .tab-link {
+        padding: 10px 15px; /* Adjust padding for smaller screens */
+        font-size: 14px;
+    }
+
+    .filter-options {
+        gap: 8px;
+    }
+
+    .filter-options .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    table.highlight th,
+    table.highlight td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .fab {
+        width: 50px;
+        height: 50px;
+    }
+
+    .fab i {
+        font-size: 20px;
+    }
+
+    .fab-options {
+        right: 25px;
+    }
+
+    .fab-option {
+        padding: 8px;
+    }
+
+    .fab-option i {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabs {
+        flex-direction: column;
+        gap: 8px;
+        padding: 6px 0;
+    }
+
+    .tab-link {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .filter-options .btn {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    table.highlight th,
+    table.highlight td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .task-summary {
+        flex-wrap: nowrap; /* Prevent wrapping on very small screens */
+    }
+
+    .card {
+        flex: 0 0 100%; /* Make cards full width on very small screens */
+        max-width: none;
+    }
+
+    .fab {
+        width: 50px;
+        height: 50px;
+    }
+
+    .fab i {
+        font-size: 20px;
+    }
+
+    .fab-options {
+        right: 25px;
+    }
+
+    .fab-option {
+        padding: 8px;
+    }
+
+    .fab-option i {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+}

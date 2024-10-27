@@ -1,0 +1,108 @@
+/* Global Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F5F5F5;
+    color: #808080;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Top App Bar Styles */
+.app-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 20px;
+    background-color: #F5F5F5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Back Icon Style */
+.back-icon,
+.save-btn {
+    cursor: pointer;
+    color: #555;
+    font-size: 24px;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Title Style */
+.app-bar-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    color: #555;
+    margin: 0;
+}
+
+/* Main Content Styles */
+main {
+    margin-top: 56px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Illustration Styles */
+.illustration {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.illustration img {
+    max-width: 90%;
+    height: auto;
+    max-height: 300px;
+    border-radius: 10px;
+}
+
+/* Form Group Styles */
+.form-group {
+    margin-top: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Form Control Styles */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Label Styles */
+.form-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Placeholder Color */
+.form-control::placeholder {
+    color: #808080;
+    opacity: 1;
+}

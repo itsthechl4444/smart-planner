@@ -1,0 +1,39 @@
+/* Adjust navbar toggler icon */
+.navbar-toggler {
+    border: none;
+    font-size: 24px;
+}
+
+/* Adjust the bell icon */
+.bell {
+    font-size: 24px;
+    margin-left: 20px;
+    color: #808080;
+    cursor: pointer;
+}
+
+/* Adjust the profile icon */
+.profile {
+    font-size: 24px;
+    margin-left: 20px;
+    color: #808080;
+    cursor: pointer;
+}
+
+/* Adjust any other icons as needed */
+.back {
+    font-size: 24px;
+    margin-left: 20px;
+    color: #808080;
+    cursor: pointer;
+}
+
+/* Define icon size */
+.bi {
+    font-size: 24px;
+}
+
+/* Define text color for icons */
+.text-gray {
+    color: #808080;
+}

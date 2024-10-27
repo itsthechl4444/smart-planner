@@ -1,0 +1,355 @@
+/* tips.css */
+
+/* =========================================
+   1. Global Styles
+========================================= */
+
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    background-color: #f4f7f9;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.menu-icon i {
+    vertical-align: middle;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+    color: #333;
+}
+
+.main-content {
+    padding: 80px 20px 20px;
+    flex: 1;
+}
+
+.illustration-wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.illustration {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* =========================================
+   2. Tips Container Styles
+========================================= */
+
+.tips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    flex: 1 1 250px;
+    max-width: 300px;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.card-content h3 {
+    margin-top: 0;
+    color: #1976d2;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* =========================================
+   3. Modal Styles (Updated)
+========================================= */
+
+.modal {
+    display: flex; /* Enable flexbox */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    /* Remove fixed max-width to allow responsiveness */
+    /* Optional: Set a max-width with relative units */
+    max-width: 90%;
+    margin: auto; /* Centers the modal horizontally */
+    border-radius: 12px;
+    overflow: hidden; /* Prevents content overflow */
+}
+
+.modal-content {
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically if needed */
+    text-align: center; /* Center text */
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.modal-content h4 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #1976d2;
+    text-align: center; /* Ensure heading is centered */
+}
+
+.modal-content .modal-illustration {
+    width: 100%;
+    max-width: 150px; /* Adjust based on your design */
+    height: auto;
+    margin: 0 auto 20px auto; /* Centers the image */
+    border-radius: 8px;
+    display: block; /* Ensures the image behaves as a block element */
+}
+
+.modal-content .modal-content-wrapper {
+    width: 100%;
+    max-width: 500px; /* Optional: Adjust based on design */
+    margin: 0 auto; /* Centers the content wrapper */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center child elements */
+    text-align: center; /* Center text */
+}
+
+.modal-content-wrapper h5 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333;
+    width: 100%;
+    text-align: center; /* Center headings */
+}
+
+.modal-content-wrapper p {
+    font-size: 16px; /* Paragraph styling */
+    color: #555;
+    line-height: 1.6;
+    width: 100%;
+    max-width: 480px; /* Limit width for readability */
+    margin: 0 auto 15px auto; /* Center paragraphs */
+}
+
+.modal-content-wrapper ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    width: 100%;
+    max-width: 480px; /* Align with paragraph width */
+    margin: 0 auto; /* Center the list */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center list items */
+}
+
+.modal-content-wrapper ul li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+    text-align: left; /* Keep list items left-aligned for readability */
+    width: 100%;
+    max-width: 480px; /* Align with list container */
+}
+
+.modal-content-wrapper ul li strong {
+    color: #1976d2;
+}
+
+.modal-footer {
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 20px;
+    text-align: right;
+    width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.modal-footer .btn-flat {
+    color: #1976d2;
+    /* Optional: Add padding for better click area */
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.modal-footer .btn-flat:hover {
+    background-color: rgba(25, 118, 210, 0.1);
+}
+
+/* =========================================
+   4. Responsive Design (Enhanced)
+========================================= */
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 25px 15px;
+    }
+
+    .modal-content h4 {
+        font-size: 24px;
+    }
+
+    .modal-content-wrapper h5 {
+        font-size: 20px;
+    }
+
+    .modal-content-wrapper p,
+    .modal-content-wrapper ul li {
+        font-size: 14px;
+    }
+
+    .modal-content .modal-illustration {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 20px 10px;
+    }
+
+    .modal-content h4 {
+        font-size: 22px;
+    }
+
+    .modal-content-wrapper h5 {
+        font-size: 18px;
+    }
+
+    .modal-content-wrapper p,
+    .modal-content-wrapper ul li {
+        font-size: 13px;
+    }
+
+    .modal-content .modal-illustration {
+        max-width: 100px;
+    }
+}
+
+/* =========================================
+   5. Accessibility Enhancements
+========================================= */
+
+.menu-icon:focus,
+.card:focus,
+.modal-close:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #1976d2;
+}
+
+/* Optional: Improve button accessibility */
+.btn-flat {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-flat:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #1976d2;
+}
+
+/* =========================================
+   4. Responsive Design
+========================================= */
+
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 45%;
+    }
+
+    .modal-content h4 {
+        font-size: 24px;
+    }
+
+    .modal-content h5 {
+        font-size: 20px;
+    }
+
+    .modal-content p,
+    .modal-content ul li {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 1 1 100%;
+    }
+
+    .card-content h3 {
+        font-size: 20px;
+    }
+
+    .card-content p {
+        font-size: 14px;
+    }
+
+    .modal-content h4 {
+        font-size: 22px;
+    }
+
+    .modal-content h5 {
+        font-size: 18px;
+    }
+
+    .modal-content p,
+    .modal-content ul li {
+        font-size: 13px;
+    }
+}
+
+/* =========================================
+   5. Accessibility Enhancements
+========================================= */
+
+.menu-icon:focus,
+.card:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #1976d2;
+}

@@ -1,0 +1,224 @@
+/* Global Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F5F5F5;
+    color: #808080;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Top App Bar Styles */
+.app-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 20px;
+    background-color: #F5F5F5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Back Icon and Save Button Style */
+.back-icon,
+.save-btn {
+    cursor: pointer;
+    color: #555;
+    font-size: 24px;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Title Style */
+.app-bar-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    color: #555;
+    margin: 0;
+}
+
+/* Main Content Styles */
+main {
+    margin-top: 56px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Illustration Styles */
+.illustration {
+    margin-bottom: 30px;
+}
+
+.illustration img {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    border-radius: 10px;
+}
+
+/* Form Group Styles */
+.form-group {
+    margin-top: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Form Control Styles */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Label Styles */
+.form-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Placeholder Color */
+.form-control::placeholder {
+    color: #808080;
+    opacity: 1;
+}
+
+/* Textarea Adjustments */
+textarea.form-control {
+    height: 150px;
+    resize: vertical;
+}
+
+/* File Input Styles */
+input[type="file"].form-control {
+    padding: 5px;
+    height: auto;
+}
+
+/* Responsive Design for Desktop and Laptop Screens */
+@media (min-width: 1280px) and (max-width: 1920px) {
+    .app-bar {
+        height: 72px;
+        padding: 0 40px;
+    }
+
+    .app-bar-title {
+        font-size: 22px;
+    }
+
+    .main {
+        margin-top: 72px;
+        padding: 40px;
+    }
+
+    .illustration img {
+        max-width: 80%;
+        max-height: 350px;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .app-bar {
+        height: 64px;
+        padding: 0 30px;
+    }
+
+    .app-bar-title {
+        font-size: 20px;
+    }
+
+    .main {
+        margin-top: 64px;
+        padding: 30px;
+    }
+
+    .illustration img {
+        max-width: 85%;
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .app-bar {
+        height: 56px;
+        padding: 0 20px;
+    }
+
+    .app-bar-title {
+        font-size: 18px;
+    }
+
+    .main {
+        margin-top: 56px;
+        padding: 20px;
+    }
+
+    .illustration img {
+        max-width: 90%;
+        max-height: 250px;
+    }
+}
+
+/* Responsive Design for Mobile Screens */
+@media (max-width: 768px) {
+    .app-bar {
+        height: 56px;
+        padding: 0 20px;
+    }
+
+    .app-bar-title {
+        font-size: 18px;
+    }
+
+    .main {
+        margin-top: 56px;
+        padding: 20px;
+    }
+
+    .illustration img {
+        max-width: 100%;
+        max-height: 250px;
+    }
+}
+
+@media (max-width: 360px) {
+    .app-bar {
+        height: 50px;
+        padding: 0 15px;
+    }
+
+    .app-bar-title {
+        font-size: 16px;
+    }
+
+    .main {
+        margin-top: 50px;
+        padding: 15px;
+    }
+
+    .illustration img {
+        width: 100%;
+        max-height: 200px;
+    }
+}

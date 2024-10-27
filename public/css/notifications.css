@@ -1,0 +1,260 @@
+/* notifications.css */
+
+/* =========================================
+   1. Global Styles
+========================================= */
+
+/* Body and Container Styles */
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    background-color: #f5f5f5; /* Main background color */
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f5f5f5; /* Header background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Menu Icon */
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Title */
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+    color: #555;
+}
+
+/* Main Content */
+.main-content {
+    padding: 80px 20px 20px; /* Padding to avoid overlap with fixed header */
+}
+
+/* =========================================
+   2. Notification Cards Styles
+========================================= */
+
+/* Notification Cards Container */
+.notification-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between cards */
+}
+
+/* Notification Card */
+.notification-card {
+    background-color: #ffffff; /* White background for the card */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease; /* Smooth transitions */
+}
+
+.notification-card:hover {
+    transform: scale(1.02); /* Scale effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Unread Notification */
+.notification-card.unread {
+    border-left: 5px solid #ababab; /* Border color for unread notifications */
+    background-color: #ffffff; /* Ensure unread notifications also have a white background */
+}
+
+/* Card Content */
+.card-content {
+    padding: 20px; /* Padding inside the card */
+}
+
+/* Notification Header */
+.notification-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Space below the header */
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+    width: 40px;
+    height: 40px;
+    background-color: #e0e0e0; /* Background for icons */
+    border-radius: 50%; /* Circular icon background */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centering icon */
+    margin-right: 15px; /* Space to the right of the icon */
+}
+
+.icon-wrapper i {
+    font-size: 24px; /* Icon size */
+    color: #424242; /* Icon color */
+}
+
+/* Card Title */
+.card-title {
+    font-size: 18px; /* Title font size */
+    font-weight: 600; /* Title font weight */
+    color: #424242; /* Title color */
+}
+
+/* Notification Message */
+.card-content p {
+    margin: 5px 0; /* Space between paragraphs */
+    font-size: 14px; /* Font size for notification message */
+    color: #757575; /* Color for notification message */
+}
+
+/* Notification Actions */
+.notification-actions {
+    margin-top: 10px; /* Space above actions */
+}
+
+.notification-actions form {
+    display: inline-block; /* Inline form for buttons */
+    margin-right: 10px; /* Space between buttons */
+}
+
+.notification-actions .btn-small {
+    padding: 6px 12px; /* Button padding */
+    font-size: 12px; /* Button font size */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.notification-actions .btn-small.green {
+    background-color: #81c784; /* Green button background */
+    color: #fff; /* Button text color */
+}
+
+.notification-actions .btn-small.red {
+    background-color: #e57373; /* Red button background */
+    color: #fff; /* Button text color */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .icon-wrapper {
+        width: 30px; /* Smaller icon on mobile */
+        height: 30px; /* Smaller icon on mobile */
+        margin-right: 10px; /* Adjusted spacing */
+    }
+
+    .icon-wrapper i {
+        font-size: 20px; /* Smaller icon size */
+    }
+
+    .card-title {
+        font-size: 16px; /* Smaller title size */
+    }
+
+    .card-content p {
+        font-size: 12px; /* Smaller message size */
+    }
+}
+
+@media (max-width: 480px) {
+    .notification-header {
+        flex-direction: column; /* Stack header elements */
+        align-items: flex-start; /* Align to start */
+    }
+
+    .icon-wrapper {
+        margin-right: 0; /* Remove right margin */
+        margin-bottom: 8px; /* Space below icon */
+    }
+
+    .card-title {
+        font-size: 14px; /* Smaller title for mobile */
+    }
+
+    .card-content p {
+        font-size: 11px; /* Smaller message for mobile */
+    }
+}
+
+/* =========================================
+   3. Additional Styles (if needed)
+========================================= */
+
+/* No Notifications Message */
+.no-notifications {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content */
+    justify-content: center; /* Center content */
+    margin-top: 50px; /* Space above */
+}
+
+.no-notifications img {
+    width: 150px; /* Image width */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 20px; /* Space below image */
+}
+
+.no-notifications h5 {
+    margin-bottom: 10px; /* Space below heading */
+    color: #555; /* Color for heading */
+}
+
+.no-notifications p {
+    color: #757575; /* Color for message */
+}
+
+/* Ensure action buttons align properly */
+.notification-actions button {
+    min-width: 80px; /* Minimum width for buttons */
+}
+
+.task-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Spacing below filter buttons */
+}
+
+.filter-btn {
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.filter-btn.active {
+    background-color: #808080; /* Highlight active button */
+    color: #fff; /* Change text color */
+    border-color: #808080; /* Match border color to active background */
+}
+
+.filter-btn:hover {
+    background-color: #e0e0e0; /* Light hover effect */
+}
+
+/* Add hover effect for the other buttons */
+.filter-btn:not(.active):hover {
+    background-color: #f0f0f0; /* Slightly darker when hovered */
+}

@@ -1,0 +1,146 @@
+/* taskmanagement.css */
+
+/* Body styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F5F5F5;
+    color: #555;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.top-app-bar {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    color: #555;
+}
+
+.top-app-bar .back-button {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 22px;
+    cursor: pointer;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.top-app-bar .headline {
+    font-size: 22pt;
+}
+
+.task-actions {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.btn-create {
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #666;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-transform: none;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    max-width: 265px;
+    height: 56px;
+}
+
+.btn-create:hover {
+    background-color: #555;
+}
+
+.task-list {
+    margin-top: 20px;
+}
+
+.task-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.task-card p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 16px;
+}
+
+.task-card p strong {
+    font-weight: bold;
+}
+
+.task-card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.task-card-actions a.btn,
+.task-card-actions form button {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.task-card-actions .btn-info {
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+}
+
+.task-card-actions .btn-warning {
+    background-color: #ffc107;
+    color: #fff;
+    border: none;
+}
+
+.task-card-actions .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+}
+
+.task-card-actions .btn-info:hover,
+.task-card-actions .btn-warning:hover,
+.task-card-actions .btn-danger:hover {
+    opacity: 0.8;
+}
+
+.task-card-actions form {
+    display: inline;
+    margin: 0;
+}
+
+.task-card-actions form button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
