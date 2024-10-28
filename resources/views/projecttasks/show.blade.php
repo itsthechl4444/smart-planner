@@ -18,9 +18,14 @@
             more_vert
         </span>
         <ul id="task-dropdown" class="dropdown-content">
-            <li><a href="{{ route('projecttasks.edit', $task->id) }}"><span class="material-symbols-outlined">edit</span>Edit Task</a></li>
+            <!-- Corrected Route References -->
             <li>
-                <form action="{{ route('projecttasks.destroy', $task->id) }}" method="POST">
+                <a href="{{ route('projecttasks.edit', ['project' => $project->id, 'task' => $task->id]) }}">
+                    <span class="material-symbols-outlined">edit</span>Edit Task
+                </a>
+            </li>
+            <li>
+                <form action="{{ route('projecttasks.destroy', ['project' => $project->id, 'task' => $task->id]) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit"><span class="material-symbols-outlined">delete</span>Delete Task</button>
@@ -38,7 +43,7 @@
             <p><strong>Priority:</strong> {{ ucfirst($task->priority) }}</p>
             <p><strong>Label:</strong> {{ $task->label ? $task->label->name : 'None' }}</p>
             <p><strong>Notes:</strong> {{ $task->notes }}</p>
-            <p><strong>Reminder:</strong> {{ $task->reminder }}</p>
+            <p><strong>Reminder:</strong> {{ $task->reminder ? 'Yes' : 'No' }}</p>
             @if ($task->attachments)
                 <p><strong>Attachments:</strong> <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">View Attachment</a></p>
             @endif

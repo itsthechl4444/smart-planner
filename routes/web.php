@@ -34,10 +34,8 @@ use App\Http\Controllers\SavingsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PasswordController;
 
-
 // Authentication Routes...
 Auth::routes();
-
 
 // Onboarding and Welcome Routes
 Route::get('/', function () {
@@ -70,7 +68,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/taskmanagement', [TaskManagementController::class, 'index'])->name('taskmanagement.index');
     Route::resource('tasks', TaskController::class);
     Route::post('/tasks/{task}/complete', [TaskController::class, 'markAsCompleted'])->name('tasks.markAsCompleted');
-});
 
     // Label Routes
     Route::resource('labels', LabelController::class);
@@ -78,43 +75,48 @@ Route::middleware(['auth'])->group(function () {
     // Project Routes
     Route::resource('projects', ProjectController::class);
 
- 
-   
-        // Task Creation Routes
-        Route::get('/projects/{project}/tasks/create', [ProjectTaskController::class, 'create'])->name('projecttasks.create');
-        Route::post('/projects/{project}/tasks', [ProjectTaskController::class, 'store'])->name('projecttasks.store');
-        Route::get('/projects/{project}/tasks/{task}', [ProjectTaskController::class, 'show'])->name('projecttasks.show');
+  // Nested Task Routes within Projects
+  Route::prefix('projects/{project}')->group(function () {
+    Route::resource('tasks', ProjectTaskController::class)->names([
+        'index'   => 'projecttasks.index',
+        'create'  => 'projecttasks.create',
+        'store'   => 'projecttasks.store',
+        'show'    => 'projecttasks.show',
+        'edit'    => 'projecttasks.edit',
+        'update'  => 'projecttasks.update',
+        'destroy' => 'projecttasks.destroy',
+    ]);
+});
 
     // Members Route
     Route::get('/projects/{project}/members', [ProjectController::class, 'members'])->name('projects.members');
 
+    // Notifications Routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 
-    Route::middleware(['auth'])->group(function () {
-        // Notifications Routes
-        Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-        Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-    
-        // Collaborations Routes
-        Route::post('/projects/{project}/invite', [CollaborationController::class, 'invite'])->name('collaborations.invite');
-        Route::post('/projects/{project}/accept', [CollaborationController::class, 'acceptInvitation'])->name('collaborations.accept');
-        Route::post('/projects/{project}/decline', [CollaborationController::class, 'declineInvitation'])->name('collaborations.decline');
-        Route::delete('/projects/{project}/remove/{collaborator}', [CollaborationController::class, 'remove'])->name('collaborations.remove');
+   // Collaboration Routes
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('projects/{project}')->group(function () {
+        Route::post('invite', [CollaborationController::class, 'invite'])->name('collaborations.invite');
+        Route::post('accept', [CollaborationController::class, 'acceptInvitation'])->name('collaborations.accept');
+        Route::post('decline', [CollaborationController::class, 'declineInvitation'])->name('collaborations.decline');
+        Route::delete('remove/{collaborator}', [CollaborationController::class, 'remove'])->name('collaborations.remove');
     });
-
-
+});
 
 
     // Finance Management
     Route::get('/financemanagement', [FinanceManagementController::class, 'index'])->name('financemanagement.index');
 
-// Calendar view
-Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    // Calendar view
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
-// Event fetching routes
-Route::get('/calendar/tasks', [CalendarController::class, 'fetchTasks'])->name('calendar.fetchTasks');
-Route::get('/calendar/expenses', [CalendarController::class, 'fetchExpenses'])->name('calendar.fetchExpenses');
-Route::get('/calendar/savings', [CalendarController::class, 'fetchSavings'])->name('calendar.fetchSavings');
-Route::get('/calendar/debts', [CalendarController::class, 'fetchDebts'])->name('calendar.fetchDebts');
+    // Event fetching routes
+    Route::get('/calendar/tasks', [CalendarController::class, 'fetchTasks'])->name('calendar.fetchTasks');
+    Route::get('/calendar/expenses', [CalendarController::class, 'fetchExpenses'])->name('calendar.fetchExpenses');
+    Route::get('/calendar/savings', [CalendarController::class, 'fetchSavings'])->name('calendar.fetchSavings');
+    Route::get('/calendar/debts', [CalendarController::class, 'fetchDebts'])->name('calendar.fetchDebts');
 
     // Tips and Reports
     Route::get('/tips', [TipsController::class, 'index'])->name('tips');
@@ -123,12 +125,6 @@ Route::get('/calendar/debts', [CalendarController::class, 'fetchDebts'])->name('
     Route::get('/expense-reports', [ReportsController::class, 'getExpenseReports'])->name('reports.expense');
     Route::get('/income-reports', [ReportsController::class, 'getIncomeReports'])->name('reports.income');
     Route::get('/budget-progress-reports', [ReportsController::class, 'getBudgetProgressReports'])->name('reports.budget_progress');
-
-    
-Route::middleware(['auth'])->group(function () {
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-});
 
     // Account Management
     Route::resource('accounts', AccountController::class);
@@ -150,6 +146,4 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
-
+});

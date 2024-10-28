@@ -74,31 +74,32 @@
             </ul>
         </section>
 
-        <!-- Project Tasks Section -->
-        @if($project->tasks->isEmpty())
-            <div class="empty-state">
-                <img src="{{ asset('images/illustration.png') }}" alt="No Tasks Illustration">
-                <p>No tasks yet</p>
-            </div>
-        @else
-            <div class="task-cards container mt-4">
-                <div class="row">
-                    @foreach($project->tasks as $task)
-                        <div class="col-md-4 mb-4">
-                            <div class="card task-card" data-url="{{ route('projecttasks.show', [$project->id, $task->id]) }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $task->title }}</h5>
-                                    <p class="card-text"><strong>Due Date:</strong> {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') : 'No due date' }}</p>
-                                    <p class="card-text"><strong>Label:</strong> {{ $task->label->name ?? 'None' }}</p>
-                                    <p class="card-text"><strong>Priority:</strong> {{ $task->priority }}</p>
-                                    <a href="{{ route('projecttasks.show', [$project->id, $task->id]) }}" class="btn btn-primary">View Task</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+       <!-- Project Tasks Section -->
+@if($project->tasks->isEmpty())
+<div class="empty-state">
+    <img src="{{ asset('images/illustration.png') }}" alt="No Tasks Illustration">
+    <p>No tasks yet</p>
+</div>
+@else
+<div class="task-cards container mt-4">
+    <div class="row">
+        @foreach($project->tasks as $task)
+            <div class="col-md-4 mb-4">
+                <div class="card task-card" data-url="{{ route('projecttasks.show', [$project->id, $task->id]) }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $task->title }}</h5>
+                        <p class="card-text"><strong>Due Date:</strong> {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') : 'No due date' }}</p>
+                        <p class="card-text"><strong>Label:</strong> {{ $task->label->name ?? 'None' }}</p>
+                        <p class="card-text"><strong>Priority:</strong> {{ ucfirst($task->priority) }}</p>
+                        <!-- Removed the 'View Task' button -->
+                    </div>
                 </div>
             </div>
-        @endif
+        @endforeach
+    </div>
+</div>
+@endif
+
 
 
 <!-- Floating Action Button -->
@@ -123,17 +124,18 @@
         const dropdownMenu = document.querySelector('#project-dropdown');
 
         // Task Cards Navigation
-        const taskCards = document.querySelectorAll('.task-card');
-        taskCards.forEach(function(card) {
-            card.addEventListener('click', function() {
-                const url = card.getAttribute('data-url');
-                if (url) {
-                    window.location.href = url;
-                } else {
-                    console.error('No URL found for this task card.');
-                }
-            });
-        });
+const taskCards = document.querySelectorAll('.task-card');
+taskCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+        const url = card.getAttribute('data-url');
+        if (url) {
+            window.location.href = url;
+        } else {
+            console.error('No URL found for this task card.');
+        }
+    });
+});
+
 
         // Toggle Dropdown Menu Visibility
         dropdownTrigger.addEventListener('click', function(event) {

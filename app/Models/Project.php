@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/Project.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,14 +32,13 @@ class Project extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-       /**
+    /**
      * Get the collaborators of the project.
      */
     public function collaborators()
     {
         return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
                     ->withPivot('status')
-                    ->wherePivot('status', 'accepted')
                     ->withTimestamps();
     }
 

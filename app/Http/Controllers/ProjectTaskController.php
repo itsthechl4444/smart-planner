@@ -75,7 +75,8 @@ class ProjectTaskController extends Controller
         ]);
 
         // Redirect back to the project show page with success message
-        return redirect()->route('projects.show', $project)->with('success', 'Task created successfully.');
+        return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'Task created successfully.');
+
     }
 
     /**
@@ -100,36 +101,50 @@ class ProjectTaskController extends Controller
         return view('projecttasks.edit', compact('project', 'task', 'labels'));
     }
 
-    // Update a project task
+     /**
+     * Update the specified project task in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project        $project
+     * @param  \App\Models\ProjectTask    $task
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, Project $project, ProjectTask $task)
     {
+        // Authorization
+        $this->authorize('update', $task);
+    
         // Validate incoming request
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
-            'priority' => 'nullable|string',
+            'priority' => 'nullable|in:Low,Medium,High',
             'label_id' => 'nullable|exists:labels,id',
             'notes' => 'nullable|string',
             'reminder' => 'nullable|boolean',
             'attachments' => 'nullable|file|max:10240', // Max size set to 10MB
+            'user_id' => 'nullable|exists:users,id', // Optional assigned user
         ]);
-
+    
         // Update task with validated data
         $task->update($validatedData);
-
+    
         // Handle file upload and replacement if a new file is uploaded
         if ($request->hasFile('attachments')) {
             if ($task->attachments) {
                 \Storage::disk('public')->delete($task->attachments);
             }
             $task->attachments = $request->file('attachments')->store('attachments', 'public');
+            $task->save();
         }
-
-        $task->save();
-
-        return redirect()->route('projects.show', $project)->with('success', 'Task updated successfully.');
+    
+        // Redirect back to the project show page with success message
+        return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'Task updated successfully.');
     }
+    
+
+
 
     // Delete a project task
     public function destroy(Project $project, ProjectTask $task)

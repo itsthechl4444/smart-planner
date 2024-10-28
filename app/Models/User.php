@@ -70,9 +70,8 @@ class User extends Authenticatable
     return $this->hasMany(Task::class);
 }
 
-
-      /**
-     * Get the projects owned by the user.
+ /**
+     * Projects owned by the user.
      */
     public function ownedProjects()
     {
@@ -80,18 +79,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Projects the user is collaborating on with 'accepted' status.
-     */
-    public function projectsCollaborated()
-    {
-        return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id')
-                    ->withPivot('status')
-                    ->wherePivot('status', 'accepted')
-                    ->withTimestamps();
-    }
-
-     /**
-     * Get the projects the user is collaborating on with accepted status.
+     * Projects the user is collaborating on.
      */
     public function acceptedCollaborations()
     {
@@ -100,10 +88,9 @@ class User extends Authenticatable
                     ->wherePivot('status', 'accepted')
                     ->withTimestamps();
     }
-    
 
     /**
-     * Projects the user has pending invitations for.
+     * Projects where the user has pending invitations.
      */
     public function projectsPending()
     {
@@ -114,7 +101,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Projects the user has declined invitations for.
+     * Projects where the user has declined invitations.
      */
     public function projectsDeclined()
     {
@@ -123,7 +110,6 @@ class User extends Authenticatable
                     ->wherePivot('status', 'declined')
                     ->withTimestamps();
     }
-
 
     /**
      * Get the tasks assigned to the user.

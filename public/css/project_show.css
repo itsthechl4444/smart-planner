@@ -187,24 +187,52 @@ main {
 
 /* Task Cards Styling */
 .task-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+    height: 100%; /* Ensures cards take full height */
 }
 
 .task-card:hover {
     transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.task-cards .card {
-    height: 100%;
+.card-body {
+    padding: 20px;
 }
 
+.card-title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    color: #666;
+}
+
+.card-text strong {
+    color: #333; /* Makes labels and values distinct */
+}
+
+/* Empty State Styles */
 .empty-state {
     text-align: center;
-    padding: 50px;
+    margin-top: 50px;
 }
 
 .empty-state img {
-    max-width: 200px;
+    max-width: 150px;
+    height: auto;
     margin-bottom: 20px;
+}
+
+.empty-state p {
+    color: #555;
+    font-size: 18px;
 }

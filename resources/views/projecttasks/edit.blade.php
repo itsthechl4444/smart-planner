@@ -32,7 +32,7 @@
         </div>
 
         <div class="container">
-            <form id="edit-task-form" action="{{ route('projecttasks.update', [$project->id, $task->id]) }}" method="POST" enctype="multipart/form-data">
+            <form id="edit-task-form" action="{{ route('projecttasks.update', ['project' => $project->id, 'task' => $task->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 
