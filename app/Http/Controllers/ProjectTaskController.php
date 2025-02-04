@@ -4,54 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectTask;
-use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreProjectTaskRequest; // If using Form Requests
-
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectTaskController extends Controller
 {
     /**
-     * Display the form to create a new project task.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * Display a listing of the tasks for a project.
+     */
+    public function index(Project $project)
+    {
+        // Authorization: owner or accepted collaborator can view tasks
+        $this->authorize('viewAny', [ProjectTask::class, $project]);
+
+        // Load tasks with their labels and assigned users
+        $tasks = $project->tasks()->with(['label', 'assignedUser'])->get();
+
+        return view('projecttasks.index', compact('project', 'tasks'));
+    }
+
+    /**
+     * Show the form for creating a new project task.
      */
     public function create(Project $project)
     {
-        // Authorization: Ensure the user can create tasks for the project
+        // Authorization: owner or accepted collaborator can create tasks
         $this->authorize('create', [ProjectTask::class, $project]);
 
-        // Fetch all labels or relevant labels associated with the project
-        $labels = Label::all(); // Adjust this as per your application's logic
-
-        return view('projecttasks.create', compact('project', 'labels'));
+        return view('projecttasks.create', compact('project'));
     }
 
     /**
      * Store a newly created project task in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project        $project
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Project $project)
     {
-        // Authorization: Ensure the user can create tasks for the project
+        // Authorization
         $this->authorize('create', [ProjectTask::class, $project]);
 
-        // Validate the incoming request data
+        // Validate
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
-            'due_date' => 'required|date|after_or_equal:today',
-            'priority' => 'required|in:Low,Medium,High',
-            'label_id' => 'nullable|exists:labels,id',
-            'notes' => 'nullable|string',
-            'reminder' => 'nullable|boolean',
+            'due_date'    => 'required|date|after_or_equal:today',
+            'priority'    => 'required|in:Low,Medium,High',
+            'notes'       => 'nullable|string',
+            'reminder'    => 'nullable|boolean',
             'attachments' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
-            'user_id' => 'nullable|exists:users,id', // Optional assigned user
         ]);
 
         // Handle file upload if attachments are present
@@ -60,103 +61,168 @@ class ProjectTaskController extends Controller
             $validated['attachments'] = $path;
         }
 
-        // Create the project task
+        // Create the task
         $task = $project->tasks()->create([
-            'title' => $validated['title'],
+            'title'       => $validated['title'],
             'description' => $validated['description'] ?? null,
-            'due_date' => $validated['due_date'],
-            'priority' => $validated['priority'],
-            'label_id' => $validated['label_id'] ?? null,
-            'notes' => $validated['notes'] ?? null,
-            'reminder' => $validated['reminder'] ?? false,
+            'due_date'    => $validated['due_date'],
+            'priority'    => $validated['priority'],
+            'notes'       => $validated['notes'] ?? null,
+            'reminder'    => $validated['reminder'] ?? false,
             'attachments' => $validated['attachments'] ?? null,
-            'status' => 'pending', // Default status
-            'user_id' => $validated['user_id'] ?? null, // Optional assigned user
+            'status'      => 'pending',
+            'user_id'     => Auth::id(),  // The user who created the task
         ]);
 
-        // Redirect back to the project show page with success message
-        return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'Task created successfully.');
+        // Send notification if reminder is set and due date is today
+        $task->sendDueDateReminder();
 
+        Log::info("ProjectTaskController: Task ID {$task->id} created in project ID {$project->id} by user ID " . Auth::id() . ".");
+
+        // Redirect to project show page (or tasks index) after creation
+        return redirect()->route('projects.show', $project->id)
+            ->with('success', 'Task created successfully.');
     }
 
     /**
      * Display the specified project task.
-     *
-     * @param  \App\Models\Project       $project
-     * @param  \App\Models\ProjectTask   $task
-     * @return \Illuminate\View\View
      */
     public function show(Project $project, ProjectTask $task)
     {
-        // Authorization: Ensure the user can view the task
+        // Authorization: owner or accepted collaborator can view
         $this->authorize('view', $task);
 
         return view('projecttasks.show', compact('project', 'task'));
     }
 
-    // Show form to edit a project task
+    /**
+     * Show the form to edit a project task.
+     */
     public function edit(Project $project, ProjectTask $task)
     {
-        $labels = Label::all();
-        return view('projecttasks.edit', compact('project', 'task', 'labels'));
+        // Authorization: owner or accepted collaborator can edit
+        $this->authorize('update', $task);
+
+        return view('projecttasks.edit', compact('project', 'task'));
     }
 
-     /**
+    /**
      * Update the specified project task in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project        $project
-     * @param  \App\Models\ProjectTask    $task
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Project $project, ProjectTask $task)
     {
         // Authorization
         $this->authorize('update', $task);
-    
-        // Validate incoming request
+
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
-            'due_date' => 'nullable|date',
-            'priority' => 'nullable|in:Low,Medium,High',
-            'label_id' => 'nullable|exists:labels,id',
-            'notes' => 'nullable|string',
-            'reminder' => 'nullable|boolean',
-            'attachments' => 'nullable|file|max:10240', // Max size set to 10MB
-            'user_id' => 'nullable|exists:users,id', // Optional assigned user
+            'due_date'    => 'nullable|date|after_or_equal:today',
+            'priority'    => 'nullable|in:Low,Medium,High',
+            'notes'       => 'nullable|string',
+            'reminder'    => 'nullable|boolean',
+            'attachments' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:10240',
         ]);
-    
-        // Update task with validated data
-        $task->update($validatedData);
-    
-        // Handle file upload and replacement if a new file is uploaded
+
+        // Replace existing file if a new one is uploaded
         if ($request->hasFile('attachments')) {
             if ($task->attachments) {
-                \Storage::disk('public')->delete($task->attachments);
+                Storage::disk('public')->delete($task->attachments);
             }
-            $task->attachments = $request->file('attachments')->store('attachments', 'public');
-            $task->save();
+            $validatedData['attachments'] = $request->file('attachments')->store('attachments', 'public');
         }
-    
-        // Redirect back to the project show page with success message
-        return redirect()->route('projects.show', ['project' => $project->id])->with('success', 'Task updated successfully.');
+
+        // Perform the update
+        $task->update([
+            'title'       => $validatedData['title'],
+            'description' => $validatedData['description'] ?? $task->description,
+            'due_date'    => $validatedData['due_date'] ?? $task->due_date,
+            'priority'    => $validatedData['priority'] ?? $task->priority,
+            'notes'       => $validatedData['notes'] ?? $task->notes,
+            'reminder'    => $validatedData['reminder'] ?? $task->reminder,
+            'attachments' => $validatedData['attachments'] ?? $task->attachments,
+        ]);
+
+        // Reminders
+        $task->sendDueDateReminder();
+
+        Log::info("ProjectTaskController: Task ID {$task->id} updated in project ID {$project->id} by user ID " . Auth::id() . ".");
+
+        // Redirect to project show page (or tasks index) after update
+        return redirect()->route('projects.show', $project->id)
+            ->with('success', 'Task updated successfully.');
     }
-    
 
-
-
-    // Delete a project task
+    /**
+     * Delete a project task.
+     */
     public function destroy(Project $project, ProjectTask $task)
     {
-        // Delete the attachment file if it exists
-        if ($task->attachments) {
-            \Storage::disk('public')->delete($task->attachments);
+        // Authorization: owner or accepted collaborator can delete
+        $this->authorize('delete', $task);
+
+        try {
+            if ($task->attachments) {
+                Storage::disk('public')->delete($task->attachments);
+            }
+
+            $task->delete();
+
+            Log::info("ProjectTaskController: Task ID {$task->id} deleted in project ID {$project->id} by user ID " . Auth::id() . ".");
+
+            // **IMPORTANT**: Redirect to the project show page with success message
+            return redirect()->route('projects.show', $project->id)
+                ->with('success', 'Task deleted successfully.');
+        } catch (\Exception $e) {
+            Log::error("ProjectTaskController: Failed to delete Task ID {$task->id}. Error: {$e->getMessage()}");
+
+            return redirect()->back()->with('error', 'Failed to delete the task.');
         }
+    }
 
-        // Delete the task
-        $task->delete();
+    /**
+     * Update the status of a project task via AJAX.
+     */
+    public function updateStatus(Request $request, Project $project, ProjectTask $task)
+    {
+        // Authorization: ensure the user can update
+        $this->authorize('update', $task);
 
-        return redirect()->route('projects.show', $project)->with('success', 'Task deleted successfully.');
+        $validated = $request->validate([
+            'status' => 'required|in:completed,pending',
+        ]);
+
+        try {
+            $task->status = $validated['status'];
+            $task->save();
+
+            Log::info("ProjectTaskController: Task ID {$task->id} status updated to '{$task->status}' by user ID " . Auth::id() . ".");
+
+            // Return JSON if done via AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Task status updated successfully.',
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error("ProjectTaskController: Failed to update status. Error: {$e->getMessage()}");
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update task status.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Mark the project task as completed via a standard POST request.
+     */
+    public function markAsCompleted(Project $project, ProjectTask $task)
+    {
+        $this->authorize('update', $task);
+
+        $task->status = 'completed';
+        $task->save();
+
+        return redirect()->back()->with('success', 'Task marked as completed.');
     }
 }

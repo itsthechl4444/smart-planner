@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\DatabaseMessage;
 use App\Models\Task;
+use Illuminate\Support\Facades\Log;
 
-class TaskReminderNotification extends Notification implements ShouldQueue
+class TaskReminderNotification extends Notification
 {
-    use Queueable;
-
     protected $task;
 
     /**
@@ -22,6 +18,7 @@ class TaskReminderNotification extends Notification implements ShouldQueue
     public function __construct(Task $task)
     {
         $this->task = $task;
+        Log::info("TaskReminderNotification: Initialized for task ID {$this->task->id}.");
     }
 
     /**
@@ -32,21 +29,54 @@ class TaskReminderNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database']; // Storing in database
+        Log::info("TaskReminderNotification: via() called for notifiable ID {$notifiable->id}.");
+        return ['phpmailer', 'database'];
     }
 
     /**
-     * Get the array representation of the notification.
+     * Define the email data to be sent via PHPMailer.
+     *
+     * @param mixed $notifiable
+     * @return array
+     */
+    public function toPHPMailer($notifiable)
+    {
+        Log::info("TaskReminderNotification: Preparing PHPMailer data for {$notifiable->email}.");
+
+        $subject = 'Task Reminder';
+        $body = "
+            <h1>Task Reminder</h1>
+            <p>Hi {$notifiable->name},</p>
+            <p>Reminder: The task '<strong>{$this->task->title}</strong>' is due today.</p>
+            <p><a href='" . route('tasks.show', $this->task->id) . "'>View Task</a></p>
+        ";
+        $altBody = "Hi {$notifiable->name},\n\nReminder: The task '{$this->task->title}' is due today.\n\nView Task: " . route('tasks.show', $this->task->id);
+
+        Log::info("TaskReminderNotification: PHPMailer data prepared for {$notifiable->email}.");
+
+        return [
+            'to'      => $notifiable->email,
+            'toName'  => $notifiable->name,
+            'subject' => $subject,
+            'body'    => $body,
+            'altBody' => $altBody,
+        ];
+    }
+
+    /**
+     * Get the array representation of the notification for database storage.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\DatabaseMessage
+     * @return array
      */
     public function toDatabase($notifiable)
     {
-        return new DatabaseMessage([
-            'message' => "Reminder: The task '{$this->task->title}' is due today.",
-            'task_id' => $this->task->id,
+        Log::info("TaskReminderNotification: Preparing database data for notifiable ID {$notifiable->id}.");
+
+        return [
+            'message'    => "Reminder: The task '{$this->task->title}' is due today.",
+            'task_id'    => $this->task->id,
             'task_title' => $this->task->title,
-        ]);
+        ];
     }
 }

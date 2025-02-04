@@ -1,99 +1,139 @@
 /* Body styles */
-html, body {
-    height: 100%;
-    margin: 0;
-        padding: 0;
-    background-color: #F5F5F5;
-    /* Background color for the body */
+body {
+    position: relative; /* Required for overlay layering */
+    background-color: #f5f5f5; /* Base background color */
     color: #808080;
-    /* Default text color */
-    font-family: 'Open Sans', sans-serif;
-    /* Default font family */
-    display: flex;
-    justify-content: center;
-
+    font-family: "Open Sans", sans-serif;
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Container styles */
+/* Background image with reduced opacity */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/images/signin.png") no-repeat center center; /* Add the background image */
+    background-size: cover; /* Ensure it covers the entire viewport */
+    opacity: 0.1; /* Adjust opacity for the background image (10% visibility) */
+    z-index: 1; /* Layer it behind content */
+}
+
+/* Content container to appear above the layers */
 .container {
+    position: relative;
+    z-index: 2; /* Place content above the background image */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100%; /* Full viewport height */
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* Heading styles */
 .container h1 {
-    font-size: 30px;
+    font-size: 2.5rem; /* Adjusted for consistency */
     font-weight: 700;
-    /* Font weight for the main heading */
-    color: #333;
-    /* Heading text color */
-    margin-bottom: 0;
-    justify-content: center;
+    color: #666666;
+    margin-bottom: 10px;
 }
 
-/* Subheading */
-.container p.lead {
-    font-size: 14px;
-    font-weight: 600;
-    /* Font weight for lead paragraphs */
-    color: #666;
-    /* Lead paragraph text color */
-    margin-bottom: 5px;
-}
-
+/* Login paragraph styles */
 .container p.login {
-    font-size: 12px;
+    font-size: small; /* Reduced font size for better balance */
+    margin-top: 10px;
+    color: #666;
 }
 
 /* Illustration styles */
 .illustration {
     max-width: 100%;
-    height: 276px;
-        /* Maximum width for images */
-        margin: 10px 0;
-        /* Margin around the image */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 350px; /* Prevent the image from being too large */
+    margin-bottom: 25px;
+    margin-top: 20px;
 }
 
-/* Regular paragraph styles */
-.container p {
-    font-size: 20px;
-        font-weight: 600;
-        /* Font size for regular paragraphs */
-        color: #666;
-        /* Regular paragraph text color */
-        margin-bottom: 20px;
-}
-
-/* Sign Up button styles */
+/* Sign Up/Get Started button styles */
 .btn-signup {
-    font-family: 'Open Sans', sans-serif;
-        margin-top: 20px;
-        background-color: #666;
-        /* Button background color */
-        border: none;
-        /* Remove default button border */
-        color: white;
-        /* Button text color */
-        padding: 10px 20px;
-        /* Padding inside the button */
-        font-size: 20px;
-        /* Button text font size */
-        font-weight: bold;
-        /* Button text font weight */
-        border-radius: 10px;
-        /* Button border radius */
-        text-transform: none;
-        /* Uppercase text */
-        width: 265px;
-        height: 56px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    background-color: #666;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 300px;
+    height: 56px;
+    font-family: "Open Sans", sans-serif;
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline for anchor tags */
+    display: inline-block; /* Ensure proper padding and hover effects */
+    text-align: center; /* Center text inside the button */
 }
 
-/* Hover state for Sign Up button */
+/* Hover state for Sign Up/Get Started button */
 .btn-signup:hover {
-    background-color: #555;
+    background-color: #333; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
     color: white;
+}
+
+/* Styles for the Login text */
+.text-link {
+    color: #333333; /* Bootstrap's link color */
+    cursor: pointer; /* Change cursor to pointer */
+    text-decoration: none; /* Remove underline */
+}
+
+.text-link:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 767px) {
+    .btn-get-started,
+    .btn-signup {
+        width: 300px;
+        font-size: 1rem;
+    }
+
+    .illustration {
+        max-height: 200px; /* Further reduce height on smaller screens */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .btn-get-started,
+    .btn-signup {
+        width: 300px;
+        font-size: 1.15rem;
+    }
+
+    .illustration {
+        max-height: 250px; /* Adjust height for tablet screens */
+    }
+}
+
+@media (min-width: 1025px) {
+    .btn-signup,
+    .btn-get-started {
+        width: 300px;
+        font-size: 1.25rem;
+    }
+
+    .illustration {
+        max-height: 300px; /* Maintain reasonable size on large screens */
+    }
 }

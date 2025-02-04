@@ -11,7 +11,7 @@ class AccountController extends Controller
     public function index()
     {
         $accounts = Auth::user()->accounts; // Fetch accounts associated with the logged-in user
-        return view('accounts.index', compact('accounts'));
+        return view('financemanagement.index', compact('accounts'));
     }
 
     public function create()
@@ -30,7 +30,7 @@ class AccountController extends Controller
         ]);
 
         Auth::user()->accounts()->create($request->all()); // Associate the account with the logged-in user
-        return redirect()->route('accounts.index')->with('success', 'Account created successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Account created successfully.');
     }
 
     public function show(Account $account)
@@ -69,7 +69,7 @@ class AccountController extends Controller
         ]);
 
         $account->update($request->all());
-        return redirect()->route('accounts.index')->with('success', 'Account updated successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Account updated successfully.');
     }
 
     public function destroy(Account $account)
@@ -80,6 +80,6 @@ class AccountController extends Controller
         }
 
         $account->delete();
-        return redirect()->route('accounts.index')->with('success', 'Account deleted successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Account deleted successfully.');
     }
 }

@@ -1,14 +1,31 @@
 /* Body styles */
 body {
-    background-color: #f5f5f5;
+    position: relative; /* Required for overlay layering */
+    background-color: #f5f5f5; /* Base background color */
     color: #808080;
     font-family: "Open Sans", sans-serif;
     height: 100vh;
     overflow: hidden;
 }
 
-/* Container styles */
+/* Background image with reduced opacity */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/images/done.png") no-repeat center center; /* Add the background image */
+    background-size: cover; /* Ensure it covers the entire viewport */
+    opacity: 0.1; /* Adjust opacity for the background image (40% visibility) */
+    z-index: 1; /* Layer it behind content */
+}
+
+/* Content container to appear above the layers */
 .container {
+    position: relative;
+    z-index: 2; /* Place content above the background image */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +37,8 @@ body {
 
 /* Fixed header styles */
 .fixed-header {
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 15px;
 }
 
 /* Heading styles */
@@ -39,12 +57,12 @@ body {
 
 /* Onboarding section styles */
 .onboarding {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 /* Image styles */
 .onboarding img {
-    max-width: 100%;
+    max-width: 70%;
     height: auto;
     margin: 10px 0;
 }
@@ -59,7 +77,8 @@ body {
 
 /* Get Started button styles */
 .btn-get-started {
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
     background-color: #666;
     border: none;
     color: white;
@@ -67,14 +86,23 @@ body {
     font-size: 1.25rem;
     font-weight: bold;
     border-radius: 10px;
-    width: 265px;
+    width: 300px;
     height: 56px;
     font-family: "Open Sans", sans-serif;
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline for anchor tags */
+    display: inline-block; /* Ensure proper padding and hover effects */
+    text-align: center; /* Center text inside the button */
 }
 
 /* Hover state for Get Started button */
 .btn-get-started:hover {
-    background-color: #555;
+    background-color: #333; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
     color: white;
 }
 
@@ -90,12 +118,12 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 10px;
-    margin-top: 20px; /* Added more spacing above */
-    margin-bottom: 30px; /* Added more spacing below */
+    margin-bottom: 20px; /* Added more spacing below */
     position: relative;
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
 }
 
-/* Individual indicator styles */
 .carousel-indicators.custom-indicators li {
     width: 12px;
     height: 12px;
@@ -106,7 +134,6 @@ body {
     opacity: 0.7;
 }
 
-/* Active indicator styles */
 .carousel-indicators.custom-indicators .active {
     background-color: #333;
     opacity: 1;
@@ -128,7 +155,7 @@ body {
     }
 
     .btn-get-started {
-        width: 220px;
+        width: 300px;
         font-size: 1rem;
     }
 
@@ -152,7 +179,7 @@ body {
     }
 
     .btn-get-started {
-        width: 240px;
+        width: 300px;
         font-size: 1.15rem;
     }
 
@@ -162,6 +189,10 @@ body {
 }
 
 @media (min-width: 1025px) {
+    body {
+        background-size: 60%; /* Slightly reduce the background size on large screens */
+    }
+
     /* Desktop styles */
     .fixed-header h1 {
         font-size: 2.5rem;
@@ -176,7 +207,7 @@ body {
     }
 
     .btn-get-started {
-        width: 265px;
+        width: 300px;
         font-size: 1.25rem;
     }
 

@@ -31,85 +31,115 @@
         </div>
 
         <div class="container">
+            <!-- Display Success or Error Messages -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Form to edit an existing task -->
             <form id="edit-task-form" action="{{ route('tasks.update', $task->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="user_id" value="{{ $task->user_id }}">
+
                 <div class="form-group">
-                    <input type="text" class="form-control" id="title" name="title" value="{{ $task->title }}" placeholder="Task Title" required>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $task->title) }}" placeholder="Task Title" required>
                     @error('title')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
-                    <textarea class="form-control" id="description" name="description" placeholder="Description">{{ $task->description }}</textarea>
+                    <textarea class="form-control" id="description" name="description" placeholder="Description">{{ old('description', $task->description) }}</textarea>
                     @error('description')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="due_date" class="form-label">Due Date</label>
-                    <input type="date" class="form-control" id="due_date" name="due_date" value="{{ $task->due_date }}" required>
+                    <input type="date" class="form-control" id="due_date" name="due_date" value="{{ old('due_date', $task->due_date->format('Y-m-d')) }}" required>
                     @error('due_date')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="priority" class="form-label">Priority</label>
                     <select class="form-control" id="priority" name="priority" required>
-                        <option value="High" {{ $task->priority == 'High' ? 'selected' : '' }}>High</option>
-                        <option value="Medium" {{ $task->priority == 'Medium' ? 'selected' : '' }}>Medium</option>
-                        <option value="Low" {{ $task->priority == 'Low' ? 'selected' : '' }}>Low</option>
+                        <option value="High" {{ old('priority', $task->priority) == 'High' ? 'selected' : '' }}>High</option>
+                        <option value="Medium" {{ old('priority', $task->priority) == 'Medium' ? 'selected' : '' }}>Medium</option>
+                        <option value="Low" {{ old('priority', $task->priority) == 'Low' ? 'selected' : '' }}>Low</option>
                     </select>
                     @error('priority')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="label_id" class="form-label">Label</label>
                     <select class="form-control" id="label_id" name="label_id">
+                        <option value="">None</option>
                         @foreach($labels as $label)
-                            <option value="{{ $label->id }}" {{ $task->label_id == $label->id ? 'selected' : '' }}>{{ $label->name }}</option>
+                            <option value="{{ $label->id }}" {{ old('label_id', $task->label_id) == $label->id ? 'selected' : '' }}>{{ $label->name }}</option>
                         @endforeach
                     </select>
                     @error('label_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
-                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes">{{ $task->notes }}</textarea>
+                    <textarea class="form-control" id="notes" name="notes" placeholder="Notes">{{ old('notes', $task->notes) }}</textarea>
                     @error('notes')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
-    <label for="attachments" class="form-label">Attachments</label>
-    <input type="file" class="form-control-file" id="attachments" name="attachments[]" multiple>
-    @error('attachments')
-        <span class="text-danger">{{ $message }}</span>
-    @enderror
-    @if ($task->attachments)
-        <div class="mt-2">
-            <strong>Existing Attachments:</strong><br>
-            @foreach (json_decode($task->attachments) as $attachment)
-                @php
-                    $extension = pathinfo(storage_path('app/public/' . $attachment), PATHINFO_EXTENSION);
-                    $isImage = in_array(strtolower($extension), ['jpg', 'jpeg', 'png']);
-                @endphp
-                @if ($isImage)
-                    <img src="{{ asset('storage/' . $attachment) }}" alt="{{ basename($attachment) }}" style="max-width: 100px; max-height: 100px;">
-                @else
-                    <a href="{{ asset('storage/' . $attachment) }}" download="{{ basename($attachment) }}">{{ basename($attachment) }}</a><br>
-                @endif
-            @endforeach
-        </div>
-    @endif
-</div>
+                    <label for="attachments" class="form-label">Attachments</label>
+                    <input type="file" class="form-control-file" id="attachments" name="attachments[]" multiple>
+                    @error('attachments')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+
+                    @if (is_array($task->attachments) && count($task->attachments) > 0)
+                        <div class="mt-2">
+                            <strong>Existing Attachments:</strong><br>
+                            @foreach ($task->attachments as $key => $attachment)
+                                @php
+                                    $extension = pathinfo($attachment, PATHINFO_EXTENSION);
+                                    $isImage = in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']);
+                                @endphp
+                                <div class="attachment-item mb-2">
+                                    @if ($isImage)
+                                        <img src="{{ asset('storage/' . $attachment) }}" alt="{{ basename($attachment) }}" style="max-width: 100px; max-height: 100px;">
+                                    @else
+                                        <a href="{{ asset('storage/' . $attachment) }}" download="{{ basename($attachment) }}">{{ basename($attachment) }}</a>
+                                    @endif
+                                    <!-- Delete Attachment Button -->
+                                    <form action="{{ route('tasks.removeAttachment', [$task->id, $key]) }}" method="POST" style="display:inline; margin-left:10px;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
 
                 <div class="form-group form-check">
                     <input type="hidden" name="reminder" value="0">
-                    <input type="checkbox" class="form-check-input" id="reminder" name="reminder" value="1" {{ $task->reminder ? 'checked' : '' }}>
+                    <input type="checkbox" class="form-check-input" id="reminder" name="reminder" value="1" {{ old('reminder', $task->reminder) ? 'checked' : '' }}>
                     <label class="form-check-label" for="reminder">Set Reminder</label>
                     @error('reminder')
                         <span class="text-danger">{{ $message }}</span>

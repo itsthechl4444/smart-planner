@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #F5F5F5;
+    font-family: "Open Sans", sans-serif;
+    background-color: #f5f5f5;
     color: #808080;
     margin: 0;
     box-sizing: border-box;
@@ -14,7 +14,7 @@ body {
     justify-content: space-between;
     height: 56px;
     padding: 0 20px;
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     position: fixed;
     top: 0;
     left: 0;
@@ -51,7 +51,7 @@ main {
     text-align: center;
 }
 
-/* Illustration Styles */
+/* Enhanced Illustration Styles */
 .illustration {
     margin-bottom: 30px;
     display: flex;
@@ -60,10 +60,11 @@ main {
 }
 
 .illustration img {
-    max-width: 90%;
+    max-width: 100%; /* Increased from 90% to 100% */
     height: auto;
-    max-height: 300px;
+    max-height: 400px; /* Increased from 300px to 400px */
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional */
 }
 
 /* Form Group Styles */
@@ -87,7 +88,7 @@ main {
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     color: #555;
     margin-top: 5px;
 }
@@ -105,4 +106,103 @@ main {
 .form-control::placeholder {
     color: #808080;
     opacity: 1;
+}
+
+/* btn-get-started Styles */
+.btn-get-started {
+    margin-top: 20px;
+    background-color: #666;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 265px;
+    height: 56px;
+    font-family: "Open Sans", sans-serif;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-get-started:hover {
+    background-color: #555;
+    color: white;
+}
+
+/* Other existing styles... */
+
+/* Media queries for responsiveness */
+@media (max-width: 767px) {
+    /* Mobile styles */
+    .fixed-header h1 {
+        font-size: 1.5rem; /* Adjusted for smaller screens */
+    }
+
+    .fixed-header p.lead {
+        font-size: 0.8rem; /* Adjusted for smaller screens */
+    }
+
+    .onboarding p {
+        font-size: 0.9rem; /* Adjusted for smaller screens */
+    }
+
+    .btn-get-started {
+        width: 200px; /* Adjusted for smaller screens */
+        font-size: 0.9rem; /* Adjusted for smaller screens */
+    }
+
+    .carousel-inner {
+        max-width: 250px; /* Adjusted for smaller screens */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Tablet styles */
+    .fixed-header h1 {
+        font-size: 1.8rem; /* Adjusted for tablets */
+    }
+
+    .fixed-header p.lead {
+        font-size: 0.9rem; /* Adjusted for tablets */
+    }
+
+    .onboarding p {
+        font-size: 1rem; /* Adjusted for tablets */
+    }
+
+    .btn-get-started {
+        width: 220px; /* Adjusted for tablets */
+        font-size: 1rem; /* Adjusted for tablets */
+    }
+
+    .carousel-inner {
+        max-width: 300px; /* Adjusted for tablets */
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Desktop styles */
+    .fixed-header h1 {
+        font-size: 2rem; /* Reduced font size */
+    }
+
+    .fixed-header p.lead {
+        font-size: 1rem; /* Adjusted for desktop */
+    }
+
+    .onboarding p {
+        font-size: 1.1rem; /* Adjusted for desktop */
+    }
+
+    .btn-get-started {
+        width: 240px; /* Adjusted width */
+        font-size: 1rem; /* Adjusted for desktop */
+    }
+
+    .carousel-inner {
+        max-width: 350px; /* Adjusted for desktop */
+    }
 }

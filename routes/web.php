@@ -1,19 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 // Import Controllers
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\TaskManagementController; 
+use App\Http\Controllers\TaskManagementController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +21,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\CollaborationController;
 use App\Http\Controllers\FinanceManagementController;
+use App\Http\Controllers\FinancialReminderController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TipsController;
@@ -33,50 +34,75 @@ use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\SavingsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\EbookController;
+use App\Http\Controllers\FaqController;
 
-// Authentication Routes...
-Auth::routes();
-
-// Onboarding and Welcome Routes
-Route::get('/', function () {
-    return view('onboarding');
-})->name('onboarding');
-
-Route::get('/welcome', function () {
-    return view('welcome');
-})->name('welcome');
-
-// Authentication Routes
+// ============================================
+// AUTHENTICATION ROUTES
+// ============================================
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
+Route::post('login', [LoginController::class, 'login'])->name('login');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Registration Routes
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Password Reset Routes
 Route::get('password/reset', [PasswordResetLinkController::class, 'create'])->name('password.request');
+Route::post('password/email', [PasswordResetLinkController::class, 'store'])->name('password.email');
+Route::get('password/reset/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 Route::post('password/reset', [NewPasswordController::class, 'store'])->name('password.update');
 
-// Dashboard Route
+// Email Verification Routes
+Route::get('/email/verify-email', [VerificationController::class, 'show'])
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::get('/email/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
+
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware(['throttle:6,1'])
+    ->name('verification.resend');
+
+// ============================================
+// PROTECTED ROUTES (DASHBOARD)
+// ============================================
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard')
-    ->middleware('auth');
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-// Protected Routes
-Route::middleware(['auth'])->group(function () {
-    // Task Management
-    Route::get('/taskmanagement', [TaskManagementController::class, 'index'])->name('taskmanagement.index');
-    Route::resource('tasks', TaskController::class);
-    Route::post('/tasks/{task}/complete', [TaskController::class, 'markAsCompleted'])->name('tasks.markAsCompleted');
+Route::get('/onboarding', [OnboardingController::class, 'showOnboarding'])->name('onboarding');
+Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
 
-    // Label Routes
-    Route::resource('labels', LabelController::class);
+// Root -> Redirect
+Route::get('/', function () {
+    return redirect()->route('onboarding');
+});
 
-    // Project Routes
-    Route::resource('projects', ProjectController::class);
+// ============================================
+// TASK MANAGEMENT
+// ============================================
+Route::get('/taskmanagement', [TaskManagementController::class, 'index'])->name('taskmanagement.index');
+Route::resource('tasks', TaskController::class);
+Route::post('/tasks/{task}/complete', [TaskController::class, 'markAsCompleted'])->name('tasks.markAsCompleted');
+Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus')->middleware('auth');
 
-  // Nested Task Routes within Projects
-  Route::prefix('projects/{project}')->group(function () {
+// LABEL ROUTES
+Route::resource('labels', LabelController::class);
+
+// ============================================
+// PROJECT ROUTES
+// ============================================
+// Resource route for projects
+Route::resource('projects', ProjectController::class);
+
+// Nested project tasks
+Route::prefix('projects/{project}')->group(function () {
     Route::resource('tasks', ProjectTaskController::class)->names([
         'index'   => 'projecttasks.index',
         'create'  => 'projecttasks.create',
@@ -86,64 +112,89 @@ Route::middleware(['auth'])->group(function () {
         'update'  => 'projecttasks.update',
         'destroy' => 'projecttasks.destroy',
     ]);
+
+    // AJAX route for updating project task status
+    Route::patch('/tasks/{task}/status', [ProjectTaskController::class, 'updateStatus'])
+        ->name('projecttasks.updateStatus')
+        ->middleware('auth');
+
+    // Mark project task as completed
+    Route::post('/tasks/{task}/mark-as-completed', [ProjectTaskController::class, 'markAsCompleted'])
+        ->name('projecttasks.markAsCompleted');
 });
 
-    // Members Route
-    Route::get('/projects/{project}/members', [ProjectController::class, 'members'])->name('projects.members');
+// Project members route
+Route::get('/projects/{project}/members', [ProjectController::class, 'members'])->name('projects.members');
 
-    // Notifications Routes
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-
-   // Collaboration Routes
-Route::middleware(['auth'])->group(function () {
-    Route::prefix('projects/{project}')->group(function () {
-        Route::post('invite', [CollaborationController::class, 'invite'])->name('collaborations.invite');
-        Route::post('accept', [CollaborationController::class, 'acceptInvitation'])->name('collaborations.accept');
-        Route::post('decline', [CollaborationController::class, 'declineInvitation'])->name('collaborations.decline');
-        Route::delete('remove/{collaborator}', [CollaborationController::class, 'remove'])->name('collaborations.remove');
-    });
+// ============================================
+// COLLABORATION ROUTES (NESTED)
+// ============================================
+Route::prefix('projects/{project}')->group(function () {
+    Route::post('collaborations/invite', [CollaborationController::class, 'invite'])->name('collaborations.invite');
+    Route::delete('collaborations/{user}', [CollaborationController::class, 'remove'])->name('collaborations.remove');
+    Route::match(['get', 'post'], 'collaborations/accept/{user}', [CollaborationController::class, 'acceptInvitation'])->name('collaborations.accept');
+    Route::match(['get', 'post'], 'collaborations/decline/{user}', [CollaborationController::class, 'declineInvitation'])->name('collaborations.decline');
 });
 
+// ============================================
+// NOTIFICATIONS
+// ============================================
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+Route::get('/notifications/show/{id}', [NotificationController::class, 'show'])->name('notifications.show');
+Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+Route::delete('/notifications/delete/{id}', [NotificationController::class, 'delete'])->name('notifications.delete');
+Route::post('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 
-    // Finance Management
-    Route::get('/financemanagement', [FinanceManagementController::class, 'index'])->name('financemanagement.index');
+// ============================================
+// FINANCE MANAGEMENT
+// ============================================
+Route::get('/financemanagement', [FinanceManagementController::class, 'index'])->name('financemanagement.index');
+Route::get('/budgets/{id}', [BudgetController::class, 'show'])->name('budget.show');
+Route::resource('savings', SavingsController::class)->only(['show', 'index', 'create', 'store', 'edit', 'update', 'destroy']);
 
-    // Calendar view
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+// CALENDAR
+Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/tasks', [CalendarController::class, 'fetchTasks'])->name('calendar.tasks');
+Route::get('/calendar/debts', [CalendarController::class, 'fetchDebts'])->name('calendar.debts');
+Route::get('/calendar/expenses', [CalendarController::class, 'fetchExpenses'])->name('calendar.expenses');
+Route::get('/calendar/savings', [CalendarController::class, 'fetchSavings'])->name('calendar.savings');
+Route::get('/calendar/{date}', [CalendarController::class, 'showDay'])->name('calendar.showDay');
 
-    // Event fetching routes
-    Route::get('/calendar/tasks', [CalendarController::class, 'fetchTasks'])->name('calendar.fetchTasks');
-    Route::get('/calendar/expenses', [CalendarController::class, 'fetchExpenses'])->name('calendar.fetchExpenses');
-    Route::get('/calendar/savings', [CalendarController::class, 'fetchSavings'])->name('calendar.fetchSavings');
-    Route::get('/calendar/debts', [CalendarController::class, 'fetchDebts'])->name('calendar.fetchDebts');
+// FINANCIAL REMINDERS
+Route::post('/financial_reminders', [FinancialReminderController::class, 'store'])->name('financial_reminders.store');
+Route::get('/financial_reminders/{id}', [FinancialReminderController::class, 'show'])->name('financial_reminders.show');
+Route::delete('/financial_reminders/{id}', [FinancialReminderController::class, 'destroy'])->name('financial_reminders.destroy');
 
-    // Tips and Reports
-    Route::get('/tips', [TipsController::class, 'index'])->name('tips');
-    Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
-    Route::get('/task-reports', [ReportsController::class, 'getTaskReports'])->name('reports.task');
-    Route::get('/expense-reports', [ReportsController::class, 'getExpenseReports'])->name('reports.expense');
-    Route::get('/income-reports', [ReportsController::class, 'getIncomeReports'])->name('reports.income');
-    Route::get('/budget-progress-reports', [ReportsController::class, 'getBudgetProgressReports'])->name('reports.budget_progress');
+// TIPS AND REPORTS
+Route::get('/tips', [TipsController::class, 'index'])->name('tips');
+Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
+Route::get('/task-reports', [ReportsController::class, 'getTaskReports'])->name('reports.task');
+Route::get('/expense-reports', [ReportsController::class, 'getExpenseReports'])->name('reports.expense');
+Route::get('/income-reports', [ReportsController::class, 'getIncomeReports'])->name('reports.income');
+Route::get('/budget-progress-reports', [ReportsController::class, 'getBudgetProgressReports'])->name('reports.budget_progress');
+Route::get('/reports/download-pdf', [ReportsController::class, 'downloadPdf'])->name('reports.downloadPdf');
 
-    // Account Management
-    Route::resource('accounts', AccountController::class);
-    Route::resource('expenses', ExpenseController::class);
-    Route::resource('debts', DebtController::class);
-    Route::resource('incomes', IncomeController::class);
-    Route::resource('budgets', BudgetController::class);
-    Route::resource('savings', SavingsController::class);
-    Route::post('savings/{saving}/add-amount', [SavingsController::class, 'addAmount'])->name('savings.addAmount');
+// ============================================
+// ACCOUNT & FINANCIAL RESOURCE ROUTES
+// ============================================
+Route::resource('accounts', AccountController::class);
+Route::resource('expenses', ExpenseController::class);
+Route::resource('debts', DebtController::class);
+Route::resource('incomes', IncomeController::class);
+Route::resource('budgets', BudgetController::class);
+Route::resource('savings', SavingsController::class);
+Route::post('savings/{saving}/add-amount', [SavingsController::class, 'addAmount'])->name('savings.addAmount');
 
-    // Task Statistics
-    Route::get('/tasks/statistics', [TaskController::class, 'getTaskStatistics'])->name('tasks.statistics');
+// ============================================
+// TASK STATISTICS
+// ============================================
+Route::get('/tasks/statistics', [TaskController::class, 'getTaskStatistics'])->name('tasks.statistics');
 
-    // Events
-    Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+// EVENTS
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 
-    // Profile Management Routes
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// PROFILE MANAGEMENT
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

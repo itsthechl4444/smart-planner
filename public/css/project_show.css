@@ -1,11 +1,39 @@
-/* Global Styles */
-body {
-    font-family: "Open Sans", sans-serif;
-    background-color: #f5f5f5;
-    color: #808080;
-    margin: 0;
+/* =========================================
+1. Global Styles
+========================================= */
+
+/* Apply box-sizing globally for consistency */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
+
+/* Body styles */
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    background: #f9f9f9; /* Matching Task Management */
+    color: #808080;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Main Content Scrollbar */
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.main-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    padding-bottom: 80px; /* To prevent overlap with bottom navbar */
+}
+
+/* =========================================
+2. Top App Bar Styles
+========================================= */
 
 /* Top App Bar Styles */
 .app-bar {
@@ -14,7 +42,7 @@ body {
     justify-content: space-between;
     height: 56px;
     padding: 0 20px;
-    background-color: #f5f5f5;
+    background-color: #f9f9f9; /* Matching Task Management */
     position: fixed;
     top: 0;
     left: 0;
@@ -23,14 +51,24 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
+/* Header Icon Styles */
+.header-icon {
+    font-size: 24px; /* Consistent icon size */
+    color: #555; /* Consistent icon color */
+    cursor: pointer; /* Indicate interactivity */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Back Icon Style */
 .back-icon {
-    cursor: pointer;
-    color: #555;
-    font-size: 24px;
-    background: none;
-    border: none;
-    padding: 0;
+    /* Inherits styles from .header-icon */
+    transition: transform 0.3s ease;
+}
+
+.back-icon:hover {
+    transform: rotate(90deg);
 }
 
 /* Title Style */
@@ -52,8 +90,10 @@ body {
 /* User Icon Link Style */
 .user-icon-link {
     margin-right: 10px;
-    color: #555;
     text-decoration: none;
+    /* Inherits color and size from .header-icon */
+    display: flex;
+    align-items: center;
 }
 
 /* Dropdown Styles */
@@ -90,6 +130,9 @@ body {
     transition: background-color 0.2s ease;
     border: none;
     background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 16px; /* Consistent font size */
 }
 
 .dropdown-content li a:hover,
@@ -97,107 +140,84 @@ body {
     background-color: #f1f1f1;
 }
 
-.dropdown-content i {
+.dropdown-content span.material-icons-outlined {
     margin-right: 8px;
+    font-size: 20px; /* Consistent icon size within dropdown */
 }
 
-/* Main Content Styles */
-main {
-    margin-top: 56px;
-    padding: 20px;
+/* =========================================
+3. Task Filter Buttons
+========================================= */
+
+/* Task filter container */
+.task-filter {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px; /* Space below the fixed app bar */
+    margin-bottom: 20px;
 }
 
-/* Empty State Styles */
-.empty-state {
-    text-align: center;
-    margin-top: 50px;
+/* Filter button styles */
+.filter-btn {
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    font-size: 14px;
+    color: #808080;
 }
 
-.empty-state img {
-    max-width: 100%;
-    height: auto;
-    max-height: 250px;
-    border-radius: 10px;
-}
-
-.empty-state p {
-    margin-top: 15px;
-    color: #555;
-}
-
-/* Floating Action Button */
-.fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+.filter-btn.active {
     background-color: #808080;
     color: #fff;
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+    border-color: #808080;
 }
 
-.fab:hover {
-    background-color: #555;
-}
-
-.fab i {
-    font-size: 24px;
-}
-
-.fab-options {
-    display: none;
-    position: fixed;
-    bottom: 90px;
-    right: 30px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    z-index: 999;
-}
-
-.fab-options.show {
-    display: block;
-}
-
-.fab-option {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.fab-option i {
-    font-size: 18px;
-    margin-right: 10px;
-}
-
-.fab-option:hover {
+.filter-btn:hover {
     background-color: #e0e0e0;
 }
 
-/* Task Cards Styling */
-.task-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+.filter-btn:not(.active):hover {
+    background-color: #f0f0f0;
+}
+
+/* =========================================
+4. Smart Sorting Options
+========================================= */
+
+/* Sorting buttons */
+.task-sort .btn {
+    margin: 0 5px;
+    cursor: pointer; /* Ensure cursor changes to pointer */
+    font-size: 14px; /* Consistent font size */
+}
+
+.task-sort .btn:hover {
+    background-color: #d9d9d9;
+}
+
+/* =========================================
+5. Task Cards Styling
+========================================= */
+
+/* Task Cards Container */
+.task-cards .card {
     cursor: pointer;
     transition:
         transform 0.2s,
-        box-shadow 0.2s;
-    height: 100%; /* Ensures cards take full height */
+        box-shadow 0.2s,
+        background-color 0.3s ease;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
 }
 
-.task-card:hover {
+.task-cards .card:hover {
     transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -210,6 +230,7 @@ main {
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .card-text {
@@ -220,19 +241,450 @@ main {
     color: #333; /* Makes labels and values distinct */
 }
 
-/* Empty State Styles */
+/* Label pill */
+.label-pill {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-top: 8px; /* Space above the pill */
+    font-size: 14px;
+    color: #fff; /* Text color */
+    background-color: #808080; /* Default background color if not set inline */
+    border-radius: 12px; /* Makes it pill-shaped */
+    text-align: center;
+}
+
+/* Overdue Status */
+.overdue-status {
+    color: red;
+    font-weight: bold;
+}
+
+/* Task Checkbox Styles */
+.task-card {
+    position: relative; /* Ensure the checkbox is positioned relative to the card */
+}
+
+.task-checkbox {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    /* Ensure the checkbox is above other elements */
+    z-index: 10;
+}
+
+/* Style for the checkbox */
+.task-complete-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #808080;
+    border-radius: 50%;
+    outline: none;
+    transition:
+        background-color 0.3s,
+        border-color 0.3s;
+    position: relative;
+}
+
+/* Checked state */
+.task-complete-checkbox:checked {
+    background-color: #808080;
+    border-color: #808080;
+}
+
+/* Checkmark (optional, visible when checked) */
+.task-complete-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+/* Optional: Hover effect for checkbox */
+.task-complete-checkbox:hover {
+    border-color: #555;
+}
+
+/* Optional: Focus styles for accessibility */
+.task-complete-checkbox:focus {
+    box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.5);
+}
+
+/* =========================================
+6. Empty State Styles
+========================================= */
+
+/* Empty State Illustration */
 .empty-state {
+    text-align: center;
+    margin-top: 50px;
+    position: relative;
+}
+
+.empty-state img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 10px;
+}
+
+.empty-state p {
+    margin-top: 15px;
+    color: #555;
+    font-size: 18px;
+}
+
+/* Specific Empty States for Filters */
+
+/* All Tasks Empty State */
+#no-tasks-all {
+    display: none;
     text-align: center;
     margin-top: 50px;
 }
 
-.empty-state img {
-    max-width: 150px;
+#no-tasks-all img {
+    max-width: 100%;
     height: auto;
-    margin-bottom: 20px;
+    max-height: 250px;
+    border-radius: 10px;
 }
 
-.empty-state p {
+#no-tasks-all p {
+    margin-top: 15px;
     color: #555;
     font-size: 18px;
+}
+
+/* Pending Tasks Empty State */
+#no-tasks-pending {
+    display: none;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#no-tasks-pending img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 10px;
+}
+
+#no-tasks-pending p {
+    margin-top: 15px;
+    color: #555;
+    font-size: 18px;
+}
+
+/* Overdue Tasks Empty State */
+#no-tasks-overdue {
+    display: none;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#no-tasks-overdue img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 10px;
+}
+
+#no-tasks-overdue p {
+    margin-top: 15px;
+    color: #555;
+    font-size: 18px;
+}
+
+/* Completed Tasks Empty State */
+#no-tasks-completed {
+    display: none;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#no-tasks-completed img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 10px;
+}
+
+#no-tasks-completed p {
+    margin-top: 15px;
+    color: #555;
+    font-size: 18px;
+}
+
+/* =========================================
+7. Floating Action Button (FAB) Styles
+========================================= */
+
+/* Floating Action Button */
+.fab-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.fab {
+    background-color: #808080;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.fab:hover {
+    background-color: #555;
+}
+
+.fab i {
+    font-size: 24px;
+}
+
+.fab-options {
+    display: none;
+    position: absolute;
+    bottom: 80px; /* Positioned above the FAB */
+    right: 0;
+    background-color: #ffffff;
+    border-radius: 50px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fab-options.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Individual FAB option */
+.fab-option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background: none; /* Remove background */
+    border: none; /* Remove borders */
+    color: inherit; /* Inherit text color */
+    width: 100%; /* Full width for clickable area */
+    text-align: left; /* Align text to the left */
+    font-size: 16px; /* Consistent font size */
+}
+
+.fab-option span.material-icons-outlined {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+/* Hover effect for FAB option */
+.fab-option:hover {
+    background-color: #e0e0e0;
+}
+
+/* Hide FAB on desktop */
+@media (min-width: 769px) {
+    .fab {
+        display: none;
+    }
+    .fab-options {
+        display: none;
+    }
+}
+
+/* Show FAB on mobile */
+@media (max-width: 768px) {
+    .fab {
+        display: flex;
+    }
+}
+
+/* =========================================
+8. Create Project Task Modal Styles
+========================================= */
+
+/* Custom Modal Content */
+.custom-modal-content {
+    background-color: #ffffff; /* Set background color as needed */
+    border: none; /* Remove default borders */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+    padding: 20px;
+    position: relative;
+}
+
+/* Remove Modal Footer Border */
+.modal-footer {
+    border-top: none;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Icon Button Styles */
+.icon-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #808080; /* Added border for outline */
+    background-color: #ffffff; /* White background */
+    color: #808080; /* Gray icon color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px; /* Slight rounding of corners */
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    margin-left: 8px; /* Space between buttons */
+}
+
+.icon-button:hover {
+    background-color: #808080; /* Gray background on hover */
+    color: #ffffff; /* White icon color on hover */
+}
+
+.icon-button .material-icons-outlined {
+    font-size: 24px; /* Adjust icon size as needed */
+}
+
+/* =========================================
+9. Completion Rate Tips and Overdue Streak Styles
+========================================= */
+
+/* Completion Rate Tips */
+#completion-tips-container {
+    display: none;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Overdue Streak Suggestion */
+#overdue-streak-container {
+    display: none;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* =========================================
+10. Loading Overlay Styles
+========================================= */
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1003; /* Above FAB and Navbar */
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #808080;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+11. Accessibility Enhancements
+========================================= */
+
+/* Ensure sufficient color contrast */
+.card-title,
+.empty-state p,
+.add-link span {
+    color: #333; /* Darker color for better contrast */
+}
+
+/* =========================================
+12. Responsive Adjustments
+========================================= */
+
+/* Ensure task-cards container has enough top padding to prevent overlap */
+.task-cards {
+    padding-top: 0; /* Reset if previously set */
+}
+
+@media (min-width: 768px) {
+    .add-button-container {
+        margin-top: 20px; /* Adjust based on design */
+        margin-bottom: 20px; /* 20px space below the button */
+    }
+}
+
+@media (max-width: 767px) {
+    .add-button-container {
+        margin-top: 20px; /* Adjust based on design */
+        margin-bottom: 20px; /* 20px space below the button */
+    }
+}
+
+/* =========================================
+13. Tooltips Styles
+========================================= */
+
+/* Custom styles for Bootstrap tooltips to match the dashboard */
+.tooltip-inner {
+    background-color: #555; /* Dark background */
+    color: #fff; /* White text */
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.bs-tooltip-top .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="top"] .tooltip-arrow::before {
+    border-top-color: #555; /* Arrow color */
+}
+
+.bs-tooltip-bottom .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="bottom"] .tooltip-arrow::before {
+    border-bottom-color: #555;
+}
+
+.bs-tooltip-left .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="left"] .tooltip-arrow::before {
+    border-left-color: #555;
+}
+
+.bs-tooltip-right .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="right"] .tooltip-arrow::before {
+    border-right-color: #555;
 }

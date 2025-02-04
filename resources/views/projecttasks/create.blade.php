@@ -63,18 +63,9 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="form-group">
-                    <label for="label_id" class="form-label">Label</label>
-                    <select class="form-control" id="label_id" name="label_id">
-                        <option value="" disabled selected>Select Label</option>
-                        @foreach($labels as $label)
-                            <option value="{{ $label->id }}" {{ old('label_id') == $label->id ? 'selected' : '' }}>{{ $label->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('label_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+
+                <!-- Removed the entire “Label” input block here -->
+                
                 <div class="form-group">
                     <textarea class="form-control" id="notes" name="notes" placeholder="Notes">{{ old('notes') }}</textarea>
                     @error('notes')

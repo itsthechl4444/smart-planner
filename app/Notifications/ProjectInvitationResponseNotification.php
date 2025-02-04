@@ -4,12 +4,8 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\DatabaseMessage;
-use App\Models\Project;
-use App\Models\User;
 
-class ProjectInvitationResponseNotification extends Notification implements ShouldQueue
+class ProjectInvitationResponseNotification extends Notification
 {
     use Queueable;
 
@@ -21,10 +17,11 @@ class ProjectInvitationResponseNotification extends Notification implements Shou
      * Create a new notification instance.
      *
      * @param \App\Models\Project $project
-     * @param \App\Models\User $collaborator
-     * @param string $response
+     * @param \App\Models\User    $collaborator
+     * @param string              $response
+     * @return void
      */
-    public function __construct(Project $project, User $collaborator, string $response)
+    public function __construct($project, $collaborator, $response)
     {
         $this->project = $project;
         $this->collaborator = $collaborator;
@@ -39,25 +36,47 @@ class ProjectInvitationResponseNotification extends Notification implements Shou
      */
     public function via($notifiable)
     {
-        return ['database']; // In-app notification
+        return ['phpmailer', 'database'];
     }
 
     /**
-     * Get the array representation of the notification.
+     * Get the PHPMailer representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toPHPMailer($notifiable)
+    {
+        $status = ucfirst($this->response); // 'Accepted' or 'Declined'
+
+        return [
+            'to'      => $notifiable->email,
+            'toName'  => $notifiable->name,
+            'subject' => "Your Invitation to '{$this->project->name}' has been {$this->response}",
+            'body'    => "
+                <h1>Invitation Response</h1>
+                <p>Hello {$notifiable->name},</p>
+                <p>{$this->collaborator->name} has {$this->response} your invitation to collaborate on the project '{$this->project->name}'.</p>
+                <p><a href='" . route('projects.show', $this->project->id) . "' style='padding: 10px 15px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>View Project</a></p>
+            ",
+            'altBody' => "Hello {$notifiable->name},\n\n{$this->collaborator->name} has {$this->response} your invitation to collaborate on the project '{$this->project->name}'.\n\nView Project: " . route('projects.show', $this->project->id),
+        ];
+    }
+
+    /**
+     * Get the array representation of the notification for database storage.
      *
      * @param  mixed  $notifiable
      * @return array
      */
     public function toDatabase($notifiable)
     {
-        $statusMessage = ucfirst($this->response);
         return [
-            'message' => "{$this->collaborator->name} has {$this->response} your invitation to collaborate on the project '{$this->project->name}'.",
-            'project_id' => $this->project->id,
-            'project_name' => $this->project->name,
-            'collaborator_id' => $this->collaborator->id,
-            'collaborator_name' => $this->collaborator->name,
-            'response' => $this->response,
+            'message'               => "{$this->collaborator->name} has {$this->response} your invitation to collaborate on '{$this->project->name}'.",
+            'project_id'            => $this->project->id,
+            'project_name'          => $this->project->name,
+            'collaborator_name'     => $this->collaborator->name,
+            'response'              => $this->response,
         ];
     }
 }

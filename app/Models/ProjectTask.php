@@ -8,6 +8,7 @@ use App\Notifications\ProjectTaskReminderNotification;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Label;
+use Illuminate\Support\Facades\Log;
 
 class ProjectTask extends Model
 {
@@ -18,17 +19,18 @@ class ProjectTask extends Model
         'description',
         'due_date',
         'priority',
-        'label_id',
         'project_id',
         'notes',
         'attachments',
         'reminder',
-        'status',
+        'status',      // Ensure 'status' is fillable
+        'user_id',     // Ensure 'user_id' is fillable
     ];
 
     protected $casts = [
         'reminder' => 'boolean',
         'due_date' => 'date',
+        'status' => 'string', // Cast 'status' to string
     ];
 
     protected $dates = ['due_date'];
@@ -49,7 +51,13 @@ class ProjectTask extends Model
         return $this->belongsTo(Label::class);
     }
 
-  
+    /**
+     * The user assigned to the task.
+     */
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     /**
      * Mark the task as completed.
@@ -66,7 +74,16 @@ class ProjectTask extends Model
     public function sendDueDateReminder()
     {
         if ($this->reminder && $this->due_date->isToday()) {
-            $this->assignedUser->notify(new ProjectTaskReminderNotification($this));
+            if ($this->assignedUser) {
+                try {
+                    $this->assignedUser->notify(new ProjectTaskReminderNotification($this));
+                    Log::info("ProjectTaskReminderNotification: Notification sent to user ID {$this->assignedUser->id} for task ID {$this->id}.");
+                } catch (\Exception $e) {
+                    Log::error("ProjectTaskReminderNotification: Failed to send notification for task ID {$this->id}. Error: {$e->getMessage()}");
+                }
+            } else {
+                Log::warning("ProjectTaskReminderNotification: No assigned user found for task ID {$this->id}.");
+            }
         }
     }
 }

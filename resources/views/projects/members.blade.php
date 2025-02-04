@@ -21,7 +21,7 @@
     <main class="container mt-4">
         <!-- Illustration Section -->
         <div class="illustration text-center mb-4">
-            <img src="{{ asset('images/illustration2.png') }}" alt="Members Illustration" class="img-fluid">
+            <img src="{{ asset('images/proj.png') }}" alt="Members Illustration">
         </div>
 
         <!-- Success and Error Messages -->
@@ -48,7 +48,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Send Invitation</button>
+                <button type="submit" class="btn-get-started">Send Invitation</button>
             </form>
         </div>
 
@@ -93,27 +93,29 @@
         </ul>
 
         <!-- Pending Invitations Section -->
-<h2>Pending Invitations ({{ $project->pendingCollaborators()->count() }})</h2>
-<ul class="list-group mb-4">
-    @forelse($project->pendingCollaborators as $pendingCollaborator)
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-                <strong>{{ $pendingCollaborator->name }}</strong> ({{ $pendingCollaborator->email }})
-                <span class="badge bg-warning ms-2">Pending</span>
-            </div>
-            @if(Auth::id() === $project->owner->id)
-                <form action="{{ route('collaborations.remove', [$project, $pendingCollaborator]) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm">Cancel Invitation</button>
-                </form>
-            @endif
-        </li>
-    @empty
-        <li class="list-group-item">No pending invitations.</li>
-    @endforelse
-</ul>
+        <h2>Pending Invitations ({{ $project->pendingCollaborators()->count() }})</h2>
+        <ul class="list-group mb-4">
+            @forelse($project->pendingCollaborators as $pendingCollaborator)
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ $pendingCollaborator->name }}</strong> ({{ $pendingCollaborator->email }})
+                        <span class="badge bg-warning ms-2">Pending</span>
+                    </div>
+                    @if(Auth::id() === $project->owner->id)
 
+                    <form action="{{ route('collaborations.remove', ['project' => $project->id, 'user' => $pendingCollaborator->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this invitation?');">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger btn-sm">Cancel Invitation</button>
+</form>
+
+                    
+                    @endif
+                </li>
+            @empty
+                <li class="list-group-item">No pending invitations.</li>
+            @endforelse
+        </ul>
     </main>
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>

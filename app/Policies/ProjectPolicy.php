@@ -12,11 +12,11 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the project.
+     * Determine whether the user can view a given project.
      */
     public function view(User $user, Project $project)
     {
-        // Allow if the user is the owner or an accepted collaborator
+        // Owner or accepted collaborator
         if ($user->id === $project->user_id) {
             return Response::allow();
         }
@@ -26,6 +26,28 @@ class ProjectPolicy
         }
 
         return Response::deny('You do not have access to this project.');
+    }
+
+    /**
+     * Determine whether the user can update (edit) the project.
+     */
+    public function update(User $user, Project $project)
+    {
+        // Only the owner can update
+        return $user->id === $project->user_id
+            ? Response::allow()
+            : Response::deny('Only the project owner can update this project.');
+    }
+
+    /**
+     * Determine whether the user can delete the project.
+     */
+    public function delete(User $user, Project $project)
+    {
+        // Only the owner can delete
+        return $user->id === $project->user_id
+            ? Response::allow()
+            : Response::deny('Only the project owner can delete this project.');
     }
 
     /**
@@ -44,15 +66,13 @@ class ProjectPolicy
     public function acceptInvitation(User $user, Project $project)
     {
         $hasPendingInvitation = $project->collaborators()
-                                         ->where('user_id', $user->id)
-                                         ->wherePivot('status', 'pending')
-                                         ->exists();
+            ->where('user_id', $user->id)
+            ->wherePivot('status', 'pending')
+            ->exists();
 
-        if ($hasPendingInvitation) {
-            return Response::allow();
-        } else {
-            return Response::deny('You do not have a pending invitation to accept.');
-        }
+        return $hasPendingInvitation
+            ? Response::allow()
+            : Response::deny('You do not have a pending invitation to accept.');
     }
 
     /**
@@ -61,15 +81,13 @@ class ProjectPolicy
     public function declineInvitation(User $user, Project $project)
     {
         $hasPendingInvitation = $project->collaborators()
-                                         ->where('user_id', $user->id)
-                                         ->wherePivot('status', 'pending')
-                                         ->exists();
+            ->where('user_id', $user->id)
+            ->wherePivot('status', 'pending')
+            ->exists();
 
-        if ($hasPendingInvitation) {
-            return Response::allow();
-        } else {
-            return Response::deny('You do not have a pending invitation to decline.');
-        }
+        return $hasPendingInvitation
+            ? Response::allow()
+            : Response::deny('You do not have a pending invitation to decline.');
     }
 
     /**
@@ -81,6 +99,4 @@ class ProjectPolicy
             ? Response::allow()
             : Response::deny('Only the project owner can remove collaborators.');
     }
-
-    // ... other policy methods if needed ...
 }

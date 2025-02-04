@@ -11,7 +11,7 @@ class DebtController extends Controller
     public function index()
     {
         $debts = Auth::user()->debts()->get(); // Fetch debts associated with the logged-in user
-        return view('debts.index', compact('debts'));
+        return view('financemanagement.index', compact('debts'));
     }
 
     public function create()
@@ -20,9 +20,11 @@ class DebtController extends Controller
         return view('debts.create', compact('currencies'));
     }
 
-
     public function store(Request $request)
     {
+        // Optional: Explicitly authorize the creation
+        $this->authorize('create', Debt::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -32,7 +34,7 @@ class DebtController extends Controller
             'due_date' => 'nullable|date',
             'reminder' => 'nullable|boolean',
         ]);
-    
+
         // Create the debt entry with proper data
         $debt = Auth::user()->debts()->create([
             'name' => $request->name,
@@ -43,13 +45,12 @@ class DebtController extends Controller
             'due_date' => $request->due_date,
             'reminder' => $request->has('reminder') ? true : false,
         ]);
-    
-        // Dispatch the DebtDeadlineNotification if due today and reminder is set
+
+        // Dispatch the DebtDeadlineNotification if reminder is set and due today
         $debt->sendDueDateReminder();
-    
-        return redirect()->route('debts.index')->with('success', 'Debt created successfully.');
+
+        return redirect()->route('financemanagement.index')->with('success', 'Debt created successfully.');
     }
-    
 
     public function show(Debt $debt)
     {
@@ -83,9 +84,22 @@ class DebtController extends Controller
             'reminder' => 'nullable|boolean',
         ]);
 
-        $debt->update($request->all());
+        $debt->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'amount' => $request->amount,
+            'currency' => $request->currency,
+            'type' => $request->type,
+            'due_date' => $request->due_date,
+            'reminder' => $request->has('reminder') ? true : false,
+        ]);
 
-        return redirect()->route('debts.index')->with('success', 'Debt updated successfully.');
+        // Optionally, re-dispatch the reminder if updated
+        if ($debt->wasChanged('reminder') || $debt->wasChanged('due_date')) {
+            $debt->sendDueDateReminder();
+        }
+
+        return redirect()->route('financemanagement.index')->with('success', 'Debt updated successfully.');
     }
 
     public function destroy(Debt $debt)
@@ -94,6 +108,6 @@ class DebtController extends Controller
         $this->authorize('delete', $debt);
         
         $debt->delete();
-        return redirect()->route('debts.index')->with('success', 'Debt deleted successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Debt deleted successfully.');
     }
 }

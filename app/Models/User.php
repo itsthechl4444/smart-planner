@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail; 
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,6 +20,7 @@ use App\Models\Account;
 use App\Models\Saving;
 use App\Models\Expense;
 use App\Models\Budget;
+use App\Notifications\CustomResetPasswordNotification; 
 
 
 class User extends Authenticatable
@@ -61,6 +63,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+  /**
+     * Override the default email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
+
+    /**
+     * Generate the email verification URL.
+     *
+     * @return string
+     */
+    protected function generateVerificationUrl()
+    {
+        return \URL::temporarySignedRoute(
+            'verification.verify',
+            \Carbon\Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
+            ['id' => $this->id, 'hash' => sha1($this->email)]
+        );
+    }
 
      /**
      * Get the tasks for the user.
@@ -111,10 +137,10 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
-    /**
-     * Get the tasks assigned to the user.
+ /**
+     * The project tasks assigned to the user.
      */
-    public function assignedTasks()
+    public function assignedProjectTasks()
     {
         return $this->hasMany(ProjectTask::class, 'user_id');
     }
@@ -162,5 +188,22 @@ class User extends Authenticatable
     public function savings()
     {
         return $this->hasMany(Saving::class);
+    } 
+
+    public function financialReminders()
+    {
+        return $this->hasMany(FinancialReminder::class);
+    }
+    
+
+   /**
+     * Override the default password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPasswordNotification($token));
     } 
 }

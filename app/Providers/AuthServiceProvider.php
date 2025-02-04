@@ -43,6 +43,7 @@ class AuthServiceProvider extends ServiceProvider
             Debt::class => DebtPolicy::class,
              Budget::class => BudgetPolicy::class,
              Saving::class => SavingPolicy::class,
+             FinancialReminder::class => FinancialReminderPolicy::class,
     ];
 
     /**

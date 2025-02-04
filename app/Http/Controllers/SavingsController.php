@@ -14,7 +14,7 @@ class SavingsController extends Controller
     {
         // Fetch savings for the authenticated user with 'amounts' relationship
         $savings = Auth::user()->savings()->with('amounts')->get();
-        return view('savings.index', compact('savings'));
+        return view('financemanagement.index', compact('savings'));
     }
     
     public function create()
@@ -43,7 +43,7 @@ class SavingsController extends Controller
         // Create a new saving attached to the authenticated user
         $saving = Auth::user()->savings()->create($data);
     
-        return redirect()->route('savings.index')->with('success', 'Saving created successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Saving created successfully.');
     }
     
     
@@ -118,7 +118,7 @@ class SavingsController extends Controller
 
     $saving->update($data);
 
-    return redirect()->route('savings.index')->with('success', 'Saving updated successfully.');
+    return redirect()->route('financemanagement.index')->with('success', 'Saving updated successfully.');
 }
 
 
@@ -129,6 +129,6 @@ class SavingsController extends Controller
             unlink(public_path('attachments') . '/' . $saving->attachment);
         }
         $saving->delete();
-        return redirect()->route('savings.index')->with('success', 'Saving deleted successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Saving deleted successfully.');
     }
 }

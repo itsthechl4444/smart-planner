@@ -1,3 +1,5 @@
+<!-- resources/views/auth/reset-password.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +14,7 @@
         <h1>Reset Password</h1>
         <img src="{{ asset('images/Illustration.png') }}" alt="Reset Password Illustration" class="illustration">
         <div class="content">
-            <form method="POST" action="{{ route('password.store') }}">
+            <form method="POST" action="{{ route('password.update') }}"> <!-- Changed from 'password.store' to 'password.update' -->
                 @csrf
 
                 <!-- Password Reset Token -->

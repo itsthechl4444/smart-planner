@@ -20,6 +20,10 @@ class Saving extends Model
 
 
     protected $dates = ['desired_date'];
+    protected $casts = [
+        'desired_date' => 'date',
+    ];
+    
 
 
     // Relationship with User

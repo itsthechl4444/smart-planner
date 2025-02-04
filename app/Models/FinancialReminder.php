@@ -2,9 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FinancialReminder extends Model
 {
-    // Define your model properties and methods here
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'title',
+        'due_date',
+        'description',
+    ];
+
+    /**
+     * Define the relationship with the User model.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

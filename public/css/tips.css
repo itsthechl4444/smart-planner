@@ -1,5 +1,3 @@
-/* tips.css */
-
 /* =========================================
    1. Global Styles
 ========================================= */
@@ -7,8 +5,8 @@
 body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
-    background-color: #f4f7f9;
-    color: #333;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5) !important;
+    color: #808080;
 }
 
 .container {
@@ -21,17 +19,21 @@ body {
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5) !important;
+    box-shadow: none; /* Remove shadow for a plain look */
     position: fixed;
     width: 100%;
     z-index: 1000;
 }
 
+.header.plain-header {
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5) !important;
+    box-shadow: none; /* Remove shadow */
+}
+
 .menu-icon {
     font-size: 24px;
     cursor: pointer;
-    color: #333;
 }
 
 .menu-icon i {
@@ -39,31 +41,114 @@ body {
 }
 
 .title {
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 500;
     flex: 1;
     text-align: center;
-    color: #333;
+    color: #555;
 }
 
 .main-content {
-    padding: 80px 20px 20px;
+    padding: 80px 20px 80px; /* Increased bottom padding for Bottom Navbar */
     flex: 1;
 }
 
-.illustration-wrapper {
-    text-align: center;
-    margin-bottom: 40px;
+/* =========================================
+   2. Carousel Wrapper Styles
+========================================= */
+
+.carousel-wrapper {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    position: relative;
 }
 
-.illustration {
-    max-width: 100%;
+.carousel-image {
+    max-width: 50%;
     height: auto;
     border-radius: 12px;
+    transition:
+        transform 0.3s ease,
+        opacity 0.5s ease;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* =========================================
-   2. Tips Container Styles
+   3. Carousel Indicators Styles
+========================================= */
+
+.carousel-indicators {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.indicators-list {
+    list-style: none;
+    padding: 0;
+    display: inline-flex;
+    gap: 10px;
+}
+
+.indicator-item {
+    width: 12px;
+    height: 12px;
+    background-color: #808080; /* Medium blue */
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.indicator-item.active {
+    background-color: #333333; /* Dark blue */
+    transform: scale(1.2);
+}
+
+.indicator-item:hover {
+    background-color: #333333;
+}
+
+/* =========================================
+   4. Tips Wrapper Styles
+========================================= */
+
+.tips-wrapper {
+    background-color: #f5f5f5; /* Changed to match header */
+    padding: 40px 20px;
+    border-radius: 12px;
+    max-width: 1200px; /* Limit the maximum width */
+    margin: 0 auto; /* Center the container */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+.tips-wrapper:hover {
+    background-color: #e0e0e0; /* Slightly darker gray on hover */
+}
+
+@media (max-width: 768px) {
+    .tips-wrapper {
+        padding: 30px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tips-wrapper {
+        padding: 20px 10px;
+    }
+}
+
+/* =========================================
+   5. Tips Container Styles
 ========================================= */
 
 .tips-container {
@@ -83,12 +168,20 @@ body {
     max-width: 300px;
     transition:
         transform 0.3s ease,
-        box-shadow 0.3s ease;
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-8px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    background-color: #f0f4f7; /* Slight background change */
+}
+
+.card:focus {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    background-color: #f0f4f7;
 }
 
 .card-content {
@@ -98,31 +191,62 @@ body {
 
 .card-content h3 {
     margin-top: 0;
-    color: #1976d2;
-    font-size: 22px;
-    margin-bottom: 10px;
+    color: #808080; /* Medium blue */
+    font-size: 20px;
+    margin-bottom: 5px;
 }
 
 .card-content p {
-    color: #555;
-    font-size: 16px;
-    line-height: 1.6;
+    color: #022b3a; /* Dark blue */
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 /* =========================================
-   3. Modal Styles (Updated)
+   6. Resources Sections Styles
+========================================= */
+
+.resources-section {
+    margin: 60px 0;
+}
+
+.resources-section h2 {
+    text-align: center;
+    color: #808080; /* Dark blue */
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.resources-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* =========================================
+   7. Modal Styles (Updated)
 ========================================= */
 
 .modal {
     display: flex; /* Enable flexbox */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
-    /* Remove fixed max-width to allow responsiveness */
-    /* Optional: Set a max-width with relative units */
     max-width: 90%;
+    max-height: 80%;
     margin: auto; /* Centers the modal horizontally */
     border-radius: 12px;
     overflow: hidden; /* Prevents content overflow */
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.modal.open {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .modal-content {
@@ -130,16 +254,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically if needed */
+    justify-content: flex-start; /* Allow vertical scrolling if needed */
     text-align: center; /* Center text */
     width: 100%;
+    max-height: 80vh; /* Max height */
+    overflow-y: auto; /* Enable scrolling */
     box-sizing: border-box; /* Ensure padding is included in width */
 }
 
 .modal-content h4 {
     font-size: 26px;
     margin-bottom: 20px;
-    color: #1976d2;
+    color: #808080; /* Medium blue */
     text-align: center; /* Ensure heading is centered */
 }
 
@@ -150,9 +276,14 @@ body {
     margin: 0 auto 20px auto; /* Centers the image */
     border-radius: 8px;
     display: block; /* Ensures the image behaves as a block element */
+    transition: transform 0.3s ease;
 }
 
-.modal-content .modal-content-wrapper {
+.modal-content .modal-illustration:hover {
+    transform: scale(1.05);
+}
+
+.modal-content-wrapper {
     width: 100%;
     max-width: 500px; /* Optional: Adjust based on design */
     margin: 0 auto; /* Centers the content wrapper */
@@ -165,14 +296,14 @@ body {
 .modal-content-wrapper h5 {
     font-size: 22px;
     margin-bottom: 15px;
-    color: #333;
+    color: #022b3a; /* Dark blue */
     width: 100%;
     text-align: center; /* Center headings */
 }
 
 .modal-content-wrapper p {
     font-size: 16px; /* Paragraph styling */
-    color: #555;
+    color: #808080; /* Dark blue */
     line-height: 1.6;
     width: 100%;
     max-width: 480px; /* Limit width for readability */
@@ -187,20 +318,25 @@ body {
     margin: 0 auto; /* Center the list */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center list items */
+    align-items: flex-start; /* Align list items to start for readability */
 }
 
 .modal-content-wrapper ul li {
     margin-bottom: 10px;
     font-size: 16px;
-    color: #555;
+    color: #808080; /* Dark blue */
     text-align: left; /* Keep list items left-aligned for readability */
     width: 100%;
     max-width: 480px; /* Align with list container */
+    transition: color 0.3s ease;
 }
 
 .modal-content-wrapper ul li strong {
-    color: #1976d2;
+    color: #808080; /* Medium blue */
+}
+
+.modal-content-wrapper ul li:hover {
+    color: #808080; /* Darker color on hover */
 }
 
 .modal-footer {
@@ -212,46 +348,102 @@ body {
 }
 
 .modal-footer .btn-flat {
-    color: #1976d2;
-    /* Optional: Add padding for better click area */
+    color: #808080; /* Medium blue */
     padding: 8px 16px;
     border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
 }
 
 .modal-footer .btn-flat:hover {
-    background-color: rgba(25, 118, 210, 0.1);
+    background-color: rgba(
+        31,
+        122,
+        140,
+        0.1
+    ); /* Semi-transparent medium blue */
+    transform: translateY(-2px);
+}
+
+.read-btn {
+    background-color: #808080; /* Medium blue */
+    color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+    text-align: center; /* Center the text horizontally */
+    display: flex; /* Center the text vertically */
+    justify-content: center; /* Center the text horizontally */
+    align-items: center; /* Center the text vertically */
+}
+
+.read-btn:hover {
+    background-color: #022b3a; /* Dark blue */
+    transform: translateY(-2px);
+}
+
+.download-btn {
+    background-color: #1f7a8c; /* Medium blue */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.download-btn:hover {
+    background-color: #022b3a; /* Dark blue */
+    transform: translateY(-2px);
 }
 
 /* =========================================
-   4. Responsive Design (Enhanced)
+   8. Responsive Design
 ========================================= */
 
+/* Adjust book cards for smaller screens */
 @media (max-width: 768px) {
-    .modal-content {
-        padding: 25px 15px;
+    .resources-container {
+        flex-direction: column;
+        align-items: center;
     }
 
-    .modal-content h4 {
-        font-size: 24px;
+    .card {
+        flex: 1 1 100%;
+        max-width: 100%;
     }
 
-    .modal-content-wrapper h5 {
-        font-size: 20px;
-    }
-
-    .modal-content-wrapper p,
-    .modal-content-wrapper ul li {
+    .modal-content-wrapper p {
         font-size: 14px;
     }
 
-    .modal-content .modal-illustration {
-        max-width: 120px;
+    .tip-card {
+        width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .modal-content {
-        padding: 20px 10px;
+    .carousel-wrapper {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .carousel.carousel-slider .carousel-fixed-item {
+        height: 200px;
+    }
+
+    .carousel-image {
+        max-width: 100%;
+    }
+
+    .resources-section h2 {
+        font-size: 22px;
     }
 
     .modal-content h4 {
@@ -267,89 +459,218 @@ body {
         font-size: 13px;
     }
 
-    .modal-content .modal-illustration {
-        max-width: 100px;
+    .quotes-section h2 {
+        font-size: 22px;
+    }
+
+    .tip-card {
+        width: 100%;
     }
 }
 
 /* =========================================
-   5. Accessibility Enhancements
+   9. Accessibility Enhancements
 ========================================= */
 
-.menu-icon:focus,
 .card:focus,
 .modal-close:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #1976d2;
+    box-shadow: 0 0 0 3px rgba(31, 122, 140, 0.5); /* Medium blue focus outline */
 }
 
-/* Optional: Improve button accessibility */
+.card:focus,
+.resource-card:focus {
+    border: 2px solid #808080; /* Medium blue */
+}
+
 .btn-flat {
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
 }
 
 .btn-flat:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #1976d2;
+    box-shadow: 0 0 0 2px #808080; /* Medium blue */
+}
+
+.btn-flat:hover {
+    transform: scale(1.05);
 }
 
 /* =========================================
-   4. Responsive Design
+   10. Bottom Navbar Styles
 ========================================= */
 
+/* Base styles for Bottom Navbar (Visible on both Desktop and Mobile) */
+.bottom-navbar {
+    position: fixed;
+    bottom: 20px; /* 20px margin from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #808080; /* Gray background */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 999; /* Below FAB */
+    width: 300px; /* Default width for desktop */
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Adjust Navbar Items */
+.bottom-navbar .navbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff; /* White icon and text color */
+    text-decoration: none;
+    font-size: 12px;
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.bottom-navbar .navbar-item i {
+    font-size: 24px;
+    color: #ffffff; /* Ensure icons are white */
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.bottom-navbar .navbar-item:hover {
+    color: #dddddd; /* Lighten icon and text color on hover */
+    transform: translateY(-3px); /* Slight lift on hover */
+}
+
+.bottom-navbar .navbar-item:hover i {
+    color: #ffffff; /* Keep icon color white on hover */
+    transform: scale(1.1); /* Slight scale-up on hover */
+}
+
+/* Responsive Adjustments */
+
+/* Mobile Styles */
 @media (max-width: 768px) {
-    .card {
-        flex: 1 1 45%;
+    .bottom-navbar {
+        width: calc(100% - 40px); /* 20px margin on each side */
+        bottom: 20px; /* Maintain 20px margin from bottom */
     }
 
-    .modal-content h4 {
-        font-size: 24px;
+    /* Adjust FAB position to be above the bottom navbar with 15px space */
+    .fab {
+        bottom: calc(
+            20px + 15px
+        ); /* Navbar bottom (20px) + 15px space = 35px */
     }
 
-    .modal-content h5 {
-        font-size: 20px;
-    }
-
-    .modal-content p,
-    .modal-content ul li {
-        font-size: 14px;
+    /* FAB Options Position Adjustment */
+    .fab-options {
+        bottom: calc(35px + 10px); /* FAB bottom (35px) + 10px space = 45px */
     }
 }
 
 @media (max-width: 480px) {
-    .card {
-        flex: 1 1 100%;
+    .bottom-navbar {
+        width: calc(100% - 40px); /* Maintain margins */
+        bottom: 20px; /* Adjusted to 20px from the bottom */
     }
 
-    .card-content h3 {
-        font-size: 20px;
+    /* FAB Position Adjustment for Mobile */
+    .fab {
+        margin-bottom: 60px;
     }
 
-    .card-content p {
-        font-size: 14px;
+    /* FAB Options Position Adjustment */
+    .fab-options {
+        margin-bottom: 120px;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .bottom-navbar {
+        width: 400px; /* Adjusted width for better aesthetics */
+        bottom: 20px; /* Maintain bottom spacing */
     }
 
-    .modal-content h4 {
-        font-size: 22px;
+    /* FAB remains at bottom-right corner */
+    .fab {
+        bottom: 20px;
+        right: 20px;
     }
 
-    .modal-content h5 {
-        font-size: 18px;
+    /* Ensure icons have enough space */
+    .bottom-navbar .navbar-item {
+        font-size: 14px; /* Increased font-size for desktop */
     }
 
-    .modal-content p,
-    .modal-content ul li {
-        font-size: 13px;
+    .bottom-navbar .navbar-item i {
+        font-size: 26px; /* Increased icon size for desktop */
     }
 }
 
 /* =========================================
-   5. Accessibility Enhancements
+   11. Enhanced Animations
 ========================================= */
 
-.menu-icon:focus,
-.card:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #1976d2;
+@keyframes scaleUp {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
+.card:hover,
+.resource-card:hover {
+    animation: scaleUp 0.3s forwards;
+}
+
+.carousel-image {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: fadeIn 1s forwards;
+}
+
+.carousel-image:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.tip-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    width: 200px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tip-card h6 {
+    margin-top: 0;
+    color: #808080; /* Medium blue */
+    font-size: 18px;
+}
+
+.tip-card p {
+    color: #808080; /* Dark blue */
+    font-size: 14px;
+    line-height: 1.4;
 }

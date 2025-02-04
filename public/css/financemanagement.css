@@ -1,67 +1,88 @@
-/* financemanagement.css */
-
 /* =========================================
    1. Global Styles
 ========================================= */
 
-/* Global styles */
+/* Body styles */
 body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
-    background-color: #f5f5f5;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5) !important;
     color: #808080;
-    /* Removed overflow: hidden; to allow scrolling */
 }
 
-.container {
+/* Hide scrollbar but keep content scrollable */
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.main-content {
     display: flex;
-    flex-direction: column;
-    /* Removed height: 100vh; to allow container to grow with content */
-    min-height: 100vh; /* Ensures the container covers the viewport height */
-    position: relative;
+    flex-direction: column; /* Arrange children vertically */
+    flex-grow: 1;
+    padding: 80px 20px 20px; /* Top padding to account for fixed header */
+    overflow-y: auto; /* Allows vertical scrolling */
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
+    color: #808080;
 }
 
-/* Header styles */
+/* Header container */
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* Center items horizontally */
     padding: 10px 20px;
-    background-color: #f5f5f5;
-    position: fixed; /* Changed from relative to fixed */
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
+    position: fixed; /* Fixed at the top */
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
+    height: 65px; /* Set consistent height */
+}
+
+/* Menu icon */
+.menu-icon {
+    position: absolute; /* Position absolutely to the left */
+    left: 20px; /* Align with left padding */
+    font-size: 24px;
+    cursor: pointer;
+    color: #808080;
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
 }
 
 .menu-icon {
-    font-size: 24px;
-    cursor: pointer;
+    transition: transform var(--transition-speed);
 }
 
+.menu-icon:hover {
+    transform: rotate(90deg);
+}
+
+/* Title in header */
 .title {
     font-size: 20px;
     font-weight: 500;
-    flex: 1;
-    text-align: center;
+    color: #555;
+    /* Removed flex: 1 to prevent stretching */
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #ddd;
-    margin: 10px 0;
-}
+/* Adjustments for mobile devices */
+@media (max-width: 480px) {
+    .header {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 
-/* Main Content */
-.main-content {
-    flex-grow: 1;
-    padding: 80px 20px 20px; /* Adjusted top padding to account for fixed header */
-    overflow-y: auto; /* Allows vertical scrolling */
+    .title {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 /* =========================================
-   2. Finance Management Search Bar Styles
+   2. Global Search Bar Styles
 ========================================= */
 
 /* Global Search Bar */
@@ -71,25 +92,25 @@ hr {
     margin-bottom: 20px;
 }
 
-.finance-search {
+.task-search {
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 800px; /* Adjust as needed for larger screens */
+    max-width: 800px;
     background-color: #fff;
     border-radius: 8px;
-    padding: 10px 20px; /* Padding for spacing inside the search bar */
+    padding: 10px 20px; /* Padding inside the search bar */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative; /* For positioning the clear search icon */
+    position: relative;
 }
 
-.finance-search .search-icon {
+.task-search .search-icon {
     color: #808080;
-    margin-right: 12px; /* Space between icon and input */
+    margin-right: 12px;
     font-size: 20px;
 }
 
-.finance-search input {
+.task-search input {
     border: none;
     outline: none;
     flex-grow: 1;
@@ -97,7 +118,7 @@ hr {
     color: #555;
 }
 
-.finance-search input::placeholder {
+.task-search input::placeholder {
     color: #aaa;
 }
 
@@ -106,25 +127,27 @@ hr {
     color: #aaa;
     cursor: pointer;
     font-size: 20px;
+    transition: color 0.3s ease;
 }
 
 .clear-search:hover {
     color: #555;
 }
 
-/* Responsive Adjustments for Finance Search Bar */
+/* Responsive adjustments for global search bar */
 @media (max-width: 768px) {
-    .finance-search {
+    .task-search {
         max-width: 100%;
+        margin: 0 auto;
         padding: 8px 12px;
     }
 
-    .finance-search .search-icon {
+    .task-search .search-icon {
         margin-right: 8px;
         font-size: 18px;
     }
 
-    .finance-search input {
+    .task-search input {
         font-size: 14px;
     }
 
@@ -134,75 +157,70 @@ hr {
 }
 
 @media (max-width: 480px) {
-    .finance-search {
+    .task-search {
+        max-width: 100%;
+        margin: 0 auto;
         padding: 6px 10px;
     }
 
-    .finance-search .search-icon {
+    .task-search .search-icon {
         margin-right: 6px;
-        font-size: 16px;
+        font-size: 16px; /* Reduced from 18px */
     }
 
-    .finance-search input {
-        font-size: 12px;
+    .task-search input {
+        font-size: 12px; /* Reduced from 14px */
     }
 
     .clear-search {
+        font-size: 16px; /* Reduced from 18px */
+    }
+
+    /* Specific adjustments for search bar on mobile */
+    .search-results h2 {
+        font-size: 20px; /* Reduce heading size for better fit */
+    }
+
+    /* Further reduce font size if necessary */
+    .search-cards .card-title {
         font-size: 16px;
+    }
+
+    .search-cards p {
+        font-size: 14px;
     }
 }
 
 /* =========================================
-   3. Search Results Section Styles
+   3. Tabs Section
 ========================================= */
 
-/* Search Results Section */
-#search-results {
-    display: none; /* Hidden by default */
-    margin-bottom: 20px;
-}
-
-#search-results.active {
-    display: block;
-}
-
-#search-results h2 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.search-cards {
+/* Tabs container to center the tabs on desktop */
+.tabs-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    justify-content: center; /* Center the tabs container */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Search Results Cards */
-#search-results .card {
-    width: 300px; /* Adjust as needed */
-}
-
-/* =========================================
-   4. Tabs Section
-========================================= */
-
-/* Tabs section */
+/* Base Styles for Tabs */
 .tabs {
     display: flex;
-    justify-content: center; /* Center the tabs horizontally */
-    background-color: #f5f5f5;
+    justify-content: center; /* Center the tabs on desktop */
+    align-items: center;
     margin-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
     overflow-x: auto; /* Enables horizontal scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     padding: 0 10px; /* Adds horizontal padding for better spacing */
+    min-width: 0;
+    width: 100%; /* Ensure the tabs take full width */
+    box-sizing: border-box; /* Include padding in width */
 }
 
+/* Hide scrollbar for tabs */
 .tabs::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar for a cleaner look */
+    display: none;
 }
 
 .tabs {
@@ -210,6 +228,7 @@ hr {
     scrollbar-width: none; /* Firefox */
 }
 
+/* Individual tab link */
 .tab-link {
     flex: 0 0 auto; /* Prevents tabs from stretching */
     background-color: transparent;
@@ -220,11 +239,22 @@ hr {
     font-size: 16px;
     color: #555;
     border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
     transition:
         border-color 0.3s ease,
         color 0.3s ease;
 }
 
+.tab-link .tab-icon {
+    font-size: 20px;
+    color: #808080;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+/* Hover and active states for tabs */
 .tab-link:hover {
     color: #333;
 }
@@ -234,6 +264,7 @@ hr {
     border-bottom: 2px solid #808080;
 }
 
+/* Tab content */
 .tab-content {
     display: none;
 }
@@ -242,115 +273,114 @@ hr {
     display: block;
 }
 
-/* Responsive Design for Tabs */
+/* Responsive design for tabs */
 @media (max-width: 600px) {
+    .tabs-container {
+        justify-content: flex-start; /* Align tabs to the start on mobile/tablet */
+    }
+
     .tabs {
-        padding-bottom: 10px; /* Adds some spacing below tabs */
+        justify-content: flex-start; /* Align tabs to the start */
+        padding: 0 5px; /* Reduce padding for smaller screens */
     }
 
     .tab-link {
-        padding: 10px 15px; /* Adjust padding for smaller screens */
-        font-size: 14px;
+        padding: 14px 12px; /* Adjust padding for smaller screens */
+        font-size: 14px; /* Reduce font size for better fit */
+    }
+
+    .tab-link .tab-icon {
+        font-size: 18px; /* Reduce icon size for better fit */
+        margin-right: 6px;
     }
 }
 
 @media (max-width: 480px) {
+    .tabs-container {
+        justify-content: flex-start; /* Align tabs to the start */
+    }
+
     .tabs {
-        flex-direction: column;
+        flex-direction: row; /* Ensure tabs stay in a row */
         gap: 8px;
         padding: 6px 0;
     }
 
     .tab-link {
-        padding: 6px 12px;
-        font-size: 14px;
+        padding: 6px 12px; /* Further adjusted padding */
+        font-size: 14px; /* Keep font size consistent */
+    }
+
+    .tab-link .tab-icon {
+        font-size: 16px; /* Further reduced icon size */
+        margin-right: 4px;
+    }
+
+    /* Specific adjustments for tab titles on mobile */
+    .tab-link {
+        font-size: 14px; /* Ensure tab titles are readable */
+    }
+
+    .tab-link .tab-icon {
+        font-size: 16px; /* Adjust icon size for mobile */
     }
 }
 
 /* =========================================
-   5. Filter Buttons
+   4. Cards
 ========================================= */
 
-/* Filter buttons */
-.filter-container {
+/* Common container styles for finance cards */
+.account-cards,
+.income-cards,
+.expense-cards,
+.debt-cards,
+.saving-cards,
+.budget-cards,
+.search-cards {
     display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center; /* Centers child elements horizontally */
+    width: 100%; /* Ensures the container takes full width */
+    padding: 0; /* Remove any default padding */
+    box-sizing: border-box; /* Ensures padding and border are included in the total width */
 }
 
-.filter-btn {
-    background-color: #f5f5f5;
-    border: none;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: #808080;
-    cursor: pointer;
-    border-radius: 4px;
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
-    flex: 1 1 auto;
-    text-align: center;
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-    background-color: #e0e0e0;
-    color: #555;
-}
-
-/* Responsive Adjustments for Filter Buttons */
-@media (max-width: 768px) {
-    .filter-container {
-        gap: 8px;
-    }
-
-    .filter-btn {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .filter-btn {
-        padding: 6px 8px;
-        font-size: 10px;
-    }
-}
-
-/* =========================================
-   6. Cards
-========================================= */
-
-/* Cards */
+/* Common card styles */
 .card {
     background-color: #ffffff;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin: 5px 0; /* Top and bottom margins */
     overflow: hidden;
     cursor: pointer;
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
+    max-width: 800px;
+    width: 100%; /* Allows the card to take full width up to max-width */
+    box-sizing: border-box; /* Ensures padding and border are included in the total width */
 }
 
+/* Hover effect for cards */
 .card:hover {
     transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card content */
 .card-content {
-    padding: 20px;
+    padding: 15px;
 }
 
+/* Card title */
 .card-title {
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
+/* Information paragraphs */
 .account-info p,
 .income-info p,
 .expense-info p,
@@ -361,21 +391,52 @@ hr {
     color: #666;
 }
 
-/* Search Results Cards */
-.search-cards .card {
-    width: 300px; /* Adjust as needed */
+/* Adjustments for mobile devices */
+@media (max-width: 480px) {
+    .card {
+        width: 100%; /* Ensure cards take full width */
+    }
+
+    .card-content {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 16px; /* Reduce font size for mobile */
+    }
+
+    .account-info p,
+    .income-info p,
+    .expense-info p,
+    .debt-info p,
+    .saving-info p,
+    .budget-info p,
+    .card-content p {
+        font-size: 14px; /* Reduce paragraph font size for mobile */
+    }
+
+    /* Adjust search results heading */
+    .search-results h2 {
+        font-size: 20px; /* Reduce heading size for mobile */
+    }
+
+    /* Adjust space below the last card */
+    .bottom-space {
+        height: 100px; /* Adjust as needed for desired spacing */
+    }
 }
 
 /* =========================================
-   7. View All Link
+   5. View All Link
 ========================================= */
 
-/* View All Link */
+/* View all link container */
 .view-all-link {
     text-align: center;
     margin-top: 20px;
 }
 
+/* View all link styles */
 .view-all-link a {
     color: #808080;
     text-decoration: none;
@@ -387,6 +448,7 @@ hr {
 }
 
 /* Hide the view-all-link by default; it will be shown when needed */
+#view-all-link,
 #view-all-accounts-link,
 #view-all-income-link,
 #view-all-expenses-link,
@@ -397,7 +459,7 @@ hr {
 }
 
 /* =========================================
-   8. Nothing Here Illustration
+   6. "Nothing Here" Illustration
 ========================================= */
 
 /* Nothing Here Illustration */
@@ -408,24 +470,58 @@ hr {
     justify-content: center;
     min-height: 60vh; /* Ensures adequate space */
     color: #808080;
+    width: 100%; /* Ensure full width */
+    margin: 0 auto; /* Center the container horizontally */
+    text-align: center; /* Center text content */
+    padding: 0 10px; /* Add some horizontal padding */
 }
 
 .nothing-here img {
-    max-width: 80%;
+    display: block;
+    width: 100%;
+    max-width: 250px; /* Sets a maximum width for larger screens */
     height: auto;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto; /* Centers the image horizontally */
+    transition: transform 0.3s ease;
+}
+
+.nothing-here img:hover {
+    transform: scale(1.05);
 }
 
 .nothing-here p {
     font-size: 18px;
     margin: 0;
+    text-align: center; /* Centers the text */
+}
+
+/* Responsive adjustments for "Nothing Here" images */
+@media (max-width: 768px) {
+    .nothing-here img {
+        max-width: 300px; /* Slightly smaller for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .nothing-here {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .nothing-here img {
+        max-width: 90%; /* Nearly full width for small screens */
+    }
+
+    .nothing-here p {
+        font-size: 16px; /* Adjust text size for better readability */
+    }
 }
 
 /* =========================================
-   9. Floating Action Button
+   7. Floating Action Button (FAB)
 ========================================= */
 
-/* Floating Action Button */
+/* Floating action button */
 .fab {
     position: fixed;
     bottom: 20px;
@@ -434,45 +530,65 @@ hr {
     color: #fff;
     width: 60px;
     height: 60px;
-    border-radius: 10px;
+    border-radius: 10px; /* Slightly rounded corners */
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.fab:hover {
-    background-color: #555;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+    z-index: 1000; /* Ensure FAB is above other elements */
 }
 
 .fab i {
     font-size: 24px;
 }
 
+/* Hover effect for FAB */
+.fab:hover {
+    background-color: #555;
+    transform: scale(1.1);
+}
+
+/* FAB options container */
 .fab-options {
     display: none;
     position: fixed;
-    bottom: 90px;
+    bottom: 100px;
     right: 30px;
-    background-color: #f5f5f5;
+    background-color: #ffffff; /* White background */
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 10px;
     z-index: 999;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
 }
 
 .fab-options.show {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* Individual FAB option */
 .fab-option {
     display: flex;
     align-items: center;
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    background: none; /* Remove background */
+    border: none; /* Remove borders */
+    color: inherit; /* Inherit text color */
+    width: 100%; /* Full width for clickable area */
+    text-align: left; /* Align text to the left */
+    font-size: 16px; /* Consistent font size */
 }
 
 .fab-option i {
@@ -480,24 +596,148 @@ hr {
     margin-right: 10px;
 }
 
+/* Hover effect for FAB option */
 .fab-option:hover {
     background-color: #e0e0e0;
 }
 
-/* =========================================
-   10. Search Results Styling
-========================================= */
+/* Adding bounce effect to FAB */
+.fab {
+    animation: float 3s ease-in-out infinite;
+}
 
-/* Search Results Cards */
-#search-results .card {
-    width: 300px; /* Adjust as needed */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* =========================================
-   11. Responsive Design
+   8. Bottom Navbar Styles
 ========================================= */
 
-/* Responsive Design for Very Small Devices */
+/* Base styles for Bottom Navbar (Visible on both Desktop and Mobile) */
+.bottom-navbar {
+    position: fixed;
+    bottom: 20px; /* 20px margin from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #808080; /* Gray background */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 999; /* Below FAB */
+    width: 300px; /* Default width for desktop */
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Adjust Navbar Items */
+.bottom-navbar .navbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff; /* White icon and text color */
+    text-decoration: none;
+    font-size: 12px;
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.bottom-navbar .navbar-item i {
+    font-size: 24px;
+    color: #ffffff; /* Ensure icons are white */
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.bottom-navbar .navbar-item:hover {
+    color: #dddddd; /* Lighten icon and text color on hover */
+    transform: translateY(-3px); /* Slight lift on hover */
+}
+
+.bottom-navbar .navbar-item:hover i {
+    color: #ffffff; /* Keep icon color white on hover */
+    transform: scale(1.1); /* Slight scale-up on hover */
+}
+
+/* Responsive Adjustments */
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .bottom-navbar {
+        width: calc(100% - 40px); /* 20px margin on each side */
+        bottom: 20px; /* Maintain 20px margin from bottom */
+    }
+
+    /* Adjust FAB position to be above the bottom navbar with 15px space */
+    .fab {
+        bottom: calc(
+            20px + 15px
+        ); /* Navbar bottom (20px) + 15px space = 35px */
+    }
+
+    /* FAB Options Position Adjustment */
+    .fab-options {
+        bottom: calc(35px + 10px); /* FAB bottom (35px) + 10px space = 45px */
+    }
+}
+
+@media (max-width: 480px) {
+    .bottom-navbar {
+        width: calc(100% - 40px); /* Maintain margins */
+        bottom: 20px; /* Adjusted to 20px from the bottom */
+    }
+
+    /* FAB Position Adjustment for Mobile */
+    .fab {
+        margin-bottom: 60px;
+    }
+
+    /* FAB Options Position Adjustment */
+    .fab-options {
+        margin-bottom: 120px;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .bottom-navbar {
+        width: 400px; /* Adjusted width for better aesthetics */
+        bottom: 20px; /* Maintain bottom spacing */
+    }
+
+    /* FAB remains at bottom-right corner */
+    .fab {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    /* Ensure icons have enough space */
+    .bottom-navbar .navbar-item {
+        font-size: 14px; /* Increased font-size for desktop */
+    }
+
+    .bottom-navbar .navbar-item i {
+        font-size: 26px; /* Increased icon size for desktop */
+    }
+}
+
+/* =========================================
+   9. Responsive Design
+========================================= */
+
+/* Responsive design for very small devices */
 @media (max-width: 480px) {
     .account-cards,
     .income-cards,
@@ -506,8 +746,7 @@ hr {
     .saving-cards,
     .budget-cards,
     .search-cards {
-        /* Ensure cards take full width */
-        width: 100%;
+        width: 100%; /* Ensure cards take full width */
     }
 
     .card-content {
@@ -515,7 +754,7 @@ hr {
     }
 
     .card-title {
-        font-size: 16px;
+        font-size: 16px; /* Reduce font size for mobile */
     }
 
     .account-info p,
@@ -525,11 +764,126 @@ hr {
     .saving-info p,
     .budget-info p,
     .card-content p {
-        font-size: 14px;
+        font-size: 14px; /* Reduce paragraph font size for mobile */
     }
 
-    /* Adjust Search Results */
-    #search-results h2 {
-        font-size: 20px;
+    /* Adjust search results heading */
+    .search-results h2 {
+        font-size: 20px; /* Reduce heading size for mobile */
+    }
+
+    /* Adjust space below the last card */
+    .bottom-space {
+        height: 100px; /* Adjust as needed for desired spacing */
+    }
+}
+
+/* =========================================
+   10. Icon Button Styles
+========================================= */
+
+/* Icon button styles */
+.icon-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #808080; /* Added border for outline */
+    background-color: #ffffff; /* White background */
+    color: #808080; /* Gray icon color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px; /* Slight rounding of corners */
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    margin-left: 8px; /* Space between buttons */
+}
+
+.icon-button:hover {
+    background-color: #808080; /* Gray background on hover */
+    color: #ffffff; /* White icon color on hover */
+}
+
+.icon-button .material-icons-outlined {
+    font-size: 24px; /* Adjust icon size as needed */
+}
+
+/* =========================================
+   11. Bottom Space for Last Card
+========================================= */
+
+.bottom-space {
+    height: 100px; /* Adjust the height as needed */
+}
+
+/* =========================================
+   12. Custom Tooltip Styling
+========================================= */
+
+/* Ensure tooltips in Finance Management match Dashboard's tooltips */
+.tooltip-inner {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    padding: 5px 10px !important;
+    font-size: 14px !important;
+}
+
+.tooltip-arrow::before {
+    border-top-color: #333 !important;
+}
+
+/* =========================================
+   13. Smart Insights Close Button Styling
+========================================= */
+
+.alert-dismissible .btn-close {
+    font-size: 1.2rem;
+    line-height: 1;
+    opacity: 0.7;
+}
+
+.alert-dismissible .btn-close:hover {
+    opacity: 1;
+}
+
+/* =========================================
+   14. Desktop-only New Item Buttons
+========================================= */
+
+.new-item {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.new-item .material-icons-outlined {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+/* Show .new-item only on desktop (769px and above) */
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .desktop-only {
+        display: flex; /* Visible on larger screens */
+    }
+}
+
+/* =========================================
+   15. Hide FAB on Desktop
+========================================= */
+@media (min-width: 769px) {
+    .fab,
+    .fab-options {
+        display: none !important; /* Hide the FAB and its options for desktop */
     }
 }

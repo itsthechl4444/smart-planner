@@ -23,19 +23,19 @@ class DashboardController extends Controller
     {
         $userId = Auth::id();
 
-         // Fetch tasks for today, this week, and this month with labels
-         $tasksToday = Task::with('label')->where('user_id', $userId)
-         ->whereDate('due_date', Carbon::today())
-         ->get();
+        // Fetch tasks for today, this week, and this month with labels
+        $tasksToday = Task::with('label')->where('user_id', $userId)
+            ->whereDate('due_date', Carbon::today())
+            ->get();
 
-     $tasksThisWeek = Task::with('label')->where('user_id', $userId)
-         ->whereBetween('due_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-         ->get();
+        $tasksThisWeek = Task::with('label')->where('user_id', $userId)
+            ->whereBetween('due_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->get();
 
-     $tasksThisMonth = Task::with('label')->where('user_id', $userId)
-         ->whereMonth('due_date', Carbon::now()->month)
-         ->whereYear('due_date', Carbon::now()->year)
-         ->get();
+        $tasksThisMonth = Task::with('label')->where('user_id', $userId)
+            ->whereMonth('due_date', Carbon::now()->month)
+            ->whereYear('due_date', Carbon::now()->year)
+            ->get();
 
 
         // Calculate total income
@@ -67,18 +67,18 @@ class DashboardController extends Controller
         $financeLabelsMonth = $financeDataMonthRaw->pluck('category')->toArray();
         $financeDataMonth = $financeDataMonthRaw->pluck('total')->toArray();
 
-          // Fetch budgets with their expenses for the current week
-$budgetDataWeek = Budget::where('user_id', $userId)
-->where('period', 'week')
-->whereBetween('date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-->get();
+        // Fetch budgets with their expenses for the current week
+        $budgetDataWeek = Budget::where('user_id', $userId)
+            ->where('period', 'week')
+            ->whereBetween('date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->get();
 
-// Fetch budgets with their expenses for the current month
-$budgetDataMonth = Budget::where('user_id', $userId)
-->where('period', 'month')
-->whereMonth('date', Carbon::now()->month)
-->whereYear('date', Carbon::now()->year)
-->get();
+        // Fetch budgets with their expenses for the current month
+        $budgetDataMonth = Budget::where('user_id', $userId)
+            ->where('period', 'month')
+            ->whereMonth('date', Carbon::now()->month)
+            ->whereYear('date', Carbon::now()->year)
+            ->get();
 
 
 

@@ -4,9 +4,9 @@ body {
     height: 100%; /* Full height for centering */
     margin: 0;
     padding: 0;
-    background-color: #F5F5F5; /* Background color */
+    background-color: #f5f5f5; /* Background color */
     color: #808080; /* Text color */
-    font-family: 'Open Sans', sans-serif; /* Font family */
+    font-family: "Open Sans", sans-serif; /* Font family */
     display: flex; /* Flexbox for centering */
     justify-content: center;
     align-items: center;
@@ -66,7 +66,7 @@ body {
 
 /* Sign-Up button styles */
 .btn-signup {
-    font-family: 'Open Sans', sans-serif; /* Font family for button */
+    font-family: "Open Sans", sans-serif; /* Font family for button */
     margin-top: 15px; /* Spacing above button */
     background-color: #666; /* Button background color */
     border: none; /* No border */

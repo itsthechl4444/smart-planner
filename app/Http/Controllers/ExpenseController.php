@@ -12,7 +12,7 @@ class ExpenseController extends Controller
     public function index()
     {
         $expenses = Auth::user()->expenses; // Fetch expenses associated with the logged-in user
-        return view('expenses.index', compact('expenses'));
+        return view('financemanagement.index', compact('expenses'));
     }
 
     public function create()
@@ -47,7 +47,7 @@ class ExpenseController extends Controller
 
         $expense->save();
 
-        return redirect()->route('expenses.index')->with('success', 'Expense created successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Expense created successfully.');
     }
 
     public function show(Expense $expense)
@@ -106,7 +106,7 @@ class ExpenseController extends Controller
 
         $expense->save();
 
-        return redirect()->route('expenses.index')->with('success', 'Expense updated successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Expense updated successfully.');
     }
 
     public function destroy(Expense $expense)
@@ -119,6 +119,6 @@ class ExpenseController extends Controller
 
         $expense->delete();
 
-        return redirect()->route('expenses.index')->with('success', 'Expense deleted successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Expense deleted successfully.');
     }
 }

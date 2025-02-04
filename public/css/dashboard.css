@@ -1,74 +1,65 @@
-/* Global styles for the body */
+/* =========================================
+  1. Global Styles
+========================================= */
 body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
-    background-color: #f5f5f5;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     color: #808080;
-    overflow: hidden;
-}
-
-/* =========================================
-   2. Layout
-========================================= */
-
-/* Container for the entire layout */
-.container {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    position: relative;
+}
+
+html {
+    height: 100%;
 }
 
 /* =========================================
-   3. Header Styles
+  2. Header Styles
 ========================================= */
-
-/* Header Styles */
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Maintains space between left and right if other elements are present */
     padding: 10px 20px;
-    background-color: #f5f5f5;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    height: 56px; /* Fixed height to avoid dynamic changes */
-    box-sizing: border-box; /* Ensure padding does not add extra height */
+    height: 70px;
 }
 
-/* Header Elements */
 .menu-icon,
 .profile-icon i,
 .notification-icon i {
     font-size: 24px;
-    flex-shrink: 0; /* Prevent elements from shrinking */
     color: #808080;
+    cursor: pointer;
 }
 
-.title {
-    flex-grow: 1;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 500;
-    color: #555;
-    margin: 0; /* Ensure no extra margin adds to height */
-    line-height: 1; /* Consistent line height */
+.menu-icon:hover {
+    transform: rotate(90deg);
 }
 
-/* Notification Icon Styles */
+.header-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Added to push the header-right to the far right */
+}
+
 .notification-icon {
-    margin-right: 15px; /* Space between notification and profile icons */
+    margin-right: 15px;
 }
 
 .notification-icon a {
-    color: #808080; /* Match the color with other icons */
+    color: #808080;
     position: relative;
+    text-decoration: none;
 }
 
-/* Optional: Notification Badge */
 .notification-icon a .notification-badge {
     position: absolute;
     top: -5px;
@@ -78,50 +69,82 @@ body {
     border-radius: 50%;
     padding: 2px 6px;
     font-size: 12px;
-    display: none; /* Hidden by default */
+    display: none;
 }
 
-/* Show badge if there are unread notifications */
 .notification-icon a.has-notifications .notification-badge {
     display: block;
 }
 
-/* =========================================
-   4. Main Content Styles
-========================================= */
+/* Ensure the profile icon maintains its styling */
+.profile-icon a {
+    color: #808080;
+    text-decoration: none;
+}
 
-/* Main content */
-.main-content {
-    margin-top: 96px; /* Adjusted margin to account for both the header and tabs */
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
+.profile-icon a i {
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+.profile-icon a:hover i {
+    color: #333;
 }
 
 /* =========================================
-   5. Tabs Section
+  3. Main Content Styles
 ========================================= */
+.main-content {
+    padding-top: 130px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 140px;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
+    color: #808080;
+    min-height: 100vh;
+    box-sizing: border-box;
+    flex: 1;
+    overflow-y: auto;
+}
 
-/* Tabs Section */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 120px;
+        padding-bottom: 160px;
+    }
+}
+
+/* =========================================
+  4. Tabs Section
+========================================= */
 .tabs {
     display: flex;
     justify-content: center;
-    background-color: #f5f5f5;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     position: fixed;
-    top: 56px; /* Fixed position just below the header */
+    top: 65px;
     left: 0;
     right: 0;
     z-index: 999;
     border-bottom: 1px solid #e0e0e0;
-    padding: 10px 0; /* Padding for tabs to stay consistent */
-    margin-top: 10px;
+    padding: 10px 0;
+    overflow-x: auto;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tabs {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .tabs .material-icons.tab-icon {
     vertical-align: middle;
-    margin-right: 8px; /* Space between icon and text */
-    font-size: 16px; /* Adjust icon size as needed */
-    color: #808080; /* Match the color with the tab text */
+    margin-right: 8px;
+    font-size: 16px;
+    color: #808080;
 }
 
 .tab-link {
@@ -138,6 +161,7 @@ body {
     transition:
         border-color 0.3s ease,
         color 0.3s ease;
+    white-space: nowrap;
 }
 
 .tab-link:hover {
@@ -151,7 +175,7 @@ body {
 
 .tab-content {
     display: none;
-    margin-top: 20px; /* Space between tabs and content */
+    margin-top: 0;
 }
 
 .tab-content.active {
@@ -159,15 +183,12 @@ body {
 }
 
 /* =========================================
-   6. Task Management Styles
+  5. Task Management Styles
 ========================================= */
-
-/* Removed Task Search Bar Styles */
-
-/* Task Filter Buttons */
 .task-filter {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -181,78 +202,181 @@ body {
     transition:
         background-color 0.3s ease,
         color 0.3s ease;
+    font-size: 14px;
+    color: #808080;
 }
 
 .filter-btn.active {
-    background-color: #808080; /* Highlight active button */
-    color: #fff; /* Change text color */
-    border-color: #808080; /* Match border color to active background */
+    background-color: #808080;
+    color: #fff;
+    border-color: #808080;
 }
 
 .filter-btn:hover {
-    background-color: #e0e0e0; /* Light hover effect */
+    background-color: #e0e0e0;
 }
 
-/* Add hover effect for the other buttons */
 .filter-btn:not(.active):hover {
-    background-color: #f0f0f0; /* Slightly darker when hovered */
+    background-color: #f0f0f0;
 }
 
-/* Task Cards */
+.task-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+@media (min-width: 992px) {
+    .task-list {
+        grid-template-columns: 1fr;
+        max-width: 60%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .task-list {
+        max-width: 60%;
+    }
+}
+
+/* Task-card style from Task Management */
 .task-card {
+    position: relative;
     background-color: #fff;
+    border-radius: 5px;
+    margin: 5px 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
-.task-card h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
+.task-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.task-card p {
-    font-size: 14px;
+/* Overdue tasks */
+.task-card.overdue {
+    border-left: 5px solid red;
+}
+
+.card-content {
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.task-info p {
+    margin: 5px 0;
     color: #666;
 }
 
-.task-label {
-    display: inline-block;
-    background-color: #f5f5f5;
-    color: #555;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin-top: 10px;
+.task-info .card-title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
-/* No Data Message Styles */
+.label-pill {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #808080;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.overdue-status {
+    color: red;
+    font-weight: bold;
+}
+
+/* The top-right checkbox */
+.task-checkbox {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.task-complete-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #808080;
+    border-radius: 50%;
+    outline: none;
+    transition:
+        background-color 0.3s,
+        border-color 0.3s;
+    position: relative;
+}
+
+.task-complete-checkbox:checked {
+    background-color: #808080;
+    border-color: #808080;
+}
+
+.task-complete-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.task-complete-checkbox:hover {
+    border-color: #555;
+}
+
+.task-complete-checkbox:focus {
+    box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.5);
+}
+
+/* No-data message for tasks */
 .no-data-message {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
-    color: #888;
-}
-
-.no-data-message img {
-    width: 200px;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.no-data-message p {
-    font-size: 1.2em;
+    justify-content: center;
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #6c757d;
+    padding: 20px;
 }
 
 /* =========================================
-   7. Finance Management Styles
+  6. Finance Management Styles
 ========================================= */
+.goals-list,
+.budget-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 10px;
+    align-items: center;
+}
 
-/* Illustrations */
 .illustration-container {
     display: flex;
     justify-content: center;
@@ -262,13 +386,13 @@ body {
 .illustration {
     max-width: 100%;
     height: auto;
-    max-height: 200px; /* Adjust the maximum height */
+    max-height: 200px;
 }
 
-/* Finance Section */
 .finance-summary {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: stretch;
     margin-top: 20px;
 }
 
@@ -278,9 +402,10 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 45%;
+    width: 48%;
     text-align: center;
-    margin: 0 10px;
+    box-sizing: border-box;
+    margin: 0 1%;
 }
 
 .finance-card h3 {
@@ -295,14 +420,12 @@ body {
     color: #555;
 }
 
-/* Divider */
 .divider {
     border: none;
     border-top: 1px solid #ccc;
     margin: 20px 0;
 }
 
-/* Expense Tracker */
 .tracker-header {
     display: flex;
     justify-content: space-between;
@@ -310,42 +433,7 @@ body {
     margin-bottom: 15px;
 }
 
-/* Style for the chart container */
-.chart-wrapper {
-    display: flex; /* Added to ensure Flexbox centering */
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 300px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
-/* Center the chart or message */
-.chart-container,
-.no-data-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Style for the no-data message */
-.no-data-message {
-    text-align: center;
-    color: #888;
-}
-
-.no-data-illustration {
-    width: 200px;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-/* Dropdown */
-#expense-filter {
+.tracker-header select {
     padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -353,41 +441,80 @@ body {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     outline: none;
-    transition: border-color 0.3s ease;
 }
 
-/* Change border color on focus */
-#expense-filter:focus {
+.tracker-header select:focus {
     border-color: #888;
 }
 
-/* Budget Planner Section */
+.chart-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#expenseChart {
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .budget-planner-section {
     margin-top: 20px;
 }
 
 .budget-planner-section h2 {
-    color: #808080; /* Change to gray to match Expense Distribution */
+    color: #808080;
 }
 
-.budget-list {
-    background-color: #fff;
+.white-container {
+    background: #fff;
     padding: 20px;
     border-radius: 8px;
+    margin-top: 20px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.budget-list .budget-item {
+    flex: 0 0 auto;
+    width: 250px;
 }
 
 .budget-item {
-    border-bottom: 1px solid #e0e0e0;
-    padding: 15px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 150px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    margin-bottom: 20px;
 }
 
-.budget-item:last-child {
-    border-bottom: none;
+.budget-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .budget-item h3 {
     margin: 0 0 10px;
-    color: #007bff; /* Optional: Add some color to the category heading */
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
 }
 
 .budget-item p {
@@ -399,36 +526,51 @@ body {
     color: #333;
 }
 
-/* Financial Goals Section */
 .financial-goals-section {
     margin-top: 20px;
 }
 
 .financial-goals-section h2 {
-    color: #808080; /* Change to gray to match Expense Distribution */
+    color: #808080;
 }
 
 .goals-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 20px;
-    justify-content: center; /* Center the cards */
+    padding-bottom: 10px;
+    align-items: center;
 }
 
 .goal-card {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    width: 250px; /* Fixed width for cards */
+    width: 250px;
     padding: 20px;
     text-align: center;
-    box-sizing: border-box; /* Include padding in the width */
+    box-sizing: border-box;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 180px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    margin-bottom: 20px;
+}
+
+.goal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .goal-card h3 {
     margin: 0 0 10px;
-    color: #007bff; /* Optional: Add color to the goal name */
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .goal-card p {
@@ -436,241 +578,293 @@ body {
     color: #555;
 }
 
-/* =========================================
-   8. Floating Action Button (FAB) Styles
-========================================= */
+.goal-card .progress {
+    height: 20px;
+}
 
-/* Floating Action Button (FAB) */
-.fab {
+.goal-card .progress-bar {
+    line-height: 20px;
+    font-size: 12px;
+    text-align: center;
+    background-color: #808080;
+}
+
+/* =========================================
+  7. Scrollable Horizontal Containers
+========================================= */
+.scrollable-horizontal {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+/* =========================================
+  8. Bottom Navbar Styles
+========================================= */
+.bottom-navbar {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #808080;
-    color: #fff;
-    width: 60px;
-    height: 60px;
     border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.fab:hover {
-    background-color: #555;
-}
-
-.fab i {
-    font-size: 24px;
-}
-
-/* FAB Options */
-.fab-options {
-    display: none;
-    position: fixed;
-    bottom: 90px;
-    right: 30px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    padding: 10px 20px;
     z-index: 999;
+    width: 300px;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.fab-options.show {
-    display: block;
-}
-
-.fab-option {
+.bottom-navbar .navbar-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
 }
 
-.fab-option i {
-    font-size: 18px;
-    margin-right: 10px;
+.bottom-navbar .navbar-item i {
+    font-size: 24px;
+    color: #ffffff;
 }
 
-.fab-option:hover {
-    background-color: #e0e0e0;
+.bottom-navbar .navbar-item:hover {
+    color: #dddddd;
+    transform: translateY(-3px);
+}
+
+.bottom-navbar .navbar-item:hover i {
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .bottom-navbar {
+        width: calc(100% - 40px);
+        bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bottom-navbar {
+        width: calc(100% - 40px);
+        bottom: 20px;
+    }
+}
+
+@media (min-width: 769px) {
+    .bottom-navbar {
+        width: 400px;
+        bottom: 20px;
+    }
 }
 
 /* =========================================
-   9. No Data Illustration Styles
+  9. No Data Illustration Styles
 ========================================= */
-
-/* Style for no-data illustration in expense distribution */
-.no-data-illustration-container {
-    display: none; /* Hidden by default */
+.no-data-message {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%; /* Make it take full height of the parent */
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #6c757d;
+    padding: 20px;
+}
+
+.no-data-illustration-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     color: #6c757d;
 }
 
-.no-data-illustration-container img {
-    max-width: 150px;
-    margin-bottom: 20px;
-}
-
-/* =========================================
-   10. Chart Styles
-========================================= */
-
-/* Ensure the chart-wrapper uses Flexbox to center its content */
-.chart-wrapper {
+.no-data-white-container {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 300px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
+    min-height: 200px;
+    flex-direction: column;
 }
 
-/* Center the canvas within the chart-wrapper */
-#expenseChart {
-    max-width: 100%;
-    max-height: 100%;
+.no-data-illustration {
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
 }
 
-/* Style for the chart title */
-.chart-wrapper .chart-title {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.25rem;
+.no-data-illustration:hover {
+    transform: scale(1.1);
+}
+
+.no-data-illustration-container p {
+    font-size: 1rem;
     color: #333;
 }
 
 /* =========================================
-    11. Responsive Adjustments
+  10. Loading Overlay
 ========================================= */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1003;
+}
 
-/* Responsive adjustments for mobile devices */
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #808080;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+  11. Responsive Adjustments
+========================================= */
 @media (max-width: 768px) {
-    /* Existing adjustments */
-    .chart-container {
-        max-width: 100%; /* Full width for mobile */
-        height: auto;
+    .chart-wrapper .chart-title {
+        font-size: 1rem;
+    }
+
+    .no-data-illustration,
+    .illustration {
+        max-width: 200px;
+    }
+
+    .task-filter {
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
+
+    .tabs {
+        padding: 5px 0;
+    }
+
+    .tab-link {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .bottom-navbar {
+        width: calc(100% - 40px);
+        bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-icon i,
+    .profile-icon i,
+    .notification-icon i {
+        font-size: 24px;
     }
 
     .chart-wrapper {
-        height: 250px; /* Reduced height for mobile */
+        height: 250px;
     }
 
-    /* 1. Increase space between tabs and filter buttons */
-    .task-filter {
-        margin-top: 20px; /* Increased from 20px to 30px */
-        margin-bottom: 20px; /* Maintain existing bottom margin */
+    .no-data-illustration,
+    .illustration {
+        max-width: 180px;
     }
 
-    /* Optional: Adjust main-content's top margin to accommodate fixed header and tabs */
     .main-content {
-        margin-top: 130px; /* Increased from 96px to 130px */
-        padding: 15px; /* Adjust padding for better spacing */
+        padding: 130px 10px 170px;
     }
 
-    /* Optional: Remove or adjust margin-top for .tabs if it's causing layout issues */
     .tabs {
-        padding: 15px 0; /* Increase vertical padding for better touch targets */
-        /* Remove margin-top if it's not effective due to fixed positioning */
-        margin-top: 0;
+        flex-wrap: nowrap;
     }
 
-    /* 2. Adjust font sizes for titles */
-
-    /* Header Title */
-    .title {
-        font-size: 18px; /* Reduced from 20px */
-    }
-
-    /* Section Titles */
-    .tracker-header h2,
-    .budget-planner-section h2,
-    .financial-goals-section h2 {
-        font-size: 1.4rem; /* Reduced from 1.5rem to fit better on mobile */
-    }
-
-    /* Finance Card Titles */
-    .finance-card h3,
-    .budget-item h3,
-    .goal-card h3 {
-        font-size: 1.1rem; /* Reduced from 1.25rem */
-    }
-
-    /* Task Card Titles */
-    .task-card h3 {
-        font-size: 16px; /* Reduced from 18px */
-    }
-
-    /* 3. Enhance touch areas for buttons */
-
-    /* Tab Links */
     .tab-link {
-        padding: 12px 15px; /* Increased padding for easier tapping */
-        font-size: 14px; /* Slightly reduced font size */
+        white-space: nowrap;
+        padding: 8px 10px;
+        font-size: 14px;
     }
 
-    /* Filter Buttons */
-    .filter-btn {
-        padding: 10px 14px; /* Increased padding */
-        font-size: 14px; /* Reduced font size for better fit */
-    }
-
-    /* FAB Button */
-    .fab {
-        width: 50px; /* Slightly smaller on mobile */
-        height: 50px;
-    }
-
-    .fab i {
-        font-size: 20px; /* Adjust icon size accordingly */
-    }
-
-    /* Notification and Profile Icons */
-    .notification-icon i,
-    .profile-icon i,
-    .menu-icon i {
-        font-size: 20px; /* Reduced from 24px */
-    }
-
-    /* Chart Title */
-    .chart-wrapper .chart-title {
-        font-size: 1rem; /* Reduced from 1.25rem */
-    }
-
-    /* Budget and Goal Card Text */
-    .budget-item p,
-    .goal-card p {
-        font-size: 14px; /* Ensure readability */
-    }
-
-    /* Additional Adjustments for Better Layout */
-
-    /* Ensure the tabs stay on top without overlapping content */
     .tabs {
-        position: fixed;
-        top: 56px; /* Below the header */
-        left: 0;
-        right: 0;
-        z-index: 999;
-        border-bottom: 1px solid #e0e0e0;
-        background-color: #f5f5f5;
+        overflow-x: auto;
     }
 
-    /* Adjust main-content to start below tabs */
-    .main-content {
-        padding-top: 10px; /* Additional padding if necessary */
+    .tabs::-webkit-scrollbar {
+        display: none;
     }
+
+    .tabs {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+/* Ensure sufficient color contrast */
+.no-data-message p,
+.finance-summary h3,
+.finance-summary p,
+.budget-item p,
+.goal-card p,
+.budget-planner-section h2,
+.financial-goals-section h2,
+.tracker-header h2,
+.chart-wrapper .chart-title,
+.task-filter .filter-btn,
+.task-card p,
+.finance-card p,
+.goal-card h3 {
+    color: #333;
+}
+
+/* Custom Tooltip Styling */
+.tooltip-inner {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    padding: 5px 10px !important;
+    font-size: 14px !important;
+}
+
+.tooltip-arrow::before {
+    border-top-color: #333 !important;
+}
+
+/* =========================================
+  12. Enhanced Filter Button Active State
+========================================= */
+button.filter-btn.active {
+    background-color: #808080;
+    color: #fff;
+    border-color: #808080;
 }

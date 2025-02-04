@@ -19,6 +19,6 @@ class CreateFinancialRemindersTable extends Migration
 
     public function down()
     {
-    
+        Schema::dropIfExists('financial_reminders');
     }
 }

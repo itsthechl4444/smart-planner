@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Notifications\ProjectInvitationNotification;
 use App\Notifications\ProjectInvitationResponseNotification;
 use App\Notifications\CollaboratorRemovedNotification;
-use Illuminate\Support\Facades\Log;
 
 class CollaborationController extends Controller
 {
@@ -17,7 +16,7 @@ class CollaborationController extends Controller
      * Send an invitation to collaborate on a project.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Project        $project
      * @return \Illuminate\Http\RedirectResponse
      */
     public function invite(Request $request, Project $project)
@@ -61,123 +60,112 @@ class CollaborationController extends Controller
      * Accept a collaboration invitation.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Project        $project
+     * @param  \App\Models\User           $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function acceptInvitation(Request $request, Project $project)
+    public function acceptInvitation(Request $request, Project $project, User $user)
     {
-        $user = Auth::user();
+        // Verify the signature if using signed routes (optional, see below)
+        // if (! $request->hasValidSignature()) {
+        //     abort(403, 'Invalid or expired invitation link.');
+        // }
 
-        // Log the attempt
-        Log::info('User attempting to accept invitation', ['user_id' => $user->id, 'project_id' => $project->id]);
+        $authUser = Auth::user();
 
-        // Authorization: Ensure the user can accept the invitation
-        $this->authorize('acceptInvitation', $project);
-
-        // Check if the user has a pending invitation
-        $pivotRecord = $project->pendingCollaborators()->where('user_id', $user->id)->first();
-
-        if (!$pivotRecord) {
-            Log::warning('No pending invitation found', ['user_id' => $user->id, 'project_id' => $project->id]);
-            return redirect()->route('notifications.index')->with('error', 'No pending invitation found for this project.');
+        // Ensure the authenticated user matches the user in the invitation
+        if ($authUser->id !== $user->id) {
+            return redirect()->route('projects.index')->with('error', 'Unauthorized action.');
         }
 
-        // Check if maximum collaborators reached
-        if ($project->acceptedCollaborators()->count() >= 3) {
-            return redirect()->route('notifications.index')->with('error', 'Cannot accept invitation. Maximum collaborators reached.');
+        // Check if there is a pending invitation
+        $invitation = $project->collaborators()->where('user_id', $authUser->id)->wherePivot('status', 'pending')->first();
+
+        if (!$invitation) {
+            return redirect()->route('projects.index')->with('error', 'No pending invitation found.');
         }
 
-        // Update the pivot record to 'accepted'
-        $project->collaborators()->updateExistingPivot($user->id, ['status' => 'accepted']);
+        // Update the invitation status to 'accepted'
+        $project->collaborators()->updateExistingPivot($authUser->id, ['status' => 'accepted']);
 
-        // Notify the owner about acceptance
-        $project->owner->notify(new ProjectInvitationResponseNotification($project, $user, 'accepted'));
+        // Notify the project owner
+        $inviter = $project->owner;
+        $inviter->notify(new ProjectInvitationResponseNotification($project, $authUser, 'accepted'));
 
-        // Mark the corresponding notification as read
-        $notification = $user->notifications()
-                             ->where('type', 'App\Notifications\ProjectInvitationNotification')
-                             ->where('data->project_id', $project->id)
-                             ->first();
-        if ($notification) {
-            $notification->markAsRead();
-            Log::info('Notification marked as read', ['user_id' => $user->id, 'notification_id' => $notification->id]);
-        }
-
-        return redirect()->route('projects.show', $project)->with('success', 'You have successfully joined the project.');
+        // Redirect to the project page with a success message and trigger welcome modal
+        return redirect()->route('projects.show', $project->id)->with(['success' => 'You have accepted the invitation.', 'show_welcome_modal' => true]);
     }
 
     /**
      * Decline a collaboration invitation.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project        $project
+     * @param  \App\Models\User           $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function declineInvitation(Project $project)
+    public function declineInvitation(Request $request, Project $project, User $user)
     {
-        $user = Auth::user();
+        // Verify the signature if using signed routes (optional, see below)
+        // if (! $request->hasValidSignature()) {
+        //     abort(403, 'Invalid or expired invitation link.');
+        // }
 
-        // Authorization: Ensure the user can decline the invitation
-        $this->authorize('declineInvitation', $project);
+        $authUser = Auth::user();
 
-        // Check if the user has a pending invitation
-        $pivotRecord = $project->pendingCollaborators()->where('user_id', $user->id)->first();
-
-        if (!$pivotRecord) {
-            return redirect()->route('notifications.index')->with('error', 'No pending invitation found for this project.');
+        // Ensure the authenticated user matches the user in the invitation
+        if ($authUser->id !== $user->id) {
+            return redirect()->route('projects.index')->with('error', 'Unauthorized action.');
         }
 
-        // Update the pivot record to 'declined'
-        $project->collaborators()->updateExistingPivot($user->id, ['status' => 'declined']);
+        // Check if there is a pending invitation
+        $invitation = $project->collaborators()->where('user_id', $authUser->id)->wherePivot('status', 'pending')->first();
 
-        // Notify the owner about declination
-        $project->owner->notify(new ProjectInvitationResponseNotification($project, $user, 'declined'));
-
-        // Mark the corresponding notification as read
-        $notification = $user->notifications()
-                             ->where('type', 'App\Notifications\ProjectInvitationNotification')
-                             ->where('data->project_id', $project->id)
-                             ->first();
-        if ($notification) {
-            $notification->markAsRead();
-            Log::info('Notification marked as read', ['user_id' => $user->id, 'notification_id' => $notification->id]);
+        if (!$invitation) {
+            return redirect()->route('projects.index')->with('error', 'No pending invitation found.');
         }
 
-        return redirect()->route('projects.index')->with('success', 'You have declined the project invitation.');
+        // Remove the invitation
+        $project->collaborators()->detach($authUser->id);
+
+        // Notify the project owner
+        $inviter = $project->owner;
+        $inviter->notify(new ProjectInvitationResponseNotification($project, $authUser, 'declined'));
+
+        // Redirect with a message
+        return redirect()->route('projects.index')->with('info', 'You have declined the invitation.');
     }
 
     /**
      * Remove a collaborator from the project.
      *
      * @param  \App\Models\Project  $project
-     * @param  \App\Models\User  $collaborator
+     * @param  \App\Models\User     $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function remove(Project $project, User $collaborator)
+    public function remove(Project $project, User $user)
     {
         // Authorization: Only the project owner can remove collaborators
         $this->authorize('removeCollaborator', $project);
 
         // Prevent owner from being removed
-        if ($collaborator->id === $project->owner->id) {
+        if ($user->id === $project->owner->id) {
             return redirect()->route('projects.show', $project)->with('error', 'Cannot remove the project owner.');
         }
 
-        // Check if the user is a collaborator
-        if (!$project->acceptedCollaborators()->where('user_id', $collaborator->id)->exists()) {
-            return redirect()->route('projects.show', $project)->with('error', 'User is not an accepted collaborator.');
+        // Check if the user is a collaborator or has a pending invitation
+        $collaboration = $project->collaborators()->where('user_id', $user->id)->first();
+
+        if (!$collaboration) {
+            return redirect()->route('projects.show', $project)->with('error', 'User is not a collaborator or does not have a pending invitation.');
         }
 
-        // Detach the collaborator
-        $detached = $project->collaborators()->detach($collaborator->id);
+        // Detach the collaborator or pending invitation
+        $project->collaborators()->detach($user->id);
 
-        // Check if detach was successful
-        if ($detached) {
-            // Notify the removed collaborator
-            $collaborator->notify(new CollaboratorRemovedNotification($project, Auth::user()));
+        // Optionally, notify the removed collaborator
+        $user->notify(new CollaboratorRemovedNotification($project, Auth::user()));
 
-            return redirect()->route('projects.show', $project)->with('success', 'Collaborator removed successfully.');
-        } else {
-            return redirect()->route('projects.show', $project)->with('error', 'Failed to remove collaborator. Please try again.');
-        }
+        return redirect()->route('projects.show', $project)->with('success', 'Collaborator or pending invitation removed successfully.');
     }
 }

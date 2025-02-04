@@ -41,8 +41,8 @@ class Budget extends Model
         return $this->belongsTo(User::class);
     }
 
-     /**
-     * Get the start date of the budget period.
+    /**
+     * Accessor to get the start date of the budget period.
      */
     public function getStartDateAttribute()
     {
@@ -57,7 +57,7 @@ class Budget extends Model
     }
 
     /**
-     * Get the end date of the budget period.
+     * Accessor to get the end date of the budget period.
      */
     public function getEndDateAttribute()
     {
@@ -71,47 +71,28 @@ class Budget extends Model
         }
     }
 
+    /**
+     * Define the expenses relationship via category and date range.
+     */
     public function expenses()
-{
-    return $this->hasMany(Expense::class, 'category', 'category')
-                ->whereBetween('date', [$this->startDate(), $this->endDate()]);
-}
+    {
+        return $this->hasMany(Expense::class, 'category', 'category')
+                    ->whereBetween('date', [$this->start_date, $this->end_date]);
+    }
 
-
-  /**
+    /**
      * Accessor to calculate total spent within this budget.
      */
     public function getSpentAttribute()
-{
-    return $this->expenses()->sum('amount');
-}
-
+    {
+        return $this->expenses()->sum('amount');
+    }
 
     /**
- * Accessor to calculate remaining budget.
- */
-public function getRemainingAttribute()
-{
-    return max($this->amount - $this->spent, 0);
-}
-
-public function startDate()
-{
-    if ($this->period === 'week') {
-        return Carbon::parse($this->date)->startOfWeek();
-    } elseif ($this->period === 'month') {
-        return Carbon::parse($this->date)->startOfMonth();
+     * Accessor to calculate remaining budget.
+     */
+    public function getRemainingAttribute()
+    {
+        return max($this->amount - $this->spent, 0);
     }
-    // Add other periods if necessary
-}
-
-public function endDate()
-{
-    if ($this->period === 'week') {
-        return Carbon::parse($this->date)->endOfWeek();
-    } elseif ($this->period === 'month') {
-        return Carbon::parse($this->date)->endOfMonth();
-    }
-
-}
 }

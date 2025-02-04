@@ -1,78 +1,152 @@
-/* taskmanagement.css */
-
 /* =========================================
-   1. Global Styles
+ 1. Global Styles
 ========================================= */
 
-/* Global styles */
+/* Apply box-sizing globally for consistency */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Body styles */
 body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
-    background-color: #f5f5f5;
+    background: #f9f9f9; /* Removed CSS variables related to dark mode */
     color: #808080;
-    /* Removed overflow: hidden; to allow scrolling */
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    /* Removed height: 100vh; to allow container to grow with content */
-    min-height: 100vh; /* Ensures the container covers the viewport height */
-    position: relative;
+/* Hide scrollbar but keep content scrollable */
+.main-content::-webkit-scrollbar {
+    display: none;
 }
 
-/* Header styles */
+.main-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    padding-bottom: 80px; /* Added padding to prevent navbar overlap */
+}
+
+/* =========================================
+ 2. Header Styles (Updated for Centering Title)
+========================================= */
+
+/* Header Container */
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* Center items horizontally */
     padding: 10px 20px;
-    background-color: #f5f5f5;
-    position: fixed;
+    background: #f9f9f9; /* Removed CSS variables related to dark mode */
+    position: fixed; /* Fixed at the top */
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
+    height: 65px; /* Set consistent height */
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Menu Icon */
+.menu-icon {
+    position: absolute; /* Position absolutely to the left */
+    left: 20px; /* Align with left padding */
+    font-size: 24px;
+    cursor: pointer;
+    color: #808080; /* Removed CSS variables */
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
 }
 
 .menu-icon {
-    font-size: 24px;
-    cursor: pointer;
+    transition: transform var(--transition-speed);
 }
 
+.menu-icon:hover {
+    transform: rotate(90deg);
+}
+
+/* Title */
 .title {
     font-size: 20px;
     font-weight: 500;
-    flex: 1;
     text-align: center;
+    color: #555;
+    /* Removed flex: 1 to prevent stretching */
 }
 
-/* Sidebar Item (Assuming it's handled in sidebar.css) */
-
-hr {
-    border: none;
-    border-top: 1px solid #ddd;
-    margin: 10px 0;
+/* Spacer to maintain symmetry */
+.spacer {
+    width: 40px; /* Width matching the menu icon's width */
+    height: 100%;
+    display: none; /* Hidden by default */
 }
 
-/* Main Content */
-.main-content {
-    flex-grow: 1;
-    padding: 80px 20px 20px; /* Adjusted top padding to account for fixed header */
-    overflow-y: auto; /* Allows vertical scrolling */
+@media (min-width: 769px) {
+    /* Show spacer on larger screens if needed */
+    .spacer {
+        display: block;
+    }
 }
 
 /* =========================================
-   2. Global Search Bar Styles
+ 3. Smart Animations
 ========================================= */
 
-/* Global Search Bar */
+/* Smooth transition for card hover effects */
+.card {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+}
+
+/* Fade-in animation for modals */
+.modal.fade .modal-dialog {
+    transition:
+        transform 0.3s ease-out,
+        opacity 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: translate(0, 0);
+    opacity: 1;
+}
+
+/* Adding bounce effect to FAB */
+.fab {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* =========================================
+ 4. Global Search Bar Styles
+========================================= */
+
+/* Global search container */
 .global-search {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    padding-top: 80px; /* To account for fixed header */
 }
 
+/* Task search bar */
 .task-search {
     display: flex;
     align-items: center;
@@ -80,32 +154,51 @@ hr {
     max-width: 800px; /* Adjust as needed for larger screens */
     background-color: #fff;
     border-radius: 8px;
-    padding: 10px 20px; /* Padding for spacing inside the search bar */
+    padding: 10px 20px; /* Padding inside the search bar */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative; /* For positioning the clear search icon */
 }
 
+/* Search icon inside the search bar */
 .task-search .search-icon {
     color: #808080;
     margin-right: 12px; /* Space between icon and input */
     font-size: 20px;
 }
 
+/* Search input field */
 .task-search input {
     border: none;
     outline: none;
     flex-grow: 1;
     font-size: 16px;
     color: #555;
+    background-color: transparent;
 }
 
+/* Placeholder text in search input */
 .task-search input::placeholder {
     color: #aaa;
 }
 
-/* Responsive Adjustments for Global Search Bar */
+/* Clear search icon */
+.clear-search {
+    color: #aaa;
+    cursor: pointer;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for clear search icon */
+.clear-search:hover {
+    color: #555;
+}
+
+/* Responsive adjustments for global search bar */
 @media (max-width: 768px) {
     .task-search {
         max-width: 100%;
+        margin: 0 auto; /* Centers the container */
         padding: 8px 12px;
     }
 
@@ -117,10 +210,16 @@ hr {
     .task-search input {
         font-size: 14px;
     }
+
+    .clear-search {
+        font-size: 18px;
+    }
 }
 
 @media (max-width: 480px) {
     .task-search {
+        max-width: 100%;
+        margin: 0 auto; /* Centers the container */
         padding: 6px 10px;
     }
 
@@ -132,26 +231,31 @@ hr {
     .task-search input {
         font-size: 12px;
     }
+
+    .clear-search {
+        font-size: 16px;
+    }
 }
 
 /* =========================================
-   3. Tabs Section
+ 5. Tabs Section
 ========================================= */
 
-/* Tabs section */
+/* Base Styles for Tabs */
 .tabs {
     display: flex;
     justify-content: center; /* Center the tabs horizontally */
-    background-color: #f5f5f5;
     margin-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
     overflow-x: auto; /* Enables horizontal scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     padding: 0 10px; /* Adds horizontal padding for better spacing */
+    min-width: 0;
 }
 
+/* Hide scrollbar for tabs */
 .tabs::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar for a cleaner look */
+    display: none;
 }
 
 .tabs {
@@ -159,6 +263,7 @@ hr {
     scrollbar-width: none; /* Firefox */
 }
 
+/* Individual tab link */
 .tab-link {
     flex: 0 0 auto; /* Prevents tabs from stretching */
     background-color: transparent;
@@ -169,20 +274,33 @@ hr {
     font-size: 16px;
     color: #555;
     border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
     transition:
         border-color 0.3s ease,
         color 0.3s ease;
 }
 
+.tab-link .tab-icon {
+    font-size: 20px;
+    color: #808080;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+/* Hover effects for tabs */
 .tab-link:hover {
     color: #333;
 }
 
+/* Active tab styles */
 .tab-link.active {
     color: #333;
     border-bottom: 2px solid #808080;
 }
 
+/* Tab content */
 .tab-content {
     display: none;
 }
@@ -191,7 +309,7 @@ hr {
     display: block;
 }
 
-/* Responsive Design for Tabs */
+/* Responsive design for tabs */
 @media (max-width: 600px) {
     .tabs {
         padding-bottom: 10px; /* Adds some spacing below tabs */
@@ -201,11 +319,16 @@ hr {
         padding: 10px 15px; /* Adjust padding for smaller screens */
         font-size: 14px;
     }
+
+    .tab-link .tab-icon {
+        font-size: 18px;
+        margin-right: 6px;
+    }
 }
 
 @media (max-width: 480px) {
     .tabs {
-        flex-direction: column;
+        flex-direction: row; /* Ensure tabs stay in a row */
         gap: 8px;
         padding: 6px 0;
     }
@@ -214,124 +337,149 @@ hr {
         padding: 6px 12px;
         font-size: 14px;
     }
+
+    .tab-link .tab-icon {
+        font-size: 16px;
+        margin-right: 4px;
+    }
 }
 
 /* =========================================
-   4. Filter Buttons
+ 6. Task Filter Buttons
 ========================================= */
 
-/* Filter buttons */
-.filter-container {
+/* Task filter container */
+.task-filter {
     display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
+    justify-content: center;
+    margin-top: 30px; /* Space between tabs and filter buttons */
     margin-bottom: 20px;
-    gap: 10px;
 }
 
+/* Filter button styles */
 .filter-btn {
-    background-color: #f5f5f5;
-    border: none;
     padding: 8px 12px;
-    font-size: 12px;
-    color: #808080;
+    margin-right: 10px;
     cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
     border-radius: 4px;
     transition:
         background-color 0.3s ease,
         color 0.3s ease;
-    flex: 1 1 auto;
-    text-align: center;
+    font-size: 14px;
+    color: #808080;
 }
 
-.filter-btn.active,
+/* Active filter button styles */
+.filter-btn.active {
+    background-color: #808080;
+    color: #fff;
+    border-color: #808080;
+}
+
+/* Hover effects for filter buttons */
 .filter-btn:hover {
     background-color: #e0e0e0;
-    color: #555;
 }
 
-/* Responsive Adjustments for Filter Buttons */
-@media (max-width: 768px) {
-    .filter-container {
-        gap: 8px;
-    }
-
-    .filter-btn {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .filter-btn {
-        padding: 6px 8px;
-        font-size: 10px;
-    }
+.filter-btn:not(.active):hover {
+    background-color: #f0f0f0;
 }
 
 /* =========================================
-   5. Cards
+ 7. Cards (Updated for Centering)
 ========================================= */
 
-/* Cards */
+/* Ensure card containers center their child cards */
+.task-cards,
+.label-cards,
+.project-cards,
+.search-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers child elements horizontally */
+    width: 100%; /* Ensures the container takes full width */
+    padding: 0; /* Remove any default padding */
+    box-sizing: border-box; /* Ensures padding and border are included in the total width */
+}
+
+/* Responsive adjustments for very small devices */
+@media (max-width: 480px) {
+    .task-cards,
+    .label-cards,
+    .project-cards,
+    .search-cards {
+        max-width: 100%;
+        margin: 0 auto; /* Centers the container */
+        padding: 0 10px; /* Adds horizontal padding to prevent overflow */
+    }
+}
+
+/* Common card styles */
 .card {
     background-color: #ffffff;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin: 5px 0; /* Top and bottom margins */
     overflow: hidden;
     cursor: pointer;
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+    width: 100%; /* Ensures the card takes full width of its container */
+    max-width: 800px; /* Maintains a maximum width for larger screens */
+    box-sizing: border-box; /* Ensures padding and border are included in the total width */
 }
 
+/* Hover effect for cards */
 .card:hover {
     transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card content */
 .card-content {
-    padding: 20px;
+    padding: 15px;
+    box-sizing: border-box; /* Ensure padding is included within the width */
 }
 
+/* Card title */
 .card-title {
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
-.task-info p {
+/* Label pill */
+.label-pill {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-top: 8px; /* Space above the pill */
+    font-size: 14px;
+    color: #fff; /* Text color */
+    background-color: #808080; /* Default background color if not set inline */
+    border-radius: 12px; /* Makes it pill-shaped */
+    text-align: center;
+}
+
+/* Information paragraphs */
+.task-info p,
+.label-info p,
+.project-info p {
     margin: 5px 0;
     color: #666;
 }
 
-/* =========================================
-   6. View All Link
-========================================= */
-
-/* View All Link */
-.view-all-link {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.view-all-link a {
-    color: #808080;
-    text-decoration: none;
+/* Overdue Status */
+.overdue-status {
+    color: red;
     font-weight: bold;
 }
 
-.view-all-link a:hover {
-    color: #555;
-}
-
-/* Hide the view-all-link by default; it will be shown when needed */
-#view-all-link {
-    display: none;
-}
-
 /* =========================================
-   7. Nothing Here Illustration
+ 8. "Nothing Here" Illustration
 ========================================= */
 
 /* Nothing Here Illustration */
@@ -342,24 +490,49 @@ hr {
     justify-content: center;
     min-height: 60vh; /* Ensures adequate space */
     color: #808080;
+    width: 100%; /* Ensure full width */
+    margin: 0 auto; /* Center the container horizontally */
 }
 
 .nothing-here img {
-    max-width: 80%;
+    width: 100%;
+    max-width: 200px; /* Sets a maximum width for larger screens */
     height: auto;
     margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.nothing-here img:hover {
+    transform: scale(1.05);
 }
 
 .nothing-here p {
     font-size: 18px;
     margin: 0;
+    text-align: center; /* Centers the text */
+}
+
+@media (max-width: 768px) {
+    .nothing-here img {
+        max-width: 300px; /* Slightly smaller for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .nothing-here img {
+        max-width: 90%; /* Nearly full width for small screens */
+    }
+
+    .nothing-here p {
+        font-size: 16px; /* Adjust text size for better readability */
+    }
 }
 
 /* =========================================
-   8. Floating Action Button
+ 9. Floating Action Button (FAB)
 ========================================= */
 
-/* Floating Action Button */
+/* Floating action button */
 .fab {
     position: fixed;
     bottom: 20px;
@@ -368,45 +541,65 @@ hr {
     color: #fff;
     width: 60px;
     height: 60px;
-    border-radius: 10px;
-    display: flex;
+    border-radius: 10px; /* Slightly rounded corners */
+    display: none; /* Hidden by default, shown only on mobile */
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.fab:hover {
-    background-color: #555;
+    transition:
+        background-color 0.3s ease,
+        transform 0.3s ease;
+    z-index: 1000; /* Ensure FAB is above other elements */
 }
 
 .fab i {
     font-size: 24px;
 }
 
+/* Hover effect for FAB */
+.fab:hover {
+    background-color: #555;
+    transform: scale(1.1);
+}
+
+/* FAB options container */
 .fab-options {
     display: none;
     position: fixed;
-    bottom: 90px;
+    bottom: 100px;
     right: 30px;
-    background-color: #f5f5f5;
+    background-color: #ffffff; /* White background */
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 10px;
     z-index: 999;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
 }
 
 .fab-options.show {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* Individual FAB option */
 .fab-option {
     display: flex;
     align-items: center;
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    background: none; /* Remove background */
+    border: none; /* Remove borders */
+    color: inherit; /* Inherit text color */
+    width: 100%; /* Full width for clickable area */
+    text-align: left; /* Align text to the left */
+    font-size: 16px; /* Consistent font size */
 }
 
 .fab-option i {
@@ -414,33 +607,381 @@ hr {
     margin-right: 10px;
 }
 
+/* Hover effect for FAB option */
 .fab-option:hover {
     background-color: #e0e0e0;
 }
 
+/* Hide FAB on desktop */
+@media (min-width: 769px) {
+    .fab {
+        display: none;
+    }
+    .fab-options {
+        display: none;
+    }
+}
+
+/* Show FAB on mobile */
+@media (max-width: 768px) {
+    .fab {
+        display: flex;
+    }
+}
+
 /* =========================================
-   9. Responsive Design
+10. Bottom Navbar Styles
 ========================================= */
 
-/* Responsive Design for Very Small Devices */
+/* Base styles for Bottom Navbar (Visible on both Desktop and Mobile) */
+.bottom-navbar {
+    position: fixed;
+    bottom: 20px; /* 20px margin from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #808080; /* Gray background */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 999; /* Below FAB */
+    width: 300px; /* Default width for desktop */
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Adjust Navbar Items */
+.bottom-navbar .navbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff; /* White icon and text color */
+    text-decoration: none;
+    font-size: 12px;
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.bottom-navbar .navbar-item i {
+    font-size: 24px;
+    color: #ffffff; /* Ensure icons are white */
+    transition:
+        color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.bottom-navbar .navbar-item:hover {
+    color: #dddddd; /* Lighten icon and text color on hover */
+    transform: translateY(-3px); /* Slight lift on hover */
+}
+
+.bottom-navbar .navbar-item:hover i {
+    color: #ffffff; /* Keep icon color white on hover */
+    transform: scale(1.1); /* Slight scale-up on hover */
+}
+
+/* Responsive Adjustments */
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .bottom-navbar {
+        width: calc(100% - 40px); /* 20px margin on each side */
+        bottom: 20px; /* Maintain 20px margin from bottom */
+    }
+
+    /* Adjust FAB position to be above the bottom navbar with 15px space */
+    .fab {
+        bottom: calc(
+            20px + 15px
+        ); /* Navbar bottom (20px) + 15px space = 35px */
+    }
+
+    /* FAB Options Position Adjustment */
+    .fab-options {
+        bottom: calc(35px + 10px); /* FAB bottom (35px) + 10px space = 45px */
+    }
+}
+
 @media (max-width: 480px) {
-    .task-cards,
-    .label-cards,
-    .project-cards {
-        /* Ensure cards take full width */
-        width: 100%;
+    .bottom-navbar {
+        width: calc(100% - 40px); /* Maintain margins */
+        bottom: 20px; /* Adjusted to 20px from the bottom */
     }
 
-    .card-content {
-        padding: 15px;
+    /* FAB Position Adjustment for Mobile */
+    .fab {
+        margin-bottom: 60px;
     }
 
-    .card-title {
-        font-size: 16px;
+    /* FAB Options Position Adjustment */
+    .fab-options {
+        margin-bottom: 120px;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .bottom-navbar {
+        width: 400px; /* Adjusted width for better aesthetics */
+        bottom: 20px; /* Maintain bottom spacing */
     }
 
-    .task-info p,
-    .card-content p {
-        font-size: 14px;
+    /* FAB remains at bottom-right corner */
+    .fab {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    /* Ensure icons have enough space */
+    .bottom-navbar .navbar-item {
+        font-size: 14px; /* Increased font-size for desktop */
+    }
+
+    .bottom-navbar .navbar-item i {
+        font-size: 26px; /* Increased icon size for desktop */
+    }
+}
+
+/* =========================================
+11. Loading Overlay Styles
+========================================= */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1003; /* Above FAB and Navbar */
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #808080;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+12. Form and Button Styles
+========================================= */
+
+/* Spacing between form fields */
+.modal-body .form-group {
+    margin-bottom: 20px; /* Adjust the value as needed for spacing */
+}
+
+/* Icon button styles */
+.icon-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #808080; /* Added border for outline */
+    background-color: #ffffff; /* White background */
+    color: #808080; /* Gray icon color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px; /* Slight rounding of corners */
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    margin-left: 8px; /* Space between buttons */
+}
+
+.icon-button:hover {
+    background-color: #808080; /* Gray background on hover */
+    color: #ffffff; /* White icon color on hover */
+}
+
+.icon-button .material-icons-outlined {
+    font-size: 24px; /* Adjust icon size as needed */
+}
+
+/* =========================================
+13. Accessibility Enhancements
+========================================= */
+
+/* Ensure sufficient color contrast */
+.nothing-here p,
+.finance-summary h3,
+.finance-summary p,
+.budget-item p,
+.goal-card p,
+.budget-planner-section h2,
+.financial-goals-section h2,
+.tracker-header h2,
+.chart-wrapper .chart-title,
+.task-filter .filter-btn,
+.task-card p,
+.finance-card p,
+.goal-card h3 {
+    color: #333; /* Darker color for better contrast */
+}
+
+/* =========================================
+14. Task Checkbox Styles (Updated)
+========================================= */
+
+/* Container for the task checkbox */
+.task-card {
+    position: relative; /* Ensure the checkbox is positioned relative to the card */
+}
+
+.task-checkbox {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    /* Ensure the checkbox is above other elements */
+    z-index: 10;
+}
+
+/* Style for the checkbox */
+.task-complete-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #808080;
+    border-radius: 50%;
+    outline: none;
+    transition:
+        background-color 0.3s,
+        border-color 0.3s;
+    position: relative;
+}
+
+/* Checked state */
+.task-complete-checkbox:checked {
+    background-color: #808080;
+    border-color: #808080;
+}
+
+/* Checkmark (optional, visible when checked) */
+.task-complete-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+/* Optional: Hover effect for checkbox */
+.task-complete-checkbox:hover {
+    border-color: #555;
+}
+
+/* Optional: Focus styles for accessibility */
+.task-complete-checkbox:focus {
+    box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.5);
+}
+
+/* =========================================
+15. Tooltips Styles
+========================================= */
+
+/* Custom styles for Bootstrap tooltips to match the dashboard */
+.tooltip-inner {
+    background-color: #555; /* Dark background */
+    color: #fff; /* White text */
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.bs-tooltip-top .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="top"] .tooltip-arrow::before {
+    border-top-color: #555; /* Arrow color */
+}
+
+.bs-tooltip-bottom .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="bottom"] .tooltip-arrow::before {
+    border-bottom-color: #555;
+}
+
+.bs-tooltip-left .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="left"] .tooltip-arrow::before {
+    border-left-color: #555;
+}
+
+.bs-tooltip-right .tooltip-arrow::before,
+.bs-tooltip-auto[x-placement^="right"] .tooltip-arrow::before {
+    border-right-color: #555;
+}
+
+/* =========================================
+16. Additional Adjustments
+========================================= */
+
+/* Ensure main container has sufficient padding at the bottom */
+.container {
+    padding-bottom: 80px; /* Adjust based on the height of the bottom navbar */
+}
+
+/* =========================================
+17. Enhanced Filter Button Active State
+======================================= */
+
+/* Ensuring higher specificity for active filter buttons */
+button.filter-btn.active {
+    background-color: #808080;
+    color: #fff;
+    border-color: #808080;
+}
+
+/* =========================================
+18. New Item Styles for Desktop
+======================================= */
+
+/* New Item (Plus Icon and Label) */
+.new-item {
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center; /* Center content horizontally */
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.new-item .material-icons-outlined {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+/* Show new-item only on desktop */
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .desktop-only {
+        display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
     }
 }

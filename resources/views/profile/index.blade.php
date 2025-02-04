@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta and Title -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Management</title>
     
-    <!-- Bootstrap CSS CDN (Integrity attributes removed for correctness) -->
+    <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Custom CSS (Optional) -->
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="{{ asset('css/taskmanagement.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
     <style>
-        /* Global Styling */
+        /* =========================================
+           1. Global Styling Enhancements
+        ========================================= */
+
+        /* Body Styles */
         html,
         body {
             height: 100%;
             margin: 0;
             padding: 0;
-            background-color: #F5F5F5;
+            background: linear-gradient(135deg, #f9f9f9, #f5f5f5);
             color: #808080;
             font-family: 'Open Sans', sans-serif;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
-        /* Top Bar Styling */
+        /* Interactive Background Animation */
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background: linear-gradient(-45deg, #f9f9f9, #e0e0e0, #f9f9f9, #e0e0e0);
+            background-size: 400% 400%;
+            animation: backgroundShift 15s ease infinite;
+        }
+
+        /* =========================================
+           2. Header Styles (Maintained Existing Style)
+        ========================================= */
+
         .app-bar {
             display: flex;
             align-items: center;
@@ -49,107 +74,302 @@
             color: #555;
         }
 
-        /* Main Container Styling */
+        .back-icon {
+            cursor: pointer;
+            font-size: 24px;
+            color: #555;
+            transition: color 0.3s ease;
+            text-decoration: none; /* Remove underline from link */
+        }
+
+        .back-icon:hover {
+            color: #333;
+        }
+
+        /* =========================================
+           3. Main Container Styling
+        ========================================= */
+
         .container {
             max-width: 500px;
-            margin: 80px auto 0;
+            margin: 80px auto 20px; /* Adjusted bottom margin for spacing */
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
+
+        /* =========================================
+           4. Profile Card Enhancements
+        ========================================= */
 
         .profile-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px 20px;
             text-align: center;
             margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
+        /* Animated Avatar */
         .circle-avatar {
             background-color: #e0e0e0;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             margin: 20px auto;
+            overflow: hidden;
+            border: 3px solid #17a2b8; /* Teal border for consistency */
+            animation: rotateAvatar 10s linear infinite;
         }
 
-        /* Action Button Styling */
+        @keyframes rotateAvatar {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .circle-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-card h5 {
+            margin-top: 15px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .profile-info {
+            margin-top: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* =========================================
+           5. Action Buttons Styling
+        ========================================= */
+
         .action-buttons button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             border-radius: 8px;
-            margin-bottom: 10px;
-            color: white;
-            border: none;
+            margin-bottom: 12px;
+            /* Updated to transparent background */
+            background-color: rgba(128, 128, 128, 0.2);
+            color: #333; /* Dark text for readability */
+            border: none; /* Remove border */
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            font-family: 'Open Sans', sans-serif;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none; /* Remove outline */
         }
 
+        /* Tooltip Initialization */
+        [data-bs-toggle="tooltip"] {
+            position: relative;
+        }
+
+        /* Button Styles */
         .btn-edit-name {
-            background-color: #0d6efd;
+            /* Previously: background-color: #17a2b8; */
+            background-color: rgba(128, 128, 128, 0.2); /* Light transparent gray */
         }
 
         .btn-edit-name:hover {
-            background-color: #0b5ed7;
+            background-color: rgba(128, 128, 128, 0.4); /* Darker transparent gray on hover */
+            transform: translateY(-2px);
         }
 
         .btn-change-password {
-            background-color: #6c757d;
+            /* Previously: background-color: #ffc107; color: #212529; */
+            background-color: rgba(128, 128, 128, 0.2); /* Light transparent gray */
+            color: #333; /* Dark text for readability */
         }
 
         .btn-change-password:hover {
-            background-color: #5c636a;
+            background-color: rgba(128, 128, 128, 0.4); /* Darker transparent gray on hover */
+            transform: translateY(-2px);
         }
 
         .btn-delete-account {
-            background-color: #dc3545;
+            /* Previously: background-color: #dc3545; */
+            background-color: rgba(128, 128, 128, 0.2); /* Light transparent gray */
+            color: #333; /* Dark text for readability */
         }
 
         .btn-delete-account:hover {
-            background-color: #c82333;
+            background-color: rgba(128, 128, 128, 0.4); /* Darker transparent gray on hover */
+            transform: translateY(-2px);
         }
+
+        /* Remove Button Outlines */
+        .action-buttons button:focus,
+        .btn-logout:focus,
+        .icon-button:focus,
+        .tab-link:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        /* =========================================
+           6. Logout Button Styling
+        ========================================= */
 
         .btn-logout {
             width: 100%;
             height: 56px;
             background: #F5F5F5;
-            border: 1px solid #E0E0E0;
+            border: none; /* Remove border */
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
             font-size: 16px;
             font-weight: 700;
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none; /* Remove outline */
+            color: #333; /* Dark text for readability */
         }
 
         .btn-logout:hover {
             background-color: #e0e0e0;
+            transform: translateY(-2px);
         }
 
-        /* Alert Positioning */
-        .alert-container {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            z-index: 1050;
-            width: auto;
+        .btn-logout i {
+            margin-right: 8px;
+            vertical-align: middle;
+            font-size: 20px;
+        }
+
+        /* =========================================
+           7. Modals Enhancements
+        ========================================= */
+
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           8. Additional Styling for Tooltips
+        ========================================= */
+
+        /* Optional: Customize Tooltip Appearance */
+        .tooltip-inner {
+            background-color: #17a2b8;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .tooltip.bs-tooltip-top .tooltip-arrow::before {
+            border-top-color: #17a2b8;
+        }
+
+        /* =========================================
+           9. Responsive Adjustments
+        ========================================= */
+
+        @media (max-width: 576px) {
+            .profile-card {
+                padding: 20px 15px;
+            }
+
+            .circle-avatar {
+                width: 100px;
+                height: 100px;
+                border-width: 2px;
+            }
+
+            .profile-card h5 {
+                font-size: 20px;
+            }
+
+            .profile-info {
+                font-size: 14px;
+            }
+
+            .action-buttons button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .btn-logout {
+                font-size: 14px;
+                height: 48px;
+            }
+
+            .btn-logout i {
+                font-size: 18px;
+            }
+        }
+
+        /* =========================================
+           10. Icon Button Styles (Modal Footer)
+        ========================================= */
+
+        /* Icon button styles */
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border: none; /* Remove border */
+            background-color: #ffffff; /* White background */
+            color: #808080; /* Gray icon color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px; /* Slight rounding of corners */
+            cursor: pointer;
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+            margin-left: 8px; /* Space between buttons */
+            outline: none; /* Remove outline */
+        }
+
+        /* Hover effect for icon button */
+        .icon-button:hover {
+            background-color: #808080; /* Gray background on hover */
+            color: #ffffff; /* White icon color on hover */
+        }
+
+        /* Icon inside the icon button */
+        .icon-button .material-icons-outlined {
+            font-size: 24px; /* Adjust icon size as needed */
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="app-bar">
-        <span class="material-symbols-outlined back-icon" onclick="window.history.back();">
+        <!-- Updated Back Arrow as a Link to Dashboard -->
+        <a href="{{ route('dashboard') }}" class="material-icons-outlined back-icon" aria-label="Back to Dashboard">
             arrow_back
-        </span>
+        </a>
         <h1 class="app-bar-title">Profile Management</h1>
-        <span class="material-symbols-outlined dropdown-trigger" id="dropdown-trigger">
-            more_vert
-        </span>
     </div>
 
+    <!-- Main Container -->
     <div class="container">
         <!-- Alert Container -->
         <div class="alert-container">
@@ -177,21 +397,32 @@
         <!-- Profile Card -->
         <div class="profile-card">
             <div class="circle-avatar">
-                <i class="material-symbols-outlined" style="font-size: 48px;">person</i>
+                <!-- Animated Avatar -->
+                <img src="{{ $user->avatar_url ?? asset('images/user.jpg') }}" alt="User Avatar">
             </div>
             <h5>{{ $user->name }}</h5>
-            <p class="text-muted">{{ $user->email }}</p>
+            <p class="profile-info">{{ $user->email }}</p>
+            <p class="profile-info">Joined on {{ \Carbon\Carbon::parse($user->created_at)->format('F Y') }}</p>
+            <!-- Profile Completion Indicator (Optional) -->
         </div>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <button type="button" class="btn-edit-name" data-bs-toggle="modal" data-bs-target="#editNameModal">Edit Name</button>
-            <button type="button" class="btn-change-password" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
-            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</button>
+            <button type="button" class="btn-edit-name" data-bs-toggle="modal" data-bs-target="#editNameModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit your display name">
+                <i class="material-icons-outlined">edit</i> Edit Name
+            </button>
+            <button type="button" class="btn-change-password" data-bs-toggle="modal" data-bs-target="#changePasswordModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Change your account password">
+                <i class="material-icons-outlined">lock</i> Change Password
+            </button>
+            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#deleteAccountModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Permanently delete your account">
+                <i class="material-icons-outlined">delete</i> Delete Account
+            </button>
         </div>
 
         <!-- Logout Button -->
-        <button type="button" class="btn-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</button>
+        <button type="button" class="btn-logout" data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout from your account">
+            <i class="material-icons-outlined">logout</i> Logout
+        </button>
     </div>
 
     <!-- Edit Name Modal -->
@@ -212,8 +443,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <!-- Cancel Icon Button -->
+                        <button type="button" class="icon-button" data-bs-dismiss="modal" aria-label="Cancel">
+                            <span class="material-icons-outlined">close</span>
+                        </button>
+                        <!-- Save Icon Button -->
+                        <button type="submit" class="icon-button" aria-label="Save Changes">
+                            <span class="material-icons-outlined">send</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -247,9 +484,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <!-- Modal Actions -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Password</button>
+                        <!-- Cancel Icon Button -->
+                        <button type="button" class="icon-button" data-bs-dismiss="modal" aria-label="Cancel">
+                            <span class="material-icons-outlined">close</span>
+                        </button>
+                        <!-- Update Icon Button -->
+                        <button type="submit" class="icon-button" aria-label="Update Password">
+                            <span class="material-icons-outlined">send</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -275,9 +517,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <!-- Modal Actions -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Delete Account</button>
+                        <!-- Cancel Icon Button -->
+                        <button type="button" class="icon-button" data-bs-dismiss="modal" aria-label="Cancel">
+                            <span class="material-icons-outlined">close</span>
+                        </button>
+                        <!-- Delete Icon Button -->
+                        <button type="submit" class="icon-button" aria-label="Delete Account">
+                            <span class="material-icons-outlined">send</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -298,9 +545,14 @@
                         <p>Are you sure you want to logout?</p>
                     </div>
                     <div class="modal-footer">
-                        <!-- Modal Actions -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Logout</button>
+                        <!-- Cancel Icon Button -->
+                        <button type="button" class="icon-button" data-bs-dismiss="modal" aria-label="Cancel">
+                            <span class="material-icons-outlined">close</span>
+                        </button>
+                        <!-- Confirm Logout Icon Button -->
+                        <button type="submit" class="icon-button" aria-label="Confirm Logout">
+                            <span class="material-icons-outlined">send</span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -311,15 +563,32 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Dropdown for additional options
-        const dropdownTrigger = document.querySelector('#dropdown-trigger');
-        dropdownTrigger.addEventListener('click', function() {
-            // You can implement additional dropdown options here if needed
-            alert('Additional options could be implemented here.');
-        });
+        // Initialize Bootstrap Tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
 
-        // Reopen modal if there are validation errors
-        document.addEventListener('DOMContentLoaded', function () {
+        // Sidebar toggle functionality (if applicable)
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuIcon = document.getElementById('menu-icon');
+            const sidebar = document.querySelector('.sidebar'); // Ensure you have a sidebar in your layout
+
+            if (menuIcon && sidebar) {
+                menuIcon.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // Dark Mode Toggle (if implemented)
+            /*
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            darkModeToggle.addEventListener('change', function() {
+                document.body.classList.toggle('dark-mode');
+            });
+            */
+
+            // Reopen modal if there are validation errors
             @if ($errors->has('current_password') || $errors->has('password') || $errors->has('password_confirmation'))
                 var changePasswordModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
                 changePasswordModal.show();
@@ -328,10 +597,6 @@
             @if ($errors->has('name'))
                 var editNameModal = new bootstrap.Modal(document.getElementById('editNameModal'));
                 editNameModal.show();
-            @endif
-
-            @if ($errors->has('password') && request()->is('profile'))
-                // Add more conditions if necessary
             @endif
         });
     </script>

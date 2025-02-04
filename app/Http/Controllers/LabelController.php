@@ -31,7 +31,10 @@ class LabelController extends Controller
         // Create the label with the associated user_id
         Auth::user()->labels()->create($request->all());
 
-        return redirect()->route('labels.index')->with('success', 'Label created successfully.');
+        // Redirect to the task management page with the "labels" tab active
+        return redirect()->route('taskmanagement.index')
+            ->with('activeTab', 'labels')
+            ->with('success', 'Label created successfully.');
     }
 
     public function show(Label $label)

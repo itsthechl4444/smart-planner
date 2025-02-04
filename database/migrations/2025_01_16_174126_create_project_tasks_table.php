@@ -13,18 +13,22 @@ class CreateProjectTasksTable extends Migration
     {
         Schema::create('project_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); // Assigned user
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
-            $table->enum('priority', ['High', 'Medium', 'Low'])->default('Medium');
-            $table->foreignId('label_id')->nullable()->constrained()->onDelete('set null');
+            $table->enum('priority', ['Low', 'Medium', 'High'])->default('Medium');
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->text('notes')->nullable();
             $table->string('attachments')->nullable();
             $table->boolean('reminder')->default(false);
-            $table->enum('status', ['pending', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'completed', 'overdue'])->default('pending');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            // Optional: Add indexes for faster queries
+            $table->index(['project_id', 'user_id']);
+            $table->index('status');
+            $table->index('priority');
         });
     }
 

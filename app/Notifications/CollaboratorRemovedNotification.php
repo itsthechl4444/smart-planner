@@ -3,11 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue; // Optional: Implement if you want to queue notifications
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\Project;
-use App\Models\User;
 
 class CollaboratorRemovedNotification extends Notification
 {
@@ -20,10 +16,10 @@ class CollaboratorRemovedNotification extends Notification
      * Create a new notification instance.
      *
      * @param \App\Models\Project $project
-     * @param \App\Models\User $removedBy
+     * @param \App\Models\User    $removedBy
      * @return void
      */
-    public function __construct(Project $project, User $removedBy)
+    public function __construct($project, $removedBy)
     {
         $this->project = $project;
         $this->removedBy = $removedBy;
@@ -37,24 +33,29 @@ class CollaboratorRemovedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database']; // You can add other channels like 'broadcast' if needed
+        return ['phpmailer', 'database'];
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Get the PHPMailer representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return array
      */
-    public function toMail($notifiable)
+    public function toPHPMailer($notifiable)
     {
-        return (new MailMessage)
-                    ->subject('You Have Been Removed from a Project')
-                    ->greeting('Hello ' . $notifiable->name . ',')
-                    ->line('You have been removed from the project "' . $this->project->name . '".')
-                    ->line('Removed By: ' . $this->removedBy->name)
-                    ->action('View Project', route('projects.show', $this->project))
-                    ->line('If you believe this was a mistake, please contact the project owner.');
+        return [
+            'to'      => $notifiable->email,
+            'toName'  => $notifiable->name,
+            'subject' => "You have been removed from '{$this->project->name}'",
+            'body'    => "
+                <h1>Collaborator Removed</h1>
+                <p>Hello {$notifiable->name},</p>
+                <p>You have been removed from the project '{$this->project->name}' by {$this->removedBy->name}.</p>
+                <p>If this was a mistake, please contact support.</p>
+            ",
+            'altBody' => "Hello {$notifiable->name},\n\nYou have been removed from the project '{$this->project->name}' by {$this->removedBy->name}.\n\nIf this was a mistake, please contact support.",
+        ];
     }
 
     /**
@@ -63,13 +64,13 @@ class CollaboratorRemovedNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
-            'message' => 'You have been removed from the project "' . $this->project->name . '" by ' . $this->removedBy->name . '.',
-            'project_id' => $this->project->id,
-            'removed_by_id' => $this->removedBy->id,
-            'removed_by_name' => $this->removedBy->name,
+            'message'               => "You have been removed from '{$this->project->name}' by {$this->removedBy->name}.",
+            'project_id'            => $this->project->id,
+            'project_name'          => $this->project->name,
+            'removed_by_name'      => $this->removedBy->name,
         ];
     }
 }

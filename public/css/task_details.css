@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #F5F5F5;
+    font-family: "Open Sans", sans-serif;
+    background-color: #f5f5f5;
     color: #808080;
     margin: 0;
     box-sizing: border-box;
@@ -14,7 +14,7 @@ body {
     justify-content: space-between;
     height: 56px;
     padding: 0 20px;
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     position: fixed;
     top: 0;
     left: 0;
@@ -39,38 +39,38 @@ body {
     font-size: 24px;
 }
 
-/* Dropdown Styles */
-.dropdown-trigger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
+/* Adjusted Dropdown Styles */
+/* Adjusted Dropdown Styles with Reduced Left Padding */
+/* Adjusted Dropdown Styles */
 .dropdown-content {
     position: fixed;
     top: 56px;
     right: 20px;
     display: none;
     background-color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     z-index: 1;
     border-radius: 4px;
     overflow: hidden;
     border: 1px solid #ddd;
+    min-width: 150px; /* Set a minimum width for the dropdown */
 }
 
 .dropdown-content.open {
     display: block;
 }
 
+/* Adjust list items for a smaller interface */
 .dropdown-content li {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
+    padding: 8px 12px; /* Reduced padding for a more compact look */
     cursor: pointer;
     white-space: nowrap;
+    font-size: 14px; /* Smaller font size */
 }
 
+/* Adjust link and button styling inside dropdown */
 .dropdown-content li a,
 .dropdown-content li form button {
     color: #555;
@@ -81,25 +81,28 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
-    padding: 12px 16px;
+    font-size: 14px; /* Smaller font size */
+    padding: 8px 12px; /* Match list item padding */
     justify-content: flex-start;
 }
 
+/* Adjust icon spacing */
 .dropdown-content li span {
-    margin-right: 8px;
+    margin-right: 6px;
 }
 
+/* Hover effect */
 .dropdown-content li:hover {
     background-color: #f0f0f0;
 }
 
+/* Adjust button in forms */
 .dropdown-content form {
     margin: 0;
 }
 
 .dropdown-content form button {
-    padding: 12px 16px;
+    padding: 8px 12px;
 }
 
 .dropdown-content form button:hover {
@@ -110,17 +113,16 @@ body {
 .container {
     width: 90%;
     max-width: 800px;
-    margin: 70px auto 0;
-    /* Top margin to leave space for fixed app bar */
+    margin: 70px auto 40px;
+    padding-bottom: 40px;
 }
 
 .task-illustration {
-    width: 100%;
-    max-width: 400px;
+    width: 80%;
+    max-width: 300px;
     height: auto;
     display: block;
     margin: 0 auto 20px;
-    /* Center the illustration and add bottom margin */
 }
 
 .task-details {
@@ -148,25 +150,79 @@ body {
 }
 
 .task-image {
-    max-width: 100%; /* Ensure the image fits within its container */
-    height: auto;    /* Maintain the aspect ratio */
-    border-radius: 8px; /* Optional: Add rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Clickable Image */
+.clickable-image {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.clickable-image:hover {
+    transform: scale(1.02);
+}
+
+/* Download Link */
+.download-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.download-link:hover {
+    text-decoration: underline;
+}
+
+/* Lightbox Modal (Optional) */
+.lightbox-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-modal .close {
+    position: absolute;
+    top: 30px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .app-bar-title {
         font-size: 18px;
     }
-
     .task-details h2 {
         font-size: 20px;
     }
-
     .task-details p {
         font-size: 14px;
+    }
+    .task-illustration {
+        width: 100%;
+        max-width: 250px;
     }
 }
 
@@ -174,12 +230,20 @@ body {
     .app-bar-title {
         font-size: 16px;
     }
-
     .task-details h2 {
         font-size: 18px;
     }
-
     .task-details p {
         font-size: 12px;
+    }
+    .task-illustration {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .lightbox-content {
+        width: 90%;
     }
 }

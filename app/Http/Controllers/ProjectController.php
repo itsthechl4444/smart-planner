@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/ProjectController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Project;
@@ -30,9 +28,6 @@ class ProjectController extends Controller
     {
         $user = Auth::user();
 
-        $projects = Auth::user()->ownedProjects()->get();
-
-
         // Retrieve projects owned by the user
         $ownedProjects = $user->ownedProjects()->latest()->get();
 
@@ -42,17 +37,13 @@ class ProjectController extends Controller
         // Combine both collections
         $projects = $ownedProjects->merge($collaboratedProjects);
 
-        // Fetch tasks associated with the user
+        // Fetch tasks associated with the user (if needed)
         $tasks = Task::where('user_id', $user->id)->with('label')->get();
 
-        // Fetch labels associated with the user
+        // Fetch labels associated with the user (if needed)
         $labels = Label::where('user_id', $user->id)->get();
 
-        return view('taskmanagement.index', [
-            'tasks' => $tasks,
-            'labels' => $labels,
-            'projects' => $projects,
-        ]);
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -82,7 +73,10 @@ class ProjectController extends Controller
         // Create the project associated with the authenticated user as the owner
         $project = $user->ownedProjects()->create($validated);
 
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        // Redirect to the Task Management page with the "projects" tab active
+        return redirect()->route('taskmanagement.index')
+            ->with('activeTab', 'projects')
+            ->with('success', 'Project created successfully.');
     }
 
     /**
@@ -142,7 +136,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        // Redirect to the task management index after deletion
+        // Redirect to the Task Management index after deletion
         return redirect()->route('taskmanagement.index')->with('success', 'Project deleted successfully.');
     }
 

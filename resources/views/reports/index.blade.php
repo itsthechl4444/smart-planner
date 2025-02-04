@@ -6,37 +6,53 @@
     <title>Reports</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('css/reports.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/taskmanagement.css') }}"> <!-- Include taskmanagement.css for tab styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
     
-    <!-- Remove Materialize CSS as it's no longer needed -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <!-- Material Icons (if needed) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Include Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
-        <div class="menu-icon" id="menu-icon">
+        <div class="menu-icon" id="menu-icon" tabindex="0" aria-label="Toggle Sidebar" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Toggle Sidebar">
             <i class="bi bi-list"></i>
         </div>
         <div class="title">Reports</div>
+        
+        <!-- More Options Icon -->
+        <div class="more-options">
+            <button id="more-options-btn" class="more-options-btn" aria-haspopup="true" aria-expanded="false" aria-label="More options">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <div id="more-options-dropdown" class="more-options-dropdown" role="menu" aria-labelledby="more-options-btn">
+                <a href="{{ route('reports.downloadPdf', ['period' => 'week']) }}" class="dropdown-item" role="menuitem">Download as PDF</a>
+            </div>
+        </div>
     </header>
 
+    <!-- Sidebar -->
     @include('partials.sidebar')
 
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Custom Tabs Section -->
-        <div class="tabs">
-            <button class="tab-link active" onclick="openTab(event, 'task-reports')">Task Reports</button>
-            <button class="tab-link" onclick="openTab(event, 'finance-reports')">Finance Reports</button>
+        <!-- Tabs Section -->
+        <div class="tabs" role="tablist">
+            <button class="tab-link active" onclick="openTab(event, 'task-reports')" role="tab" aria-selected="true" aria-controls="task-reports">Task Reports</button>
+            <button class="tab-link" onclick="openTab(event, 'finance-reports')" role="tab" aria-selected="false" aria-controls="finance-reports">Finance Reports</button>
         </div>
 
         <!-- Task Reports Section -->
-        <div id="task-reports" class="tab-content active">
+        <div id="task-reports" class="tab-content active" role="tabpanel">
             <div class="task-summary">
                 <div class="card completed-card">
                     <h5>Completed</h5>
@@ -52,46 +68,51 @@
                 </div>
             </div>
 
-            <!-- Line Divider -->
+            <!-- Divider -->
             <div class="divider"></div>
 
             <!-- Task Distribution Section -->
-            <div class="task-distribution">
+            <div class="task-distribution report-container">
                 <h5>Task Distribution by Label</h5>
                 <div class="filter-options">
                     <button onclick="updateChartPeriod('week')" class="btn waves-effect waves-light">This Week</button>
                     <button onclick="updateChartPeriod('month')" class="btn waves-effect waves-light">This Month</button>
                 </div>
-                <!-- Canvas for Donut Chart -->
-                <canvas id="taskDistributionChart" width="400" height="400"></canvas>
+                <div class="chart-wrapper">
+                    <canvas id="taskDistributionChart"></canvas>
+                    <!-- No Data Illustration -->
+                    <div class="no-data-illustration-container" id="no-data-task-illustration">
+                        <img src="{{ asset('images/illustration1.png') }}" alt="No Data" class="no-data-illustration">
+                        <p id="no-data-task-text">No data available for the selected period.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Finance Reports Section -->
-        <div id="finance-reports" class="tab-content">
-            <!-- Add a loading spinner above the Expense Summary table -->
-            <div id="expense-loading" style="display: none; text-align: center; margin-top: 20px;">
-                <div class="preloader-wrapper active">
-                    <div class="spinner-layer spinner-blue-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="gap-patch">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div id="finance-reports" class="tab-content" role="tabpanel">
             <!-- Expense Summary Section -->
-            <div class="other-section">
+            <div class="expense-summary report-container">
                 <h5>Expense Summary</h5>
                 <div class="filter-options">
                     <button onclick="updateExpenseReportPeriod('week')" class="btn waves-effect waves-light">This Week</button>
                     <button onclick="updateExpenseReportPeriod('month')" class="btn waves-effect waves-light">This Month</button>
+                </div>
+                <!-- Loading Spinner -->
+                <div id="expense-loading" class="loading-spinner">
+                    <div class="preloader-wrapper active">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <table class="highlight" id="expense-summary-table">
                     <thead>
@@ -107,19 +128,18 @@
                 </table>
             </div>
 
-            <!-- Line Divider -->
+            <!-- Divider -->
             <div class="divider"></div>
 
             <!-- Income Overview Section -->
-            <div class="income-overview other-section">
+            <div class="income-overview report-container">
                 <h5>Income Overview</h5>
                 <div class="filter-options">
                     <button onclick="updateIncomeReportPeriod('week')" class="btn waves-effect waves-light">This Week</button>
                     <button onclick="updateIncomeReportPeriod('month')" class="btn waves-effect waves-light">This Month</button>
                 </div>
-
-                <!-- Add a loading spinner above the Income Overview table -->
-                <div id="income-loading" style="display: none; text-align: center; margin-top: 20px;">
+                <!-- Loading Spinner -->
+                <div id="income-loading" class="loading-spinner">
                     <div class="preloader-wrapper active">
                         <div class="spinner-layer spinner-green-only">
                             <div class="circle-clipper left">
@@ -134,8 +154,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Income Overview Table -->
                 <table class="highlight" id="income-overview-table">
                     <thead>
                         <tr>
@@ -149,19 +167,18 @@
                 </table>
             </div>
 
-            <!-- Line Divider -->
+            <!-- Divider -->
             <div class="divider"></div>
 
             <!-- Budget Progress Report Section -->
-            <div class="budget-progress-report other-section">
+            <div class="budget-progress-report report-container">
                 <h5>Budget Progress Report</h5>
                 <div class="filter-options">
                     <button onclick="updateBudgetProgressReportPeriod('week')" class="btn waves-effect waves-light">This Week</button>
                     <button onclick="updateBudgetProgressReportPeriod('month')" class="btn waves-effect waves-light">This Month</button>
                 </div>
-
-                <!-- Add a loading spinner above the Budget Progress table -->
-                <div id="budget-progress-loading" style="display: none; text-align: center; margin-top: 20px;">
+                <!-- Loading Spinner -->
+                <div id="budget-progress-loading" class="loading-spinner">
                     <div class="preloader-wrapper active">
                         <div class="spinner-layer spinner-orange-only">
                             <div class="circle-clipper left">
@@ -176,8 +193,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Budget Progress Table -->
                 <table class="highlight" id="budget-progress-table">
                     <thead>
                         <tr>
@@ -195,8 +210,41 @@
         </div>
     </main>
 
-    <!-- Include Sidebar JS -->
+    <!-- Bottom Navbar -->
+    <nav class="bottom-navbar" role="navigation" aria-label="Bottom Navigation">
+        <a href="{{ route('dashboard') }}" class="navbar-item" aria-label="Dashboard" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-house-door" aria-hidden="true"></i>
+        </a>
+        <a href="{{ route('taskmanagement.index') }}" class="navbar-item active" aria-label="Task Management" title="Task Management" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-list-task" aria-hidden="true"></i>
+        </a>
+        <a href="{{ route('financemanagement.index') }}" class="navbar-item" aria-label="Finance Management" title="Finance Management" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-currency-dollar" aria-hidden="true"></i>
+        </a>
+        <a href="{{ route('calendar.index') }}" class="navbar-item" aria-label="Calendar" title="Calendar" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-calendar" aria-hidden="true"></i>
+        </a>
+        <a href="{{ route('notifications.index') }}" class="navbar-item" aria-label="Notifications" title="Notifications" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-bell" aria-hidden="true"></i>
+        </a>
+        <a href="{{ route('tips') }}" class="navbar-item" aria-label="Tips & Best Practices" title="Tips & Best Practices" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-lightbulb" aria-hidden="true"></i>
+        </a>
+        <a href="{{ route('reports') }}" class="navbar-item" aria-label="Reports" title="Reports" data-bs-toggle="tooltip" data-bs-placement="top">
+            <i class="bi bi-bar-chart" aria-hidden="true"></i>
+        </a>
+    </nav>
+
+    <!-- Loading Overlay (if needed) -->
+    <!-- You can include a loading overlay similar to the Dashboard if required -->
+
+    <!-- Bootstrap 5 JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Sidebar Script -->
     <script src="{{ asset('js/sidebar.js') }}"></script>
+
+    <!-- Custom JavaScript -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -205,31 +253,93 @@
         fetchExpenseData('week'); // Fetch initial expense data
         fetchIncomeData('week'); // Fetch initial income data
         fetchBudgetProgressData('week'); // Fetch initial budget progress data
+
+        // Handle More Options dropdown
+        const moreOptionsBtn = document.getElementById('more-options-btn');
+        const moreOptionsDropdown = document.getElementById('more-options-dropdown');
+
+        moreOptionsBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the event from bubbling up
+            moreOptionsDropdown.classList.toggle('show');
+        });
+
+        // Close the dropdown if the user clicks outside of it
+        document.addEventListener('click', (e) => {
+            if (!moreOptionsBtn.contains(e.target) && !moreOptionsDropdown.contains(e.target)) {
+                moreOptionsDropdown.classList.remove('show');
+            }
+        });
+
+        // Ensure the no-data container is hidden initially
+        document.getElementById('no-data-task-illustration').style.display = 'none';
+
+        // Initialize Bottom Navbar Tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        // Toggle Sidebar
+        const menuIcon = document.getElementById('menu-icon');
+        const bottomNavbar = document.querySelector('.bottom-navbar');
+
+        menuIcon.addEventListener('click', () => {
+            document.body.classList.toggle('sidebar-open');
+        });
+
+        // Show bottom navbar on viewport changes if needed
+        function checkViewport() {
+            if (window.innerWidth <= 768) {
+                bottomNavbar.style.display = 'flex';
+            } else {
+                bottomNavbar.style.display = 'flex';
+            }
+        }
+
+        // Initial check
+        checkViewport();
+
+        // Check on resize
+        window.addEventListener('resize', checkViewport);
     });
 
-    // Function to generate random colors
+    // Function to generate light shades of gray colors
     function generateColors(numColors) {
         const backgroundColor = [];
         const borderColor = [];
 
+        const grayShades = [
+            'rgba(220, 220, 220, 0.2)',
+            'rgba(211, 211, 211, 0.2)',
+            'rgba(192, 192, 192, 0.2)',
+            'rgba(169, 169, 169, 0.2)',
+            'rgba(128, 128, 128, 0.2)',
+            'rgba(105, 105, 105, 0.2)',
+            'rgba(119, 136, 153, 0.2)',
+            'rgba(169, 169, 169, 0.2)',
+            'rgba(192, 192, 192, 0.2)',
+            'rgba(220, 220, 220, 0.2)'
+        ];
+
+        const borderGrayShades = [
+            'rgba(220, 220, 220, 1)',
+            'rgba(211, 211, 211, 1)',
+            'rgba(192, 192, 192, 1)',
+            'rgba(169, 169, 169, 1)',
+            'rgba(128, 128, 128, 1)',
+            'rgba(105, 105, 105, 1)',
+            'rgba(119, 136, 153, 1)',
+            'rgba(169, 169, 169, 1)',
+            'rgba(192, 192, 192, 1)',
+            'rgba(220, 220, 220, 1)'
+        ];
+
         for (let i = 0; i < numColors; i++) {
-            const color = getRandomColor();
-            backgroundColor.push(color.background);
-            borderColor.push(color.border);
+            backgroundColor.push(grayShades[i % grayShades.length]);
+            borderColor.push(borderGrayShades[i % borderGrayShades.length]);
         }
 
         return { backgroundColor, borderColor };
-    }
-
-    // Function to get a random color
-    function getRandomColor() {
-        const r = Math.floor(Math.random() * 200);
-        const g = Math.floor(Math.random() * 200);
-        const b = Math.floor(Math.random() * 200);
-        return {
-            background: `rgba(${r}, ${g}, ${b}, 0.2)`,
-            border: `rgba(${r}, ${g}, ${b}, 1)`
-        };
     }
 
     // Function to fetch task data based on the selected period
@@ -259,9 +369,76 @@
         });
     }
 
+    // Function to initialize the doughnut chart for task distribution
+    function renderTaskChart() {
+        const ctx = document.getElementById('taskDistributionChart').getContext('2d');
+        window.taskChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [], // Initialize empty labels
+                datasets: [{
+                    label: 'Task Distribution',
+                    data: [], // Initialize empty data
+                    backgroundColor: [], // Colors will be set dynamically
+                    borderColor: [],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 1, // Ensures the chart is a perfect circle
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#555' // Legend text color
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Function to update the task distribution chart with new data
+    function updateTaskChart(labels, taskCounts) {
+        const noDataContainer = document.getElementById('no-data-task-illustration');
+        const noDataText = document.getElementById('no-data-task-text');
+
+        if (labels.length === 0 || taskCounts.every(count => count === 0)) {
+            // Hide the chart
+            document.getElementById('taskDistributionChart').style.display = 'none';
+            // Show the no-data illustration
+            noDataText.textContent = 'No data available for the selected period.';
+            noDataContainer.style.display = 'flex';
+        } else {
+            // Show the chart
+            document.getElementById('taskDistributionChart').style.display = 'block';
+            // Hide the no-data illustration
+            noDataContainer.style.display = 'none';
+        }
+
+        if (labels.length > 0 && taskCounts.some(count => count > 0)) {
+            window.taskChart.data.labels = labels;
+            window.taskChart.data.datasets[0].data = taskCounts;
+
+            // Generate light gray colors
+            const colors = generateColors(labels.length);
+            window.taskChart.data.datasets[0].backgroundColor = colors.backgroundColor;
+            window.taskChart.data.datasets[0].borderColor = colors.borderColor;
+
+            window.taskChart.update(); // Refresh the chart with the new data
+        }
+    }
+
+    // Function to handle task chart period filter button clicks
+    function updateChartPeriod(period) {
+        fetchTaskData(period);
+    }
+
     // Function to fetch expense data based on the selected period
     function fetchExpenseData(period) {
-
         // Show loading spinner
         document.getElementById('expense-loading').style.display = 'block';
 
@@ -281,61 +458,14 @@
         })
         .then(data => {
             populateExpenseTable(data.expenseSummary, data.totalBudget, data.totalSpent);
-             // Hide loading spinner
+            // Hide loading spinner
             document.getElementById('expense-loading').style.display = 'none';
         })
         .catch(error => {
             console.error('Error fetching expense data:', error);
             // Hide loading spinner
-          document.getElementById('expense-loading').style.display = 'none';
+            document.getElementById('expense-loading').style.display = 'none';
         });
-    }
-
-    // Function to initialize the doughnut chart for task distribution
-    function renderTaskChart() {
-        const ctx = document.getElementById('taskDistributionChart').getContext('2d');
-        window.taskChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [], // Initialize empty labels
-                datasets: [{
-                    label: 'Task Distribution',
-                    data: [], // Initialize empty data
-                    backgroundColor: [], // Colors will be set dynamically
-                    borderColor: [],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    }
-                }
-            }
-        });
-    }
-
-    // Function to update the task distribution chart with new data
-    function updateTaskChart(labels, taskCounts) {
-        window.taskChart.data.labels = labels;
-        window.taskChart.data.datasets[0].data = taskCounts;
-
-        // Generate colors if necessary
-        if (window.taskChart.data.datasets[0].backgroundColor.length !== labels.length) {
-            const colors = generateColors(labels.length);
-            window.taskChart.data.datasets[0].backgroundColor = colors.backgroundColor;
-            window.taskChart.data.datasets[0].borderColor = colors.borderColor;
-        }
-
-        window.taskChart.update(); // Refresh the chart with the new data
-    }
-
-    // Function to handle task chart period filter button clicks
-    function updateChartPeriod(period) {
-        fetchTaskData(period);
     }
 
     // Function to handle expense report period filter button clicks
@@ -471,7 +601,6 @@
         tableBody.appendChild(trTotal);
     }
 
-
     // Function to fetch budget progress data based on the selected period
     function fetchBudgetProgressData(period) {
         // Show loading spinner
@@ -507,7 +636,6 @@
     function updateBudgetProgressReportPeriod(period) {
         fetchBudgetProgressData(period);
     }
-
 
     // Function to populate the Budget Progress table
     function populateBudgetProgressTable(budgetProgress) {
@@ -567,16 +695,21 @@
         // Hide all tab contents
         for (let i = 0; i < tabContents.length; i++) {
             tabContents[i].classList.remove("active");
+            tabContents[i].setAttribute('aria-hidden', 'true');
         }
 
         // Remove 'active' class from all tab links
         for (let i = 0; i < tabLinks.length; i++) {
             tabLinks[i].classList.remove("active");
+            tabLinks[i].setAttribute('aria-selected', 'false');
         }
 
         // Show the current tab and add 'active' class to the clicked tab
-        document.getElementById(tabName).classList.add("active");
+        const currentTabContent = document.getElementById(tabName);
+        currentTabContent.classList.add("active");
+        currentTabContent.setAttribute('aria-hidden', 'false');
         evt.currentTarget.classList.add("active");
+        evt.currentTarget.setAttribute('aria-selected', 'true');
     }
     </script>
 </body>

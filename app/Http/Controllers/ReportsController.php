@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;  
 use Illuminate\Http\Request;
+use PDF; // Import PDF facade
 
 class ReportsController extends Controller
 {
@@ -311,6 +312,223 @@ public function getIncomeReports(Request $request)
         return response()->json([
             'budgetProgress' => $budgetProgress,
         ]);
+    }
+
+     /**
+     * Download the reports as a PDF.
+     */
+    public function downloadPDF(Request $request)
+    {
+        $userId = Auth::id();
+        $period = $request->query('period', 'week');
+        $today = Carbon::now();
+        $startDate = null;
+        $endDate = null;
+
+        // Determine the date range based on the period
+        switch ($period) {
+            case 'week':
+                $startDate = $today->copy()->startOfWeek();
+                $endDate = $today->copy()->endOfWeek();
+                break;
+            case 'month':
+                $startDate = $today->copy()->startOfMonth();
+                $endDate = $today->copy()->endOfMonth();
+                break;
+            default:
+                $startDate = $today->copy()->startOfWeek();
+                $endDate = $today->copy()->endOfWeek();
+                break;
+        }
+
+        // Fetch data for the PDF
+
+        // Task Summary
+        $completedCount = Task::where('user_id', $userId)
+                              ->where('status', 'completed')
+                              ->whereBetween('created_at', [$startDate, $endDate])
+                              ->count();
+
+        $pendingCount = Task::where('user_id', $userId)
+                            ->where('status', 'pending')
+                            ->whereBetween('created_at', [$startDate, $endDate])
+                            ->count();
+
+        $overdueCount = Task::where('user_id', $userId)
+                            ->where('due_date', '<', now())
+                            ->where('status', '!=', 'completed')
+                            ->whereBetween('created_at', [$startDate, $endDate])
+                            ->count();
+
+        // Task Distribution
+        $tasks = Task::where('user_id', $userId)
+                     ->whereBetween('created_at', [$startDate, $endDate])
+                     ->with('label')
+                     ->get();
+
+        $taskDistribution = $tasks->groupBy(function ($task) {
+            return $task->label ? $task->label->name : 'No Label';
+        })->map(function ($group) {
+            return $group->count();
+        });
+
+        $taskLabels = $taskDistribution->keys()->toArray();
+        $taskCounts = $taskDistribution->values()->toArray();
+
+        // Expense Summary
+        $expenseData = $this->calculateExpenseSummary($userId, $period, $startDate);
+        // Income Overview
+        $incomeData = $this->calculateIncomeOverview($userId, $startDate, $endDate);
+        // Budget Progress
+        $budgetData = $this->calculateBudgetProgress($userId, $period, $startDate, $endDate);
+
+        // Prepare data for PDF
+        $data = array_merge([
+            'period' => ucfirst($period),
+            'date' => $today->format('F d, Y'),
+            'completedCount' => $completedCount,
+            'pendingCount' => $pendingCount,
+            'overdueCount' => $overdueCount,
+            'taskLabels' => $taskLabels,
+            'taskCounts' => $taskCounts,
+        ], $expenseData, $incomeData, $budgetData);
+
+        // Generate PDF
+        $pdf = PDF::loadView('reports.pdf', $data);
+
+        // Return the PDF for download
+        return $pdf->download('reports_' . $period . '_' . $today->format('Ymd') . '.pdf');
+    }
+
+    // Helper methods to calculate expense summary, income overview, and budget progress
+    private function calculateExpenseSummary($userId, $period, $startDate)
+    {
+        $categories = ['Food', 'Transportation', 'Utilities', 'Entertainment', 'Healthcare'];
+
+        // Fetch budgets
+        $budgets = Budget::where('user_id', $userId)
+                         ->where('period', $period)
+                         ->whereIn('category', $categories)
+                         ->get()
+                         ->keyBy('category');
+
+        // Fetch expenses
+        $expenses = Expense::where('user_id', $userId)
+                           ->where('date', '>=', $startDate)
+                           ->whereIn('category', $categories)
+                           ->get();
+
+        // Group and calculate
+        $expenseGroup = $expenses->groupBy('category')->map(function ($group) {
+            return $group->sum('amount');
+        });
+
+        // Prepare summary
+        $expenseSummary = [];
+        $totalBudget = 0;
+        $totalSpent = 0;
+
+        foreach ($categories as $category) {
+            $allocated = $budgets->has($category) ? $budgets[$category]->amount : 0;
+            $spent = $expenseGroup->get($category, 0);
+            $percentage = $allocated > 0 ? round(($spent / $allocated) * 100, 2) : 0.00;
+
+            $expenseSummary[] = [
+                'category' => $category,
+                'allocated_budget' => $allocated,
+                'amount_spent' => $spent,
+                'percentage_of_budget' => $percentage,
+            ];
+
+            $totalBudget += $allocated;
+            $totalSpent += $spent;
+        }
+
+        // Unbudgeted expenses
+        $unbudgetedExpenses = Expense::where('user_id', $userId)
+                                     ->where('date', '>=', $startDate)
+                                     ->whereNotIn('category', $categories)
+                                     ->sum('amount');
+
+        if ($unbudgetedExpenses > 0) {
+            $percentage = $totalBudget > 0 ? round(($unbudgetedExpenses / $totalBudget) * 100, 2) : 0.00;
+
+            $expenseSummary[] = [
+                'category' => 'Unbudgeted',
+                'allocated_budget' => 0,
+                'amount_spent' => $unbudgetedExpenses,
+                'percentage_of_budget' => $percentage,
+            ];
+
+            $totalSpent += $unbudgetedExpenses;
+        }
+
+        return [
+            'expenseSummary' => $expenseSummary,
+            'totalBudget' => $totalBudget,
+            'totalSpent' => $totalSpent,
+        ];
+    }
+
+    private function calculateIncomeOverview($userId, $startDate, $endDate)
+    {
+        $incomes = Income::where('user_id', $userId)
+                         ->whereBetween('date', [$startDate, $endDate])
+                         ->get();
+
+        $incomeGroup = $incomes->groupBy('source_name')->map(function ($group) {
+            return $group->sum('amount');
+        });
+
+        $incomeSummary = [];
+        $totalIncome = 0;
+
+        foreach ($incomeGroup as $sourceName => $amountReceived) {
+            $incomeSummary[] = [
+                'source_name' => $sourceName,
+                'amount_received' => $amountReceived,
+            ];
+            $totalIncome += $amountReceived;
+        }
+
+        return [
+            'incomeSummary' => $incomeSummary,
+            'totalIncome' => $totalIncome,
+        ];
+    }
+
+    private function calculateBudgetProgress($userId, $period, $startDate, $endDate)
+    {
+        $budgets = Budget::where('user_id', $userId)
+                         ->where('period', $period)
+                         ->get()
+                         ->keyBy('category');
+
+        $expenses = Expense::where('user_id', $userId)
+                           ->whereBetween('date', [$startDate, $endDate])
+                           ->get();
+
+        $expenseGroup = $expenses->groupBy('category')->map(function ($group) {
+            return $group->sum('amount');
+        });
+
+        $budgetProgress = [];
+        foreach ($budgets as $category => $budget) {
+            $allocatedBudget = $budget->amount;
+            $amountSpent = $expenseGroup->get($category, 0);
+            $remainingBudget = $allocatedBudget - $amountSpent;
+
+            $budgetProgress[] = [
+                'category' => $category,
+                'allocated_budget' => $allocatedBudget,
+                'amount_spent' => $amountSpent,
+                'remaining_budget' => $remainingBudget,
+            ];
+        }
+
+        return [
+            'budgetProgress' => $budgetProgress,
+        ];
     }
 
 }

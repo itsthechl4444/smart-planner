@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Notifications\DebtDeadlineNotification;
 use App\Models\User;
+use Illuminate\Notifications\Notifiable; 
 
 class Debt extends Model
 {
-    use HasFactory;
+    use HasFactory, notifiable;
 
     protected $fillable = [
         'name',

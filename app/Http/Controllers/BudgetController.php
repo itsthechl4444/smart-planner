@@ -18,7 +18,7 @@ class BudgetController extends Controller
     public function index()
     {
         $budgets = Budget::all();
-        return view('budgets.index', compact('budgets'));
+        return view('financemanagement.index', compact('budgets'));
     }
 
     // BudgetController.php
@@ -101,7 +101,7 @@ class BudgetController extends Controller
 
         Budget::create($validatedData);
 
-        return redirect()->route('budgets.index')->with('success', 'Budget created successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Budget created successfully.');
     }
 
 
@@ -148,7 +148,7 @@ class BudgetController extends Controller
 
         $budget->update($validatedData);
 
-        return redirect()->route('budgets.index')->with('success', 'Budget updated successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Budget updated successfully.');
     }
 
 
@@ -159,6 +159,6 @@ class BudgetController extends Controller
         $this->authorize('delete', $budget);
 
         $budget->delete();
-        return redirect()->route('budgets.index')->with('success', 'Budget deleted successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Budget deleted successfully.');
     }
 }

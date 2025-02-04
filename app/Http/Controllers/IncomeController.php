@@ -11,7 +11,7 @@ class IncomeController extends Controller
     public function index()
     {
         $incomes = Auth::user()->incomes; // Fetch incomes for the logged-in user
-        return view('incomes.index', compact('incomes'));
+        return view('financemanagement.index', compact('incomes'));
     }
 
     public function create()
@@ -30,7 +30,7 @@ class IncomeController extends Controller
 
         Auth::user()->incomes()->create($request->all());
 
-        return redirect()->route('incomes.index')->with('success', 'Income created successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Income created successfully.');
     }
 
     public function show(Income $income)
@@ -58,7 +58,7 @@ class IncomeController extends Controller
 
         $income->update($request->all());
 
-        return redirect()->route('incomes.index')->with('success', 'Income updated successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Income updated successfully.');
     }
 
     public function destroy(Income $income)
@@ -66,6 +66,6 @@ class IncomeController extends Controller
         $this->authorize('delete', $income); // Add authorization check
         $income->delete();
 
-        return redirect()->route('incomes.index')->with('success', 'Income deleted successfully.');
+        return redirect()->route('financemanagement.index')->with('success', 'Income deleted successfully.');
     }
 }
