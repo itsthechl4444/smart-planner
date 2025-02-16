@@ -40,25 +40,6 @@ body {
     height: 65px; /* Set consistent height */
 }
 
-/* Menu icon */
-.menu-icon {
-    position: absolute; /* Position absolutely to the left */
-    left: 20px; /* Align with left padding */
-    font-size: 24px;
-    cursor: pointer;
-    color: #808080;
-    background: none; /* Remove default button background */
-    border: none; /* Remove default button border */
-}
-
-.menu-icon {
-    transition: transform var(--transition-speed);
-}
-
-.menu-icon:hover {
-    transform: rotate(90deg);
-}
-
 /* Title in header */
 .title {
     font-size: 20px;
@@ -132,6 +113,16 @@ body {
 
 .clear-search:hover {
     color: #555;
+}
+
+/* Additional adjustments for search results text */
+.search-results h2 {
+    text-align: center;
+    font-size: 16px; /* Slightly smaller than default */
+}
+.search-results .nothing-here p {
+    text-align: center;
+    font-size: 14px; /* Smaller text for search results */
 }
 
 /* Responsive adjustments for global search bar */
@@ -599,21 +590,6 @@ body {
 /* Hover effect for FAB option */
 .fab-option:hover {
     background-color: #e0e0e0;
-}
-
-/* Adding bounce effect to FAB */
-.fab {
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
 }
 
 /* =========================================

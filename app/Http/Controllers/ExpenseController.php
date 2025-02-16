@@ -11,7 +11,8 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        $expenses = Auth::user()->expenses; // Fetch expenses associated with the logged-in user
+        // Fetch expenses associated with the logged-in user
+        $expenses = Auth::user()->expenses;
         return view('financemanagement.index', compact('expenses'));
     }
 
@@ -27,19 +28,19 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'amount' => 'required|numeric',
-            'category' => 'required|string',
-            'date' => 'required|date',
-            'currency' => 'required|string',
+            'name'           => 'required|string|max:255',
+            'description'    => 'nullable|string',
+            'amount'         => 'required|numeric',
+            'category'       => 'required|string',
+            'date'           => 'required|date',
+            'currency'       => 'required|string',
             'payment_method' => 'required|string',
-            'notes' => 'nullable|string',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,txt,zip|max:5120', // 5MB limit
+            'notes'          => 'nullable|string',
+            'attachment'     => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,txt,zip|max:5120', // 5MB limit
         ]);
 
         $expense = new Expense($request->all());
-        $expense->user_id = Auth::id(); // Associate expense with the logged-in user
+        $expense->user_id = Auth::id();
 
         if ($request->hasFile('attachment')) {
             $expense->attachment = $request->file('attachment')->store('attachments', 'public');
@@ -47,7 +48,9 @@ class ExpenseController extends Controller
 
         $expense->save();
 
-        return redirect()->route('financemanagement.index')->with('success', 'Expense created successfully.');
+        // Redirect to Finance Management page with '#expenses' hash to open the Expenses tab
+        return redirect(route('financemanagement.index') . '#expenses')
+            ->with('success', 'Expense created successfully.');
     }
 
     public function show(Expense $expense)
@@ -71,22 +74,22 @@ class ExpenseController extends Controller
         $this->authorize('update', $expense);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'amount' => 'required|numeric',
-            'category' => 'required|string',
-            'date' => 'required|date',
-            'currency' => 'required|string',
-            'payment_method' => 'required|string',
-            'notes' => 'nullable|string',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,txt,zip|max:5120', // 5MB limit
+            'name'             => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'amount'           => 'required|numeric',
+            'category'         => 'required|string',
+            'date'             => 'required|date',
+            'currency'         => 'required|string',
+            'payment_method'   => 'required|string',
+            'notes'            => 'nullable|string',
+            'attachment'       => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,txt,zip|max:5120', // 5MB limit
             'remove_attachment' => 'nullable|boolean',
         ]);
 
-        // Fill the expense with the request data except 'attachment' and 'remove_attachment'
+        // Update expense details (except attachment fields)
         $expense->fill($request->except(['attachment', 'remove_attachment']));
 
-        // Handle attachment removal
+        // Remove current attachment if requested
         if ($request->has('remove_attachment') && $request->remove_attachment) {
             if ($expense->attachment) {
                 Storage::disk('public')->delete($expense->attachment);
@@ -94,19 +97,19 @@ class ExpenseController extends Controller
             }
         }
 
-        // Handle new attachment upload
+        // Handle new attachment upload if provided
         if ($request->hasFile('attachment')) {
-            // Delete old attachment if it exists
             if ($expense->attachment) {
                 Storage::disk('public')->delete($expense->attachment);
             }
-            // Store the new attachment
             $expense->attachment = $request->file('attachment')->store('attachments', 'public');
         }
 
         $expense->save();
 
-        return redirect()->route('financemanagement.index')->with('success', 'Expense updated successfully.');
+        // Redirect to Finance Management page with '#expenses' hash to ensure the Expenses section is active
+        return redirect(route('financemanagement.index') . '#expenses')
+            ->with('success', 'Expense updated successfully.');
     }
 
     public function destroy(Expense $expense)
@@ -119,6 +122,7 @@ class ExpenseController extends Controller
 
         $expense->delete();
 
-        return redirect()->route('financemanagement.index')->with('success', 'Expense deleted successfully.');
+        return redirect(route('financemanagement.index') . '#expenses')
+            ->with('success', 'Expense deleted successfully.');
     }
 }

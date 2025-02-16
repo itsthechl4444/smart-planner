@@ -24,11 +24,11 @@ class FinanceManagementController extends Controller
         $debts = Debt::where('user_id', $userId)->get();
         $budgets = Budget::where('user_id', $userId)->get();
         $savings = Saving::where('user_id', $userId)->get();
-         // Define or fetch currencies
-         $currencies = ['PHP', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'SEK', 'NZD'];
-         $categories = ['Food', 'Transportation', 'Utilities', 'Entertainment', 'Healthcare'];
-         $paymentMethods = ['Cash', 'Card', 'ATM', 'Online'];
-         $periods = [
+        // Define or fetch currencies
+        $currencies = ['PHP', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'SEK', 'NZD'];
+        $categories = ['Food', 'Transportation', 'Utilities', 'Entertainment', 'Healthcare'];
+        $paymentMethods = ['Cash', 'Card', 'ATM', 'Online'];
+        $periods = [
             'week' => 'This Week',
             'month' => 'This Month',
         ];

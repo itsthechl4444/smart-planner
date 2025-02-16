@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- 1. Meta and Title -->
+    <!-- ========================
+         1. Meta and Title
+    ========================= -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Favicon -->
+     <link rel="icon" href="/images/LogoPNG.png" type="image/png">
     <title>Smart Planner Calendar</title>
 
     <!-- CSRF Token for AJAX Requests -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- 2. External Stylesheets -->
+    <!-- =========================
+         2. External Stylesheets
+    ========================== -->
     <!-- FullCalendar CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" />
 
@@ -22,14 +28,18 @@
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
-    <!-- Sidebar CSS -->
+    <!-- Sidebar CSS (if you have a sidebar) -->
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 
-    <!-- 3. Custom CSS -->
+    <!-- =======================
+         3. Custom CSS Section
+    ======================== -->
     <style>
-        /* Theme Colors */
+        /* -----------------------------------------------------
+           THEME COLORS & GLOBAL VARIABLES
+           ----------------------------------------------------- */
         :root {
-            --primary-color: #6c757d;       /* Gray */
+            --primary-color: #6c757d;       /* Gray for highlights */
             --secondary-color: #adb5bd;     /* Light Gray */
             --light-color: #f8f9fa;         /* Very Light Gray */
             --dark-color: #343a40;          /* Darker Gray */
@@ -41,38 +51,31 @@
             --text-gray: #808080;           /* Gray for day numbers and week titles */
             --no-underline: none;           /* Remove underlines */
             --event-hover-bg: #495057;      /* Darker background on event hover */
-            --transition-speed: 0.3s;       /* Transition duration */
+            --transition-speed: 0.3s;       /* Transition duration for hovers */
         }
 
-        /* Global Styles */
+        /* --------------------------------------
+           GLOBAL STYLES & BODY BACKGROUND
+           -------------------------------------- */
         body {
             font-family: "Open Sans", sans-serif;
             margin: 0;
-            background: var(--background-color) !important;
-            color: #808080;
+            background: linear-gradient(to right, #f9f9f9, #f5f5f5);
+            color: #808080; /* Default text color */
         }
 
-        /* Header Styles */
+        /* --------------------------------------
+           HEADER STYLES
+           -------------------------------------- */
         .header {
             display: flex;
             align-items: center;
             padding: 10px 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(to right, #f9f9f9, #f5f5f5);
             position: sticky;
             top: 0;
             z-index: 1000;
-            height: 60px;
-        }
-
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-            transition: transform var(--transition-speed);
-        }
-
-        .menu-icon:hover {
-            transform: rotate(90deg);
+            height: 60px; /* Fixed header height */
         }
 
         .title {
@@ -83,14 +86,24 @@
             color: #333;
         }
 
-        /* Calendar Container */
+        /* --------------------------------------
+           CALENDAR CONTAINER
+           -------------------------------------- */
         .calendar-container {
-            padding: 80px 20px 20px;
+            /*
+             * Reduced top padding to move the content
+             * closer to the header, plus added extra
+             * bottom padding (80px) so the bottom navbar 
+             * doesn't overlap the container content.
+             */
+            padding: 50px 20px 80px; 
             max-width: 100%;
             box-sizing: border-box;
         }
 
-        /* Section Divider */
+        /* --------------------------------------
+           SECTION DIVIDER
+           -------------------------------------- */
         .section-divider {
             margin: 40px 0;
             border: 0;
@@ -98,11 +111,13 @@
             background: linear-gradient(to right, transparent, #ccc, transparent);
         }
 
-        /* Illustration Image */
+        /* --------------------------------------
+           ILLUSTRATION IMAGE
+           -------------------------------------- */
         .illustration-image {
             display: block;
-            margin: 0 auto 20px auto; /* Center horizontally with bottom margin */
-            max-width: 30%; /* Adjust as needed */
+            margin: 0 auto 20px auto;  /* Center horizontally with bottom margin */
+            max-width: 30%;            /* Adjust as needed */
             height: auto;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -114,7 +129,7 @@
             transform: scale(1.05);
         }
 
-        /* Animation for the illustration */
+        /* Floating animation */
         @keyframes float {
             0%, 100% {
                 transform: translateY(0);
@@ -124,23 +139,24 @@
             }
         }
 
-        /* Organized Container for Filter and Cards */
+        /* --------------------------------------
+           FILTER AND CARDS CONTAINER
+           -------------------------------------- */
         .filter-and-cards-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
-            /* White container styles */
             background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* Cards Section */
         .cards-section {
             padding: 20px 0;
         }
 
+        /* Cards Container for dynamic data */
         .cards-container {
             margin-top: 20px;
             display: flex;
@@ -149,17 +165,18 @@
             width: 100%;
         }
 
+        /* Card Styles */
         .card {
             margin-bottom: 20px;
             width: 100%;
-            max-width: 500px; /* Adjust the max-width as needed */
-            height: 150px; /* Fixed height for consistency */
+            max-width: 500px;   /* Adjust the max-width as needed */
+            height: 150px;      /* Fixed height for consistency */
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
             position: relative;
-            background-color: #ffffff; /* White background */
-            border: 1px solid #ddd;    /* Light border */
-            border-radius: 8px;        /* Rounded corners */
-            overflow: hidden;          /* Prevent content overflow */
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .card:hover {
@@ -167,7 +184,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        /* "Nothing here" Message Styles */
+        /* Message when no data is available */
         .no-data-message {
             text-align: center;
             color: #6c757d;
@@ -175,20 +192,21 @@
             margin-top: 40px;
         }
 
-        /* =========================================
-           FullCalendar Customizations
-        ========================================= */
-        /* Toolbar Title */
+        /* --------------------------------------
+           FULLCALENDAR CUSTOMIZATION
+           -------------------------------------- */
+        /* Calendar Toolbar Title */
         .fc .fc-toolbar-title {
-            color: var(--secondary-color);
+            color: #333;
             font-size: 1.5rem;
+            align-self: center;
         }
 
-        /* Adjust FullCalendar button colors to lighter gray */
+        /* Calendar Buttons (previous, next, today, etc.) */
         .fc .fc-button {
-            background-color: var(--button-color) !important;
+            background-color: #6f6868 !important;
             border-color: var(--button-color) !important;
-            color: #333 !important; /* Dark text for readability */
+            color: #f0f0f0 !important;
             padding: 5px 10px;
             font-size: 0.9rem;
             border-radius: 4px;
@@ -201,44 +219,44 @@
             border-color: var(--button-hover-color) !important;
         }
 
-        /* Today's date background */
+        /* Highlight Today's Date */
         .fc .fc-day-today {
             background-color: #e9ecef;
         }
 
-        /* Change day numbers and week titles to gray and remove underlines */
+        /* Gray color for day numbers and week titles, remove underlines */
         .fc .fc-col-header-cell-cushion,
         .fc .fc-daygrid-day-number {
-            color: var(--text-gray) !important; /* Gray color */
-            text-decoration: var(--no-underline) !important; /* Remove underlines */
+            color: var(--text-gray) !important;
+            text-decoration: var(--no-underline) !important;
             transition: color var(--transition-speed);
         }
 
-        /* Remove underlines on hover */
+        /* Subtle hover change */
         .fc .fc-col-header-cell-cushion:hover,
         .fc .fc-daygrid-day-number:hover {
+            color: var(--primary-color) !important;
             text-decoration: var(--no-underline) !important;
-            color: var(--primary-color) !important; /* Slight color change on hover */
         }
 
-        /* Adjust the day cell height and limit events per day */
+        /* Fixed day cell height and limiting events */
         .fc .fc-daygrid-day-frame {
-            height: 130px !important; /* Fixed height with !important to override defaults */
+            height: 130px !important; /* Fix the height for a consistent grid */
             overflow: hidden;
             position: relative;
         }
 
         .fc .fc-daygrid-day-events {
-            max-height: 100px; /* Adjust based on max events you want to display */
+            max-height: 100px; /* Adjust to allow more or fewer events */
             overflow: hidden;
         }
 
-        /* Style the "more" link */
+        /* Styling the 'more' link in day cells */
         .fc .fc-more-link {
             position: absolute;
             bottom: 2px;
             left: 2px;
-            color: var(--secondary-color) !important; /* Gray color */
+            color: var(--secondary-color) !important;
             font-size: 0.8rem;
             text-decoration: none;
             cursor: pointer;
@@ -250,11 +268,11 @@
 
         .fc .fc-more-link:hover {
             text-decoration: underline;
-            background-color: rgba(173, 181, 189, 0.2); /* Light gray background on hover */
+            background-color: rgba(173, 181, 189, 0.2); /* Light gray background */
             color: var(--primary-color) !important;
         }
 
-        /* Event Styles */
+        /* Event blocks on the calendar */
         .fc-event {
             background-color: var(--dark-color);
             border: none;
@@ -272,39 +290,31 @@
             background-color: var(--event-hover-bg);
         }
 
-        /* Ensure events stack vertically without overlapping */
+        /* Ensure events stack without overlapping */
         .fc-daygrid-event {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* =========================================
-           Responsive Styles
-        ========================================= */
+        /* --------------------------------------
+           RESPONSIVE STYLES
+           -------------------------------------- */
         @media (max-width: 992px) {
             .illustration-image {
-                max-width: 35%; /* Further reduced size for medium screens */
+                max-width: 35%;
             }
         }
 
         @media (max-width: 768px) {
-            /* Adjust calendar container padding for tablets and below */
             .calendar-container {
-                padding: 70px 10px 10px;
+                padding: 40px 10px 80px; /* 80px bottom padding remains for nav */
             }
 
             .illustration-image {
-                max-width: 30%; /* Further reduced size for smaller screens */
-            }
-        }
-
-        @media (max-width: 576px) {
-            .calendar-container {
-                padding: 70px 10px 10px;
+                max-width: 40%;
             }
 
-            /* Adjust toolbar elements to fit in one line */
             .fc .fc-toolbar.fc-header-toolbar {
                 flex-wrap: nowrap;
                 flex-direction: row;
@@ -313,40 +323,38 @@
                 padding: 0 5px;
             }
 
-            /* Adjust the toolbar chunks */
             .fc .fc-toolbar-chunk {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
-            /* Adjust the title font size */
             .fc .fc-toolbar-title {
                 font-size: 1rem;
                 margin: 0 5px;
             }
 
-            /* Adjust button sizes */
             .fc .fc-button {
                 padding: 4px 6px;
                 font-size: 0.8rem;
                 margin: 0 2px;
             }
 
-            /* Adjust event font size */
             .fc-event {
                 font-size: 0.75rem;
                 padding: 1px 2px;
             }
-
-            /* Adjust illustration image on small screens */
-            .illustration-image {
-                max-width: 50%; /* Increase size for better visibility */
-            }
         }
 
-        @media (max-width: 400px) {
-            /* Further adjustments for very small screens */
+        @media (max-width: 576px) {
+            .calendar-container {
+                padding: 40px 10px 80px;
+            }
+
+            .illustration-image {
+                max-width: 50%;
+            }
+
             .fc .fc-toolbar.fc-header-toolbar {
                 padding: 0 2px;
             }
@@ -362,18 +370,14 @@
                 margin: 0 1px;
             }
 
-            /* Adjust event font size */
             .fc-event {
                 font-size: 0.65rem;
             }
-
-            /* Ensure illustration remains visible */
-            .illustration-image {
-                max-width: 40%; /* Adjusted to fit smaller screens */
-            }
         }
 
-        /* Modal Styles */
+        /* --------------------------------------
+           MODAL STYLES (FOR ADD TASK)
+           -------------------------------------- */
         .modal {
             display: none; /* Hidden by default */
             position: fixed;
@@ -388,7 +392,7 @@
 
         .modal-content {
             background-color: #ffffff;
-            margin: 10% auto; /* 10% from the top and centered */
+            margin: 10% auto; /* 10% from the top, centered */
             padding: 20px;
             border: 1px solid #888;
             width: 90%;
@@ -422,20 +426,26 @@
             cursor: pointer;
         }
 
-        /* Loading Spinner */
+        /* --------------------------------------
+           LOADING SPINNER
+           -------------------------------------- */
         .spinner-border {
             width: 3rem;
             height: 3rem;
         }
 
-        /* Error Message */
+        /* --------------------------------------
+           ERROR MESSAGE
+           -------------------------------------- */
         .error-message {
             color: red;
             text-align: center;
             margin-top: 20px;
         }
 
-        /* Card Link Styles */
+        /* --------------------------------------
+           CARD LINK (COVERS WHOLE CARD)
+           -------------------------------------- */
         .card a.stretched-link {
             position: absolute;
             top: 0;
@@ -444,17 +454,15 @@
             width: 100%;
             z-index: 1;
             text-decoration: none;
-            pointer-events: auto; /* Ensure the link is clickable */
+            pointer-events: auto; /* Make sure link is clickable */
         }
 
-        /* =========================================
-           10. Bottom Navbar Styles
-        ========================================= */
-
-        /* Base styles for Bottom Navbar (Visible on both Desktop and Mobile) */
+        /* --------------------------------------
+           BOTTOM NAVBAR
+           -------------------------------------- */
         .bottom-navbar {
             position: fixed;
-            bottom: 20px; /* 20px margin from bottom */
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #808080; /* Gray background */
@@ -464,110 +472,61 @@
             justify-content: space-around;
             align-items: center;
             padding: 10px 20px;
-            z-index: 999; /* Below FAB */
-            width: 300px; /* Default width for desktop */
-            transition:
-                background-color 0.3s ease,
-                box-shadow 0.3s ease;
+            z-index: 999;  /* Below FAB if you have a FAB */
+            width: 300px;  /* Default width for desktop */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Adjust Navbar Items */
         .bottom-navbar .navbar-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #ffffff; /* White icon and text color */
+            color: #ffffff;
             text-decoration: none;
             font-size: 12px;
-            transition:
-                color 0.3s ease,
-                transform 0.2s ease;
+            transition: color 0.3s ease, transform 0.2s ease;
         }
 
         .bottom-navbar .navbar-item i {
             font-size: 24px;
-            color: #ffffff; /* Ensure icons are white */
-            transition:
-                color 0.3s ease,
-                transform 0.2s ease;
+            color: #ffffff;
+            transition: color 0.3s ease, transform 0.2s ease;
         }
 
         .bottom-navbar .navbar-item:hover {
-            color: #dddddd; /* Lighten icon and text color on hover */
-            transform: translateY(-3px); /* Slight lift on hover */
+            color: #dddddd;
+            transform: translateY(-3px);
         }
 
         .bottom-navbar .navbar-item:hover i {
-            color: #ffffff; /* Keep icon color white on hover */
-            transform: scale(1.1); /* Slight scale-up on hover */
+            color: #ffffff;
+            transform: scale(1.1);
         }
 
-        /* Responsive Adjustments */
-
-        /* Mobile Styles */
         @media (max-width: 768px) {
             .bottom-navbar {
-                width: calc(100% - 40px); /* 20px margin on each side */
-                bottom: 20px; /* Maintain 20px margin from bottom */
-            }
-
-            /* Adjust FAB position to be above the bottom navbar with 15px space */
-            .fab {
-                bottom: calc(
-                    20px + 15px
-                ); /* Navbar bottom (20px) + 15px space = 35px */
-            }
-
-            /* FAB Options Position Adjustment */
-            .fab-options {
-                bottom: calc(35px + 10px); /* FAB bottom (35px) + 10px space = 45px */
+                width: calc(100% - 40px); /* 20px margin each side */
+                bottom: 20px;
             }
         }
 
         @media (max-width: 480px) {
             .bottom-navbar {
-                width: calc(100% - 40px); /* Maintain margins */
-                bottom: 20px; /* Adjusted to 20px from the bottom */
-            }
-
-            /* FAB Position Adjustment for Mobile */
-            .fab {
-                margin-bottom: 60px;
-            }
-
-            /* FAB Options Position Adjustment */
-            .fab-options {
-                margin-bottom: 120px;
+                width: calc(100% - 40px);
+                bottom: 20px;
             }
         }
 
-        /* Desktop Styles */
         @media (min-width: 769px) {
             .bottom-navbar {
-                width: 400px; /* Adjusted width for better aesthetics */
-                bottom: 20px; /* Maintain bottom spacing */
-            }
-
-            /* FAB remains at bottom-right corner */
-            .fab {
+                width: 400px; /* Slightly wider for desktop aesthetic */
                 bottom: 20px;
-                right: 20px;
-            }
-
-            /* Ensure icons have enough space */
-            .bottom-navbar .navbar-item {
-                font-size: 14px; /* Increased font-size for desktop */
-            }
-
-            .bottom-navbar .navbar-item i {
-                font-size: 26px; /* Increased icon size for desktop */
             }
         }
 
-        /* =========================================
-           11. Loading Overlay Styles
-        ========================================= */
-
+        /* --------------------------------------
+           LOADING OVERLAY (IF USED)
+           -------------------------------------- */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -578,7 +537,7 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 1003; /* Above FAB and Navbar */
+            z-index: 1003;
         }
 
         .loading-spinner {
@@ -596,72 +555,72 @@
             }
         }
 
-        /* =========================================
-           12. Form and Button Styles
-        ========================================= */
-
-        /* Spacing between form fields */
+        /* --------------------------------------
+           FORM & BUTTON STYLES
+           -------------------------------------- */
         .modal-body .form-group {
-            margin-bottom: 20px; /* Adjust the value as needed for spacing */
+            margin-bottom: 20px;
         }
 
-        /* Icon button styles */
         .icon-button {
             width: 40px;
             height: 40px;
-            border: 1px solid #808080; /* Added border for outline */
-            background-color: #ffffff; /* White background */
-            color: #808080; /* Gray icon color */
+            border: 1px solid #808080;
+            background-color: #ffffff;
+            color: #e6e6e6;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 4px; /* Slight rounding of corners */
+            border-radius: 4px;
             cursor: pointer;
-            transition:
-                background-color 0.3s ease,
-                color 0.3s ease;
-            margin-left: 8px; /* Space between buttons */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-left: 8px;
         }
 
         .icon-button:hover {
-            background-color: #808080; /* Gray background on hover */
-            color: #ffffff; /* White icon color on hover */
+            background-color: #808080;
+            color: #ffffff;
         }
 
         .icon-button .material-icons-outlined {
-            font-size: 24px; /* Adjust icon size as needed */
+            font-size: 24px;
         }
-
     </style>
 </head>
+
 <body>
-    <!-- 1. Header Section -->
-    <header class="header">
-        <!-- Menu Icon to Toggle Sidebar -->
-        <div class="menu-icon" id="menu-icon" aria-label="Toggle Sidebar" role="button" tabindex="0" title="Toggle Sidebar">
-            <i class="bi bi-list"></i>
-        </div>
-        <!-- Title of the Calendar -->
-        <div class="title">Calendar</div>
-    </header>
+    <!-- =========================
+         CUSTOM LOADER (OPTIONAL)
+         ========================= -->
+    @include('partials.loader')
 
-    <!-- 2. Sidebar Inclusion -->
-    @include('partials.sidebar')
+    <!-- =========================
+         1. HEADER SECTION
+         ========================= -->
 
-    <!-- 3. Main Content Area -->
+    <!-- =========================
+         2. MAIN CONTENT AREA
+         ========================= -->
     <div class="calendar-container">
-        <!-- Calendar Element -->
+        <!-- FullCalendar Element -->
         <div id="calendar" aria-label="Calendar"></div>
 
-        <!-- Line Divider -->
+        <!-- Section Divider -->
         <hr class="section-divider">
 
-        <!-- Illustration Image (Placed Above the Filter and Cards Container) -->
-        <img src="{{ asset('images/calendar.png') }}" alt="Calendar Illustration" class="illustration-image" data-bs-toggle="tooltip" data-bs-placement="top" title="Your personal calendar">
+        <!-- Illustration Image -->
+        <img 
+            src="{{ asset('images/calendar.png') }}" 
+            alt="Calendar Illustration" 
+            class="illustration-image" 
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            title="Your personal calendar"
+        >
 
         <!-- Combined Container for Filter and Cards -->
         <div class="filter-and-cards-container">
-            <!-- Filter Dropdown -->
+            <!-- Filter (Dropdown) -->
             <div class="d-flex justify-content-end mb-3">
                 <select id="filter-select" class="form-select w-auto" aria-label="Filter Calendar">
                     <option value="today">Today</option>
@@ -682,17 +641,19 @@
                 <!-- Error Message -->
                 <div id="error-message" class="error-message" role="alert" aria-live="assertive"></div>
 
-                <!-- Cards Container -->
+                <!-- Container for dynamically loaded cards -->
                 <div id="cards-container" class="cards-container">
-                    <!-- Cards will be dynamically inserted here -->
+                    <!-- Cards will be inserted here via JS -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 4. Bottom Navbar Integration -->
-    <!-- Bottom Navbar -->
+    <!-- =========================
+         3. BOTTOM NAVBAR
+         ========================= -->
     <nav class="bottom-navbar" role="navigation" aria-label="Bottom Navigation">
+        <!-- Example Navbar Items -->
         <a href="{{ route('dashboard') }}" class="navbar-item" aria-label="Dashboard" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="top">
             <i class="bi bi-house-door" aria-hidden="true"></i>
         </a>
@@ -715,9 +676,10 @@
             <i class="bi bi-bar-chart" aria-hidden="true"></i>
         </a>
     </nav>
-    <!-- End of Bottom Navbar Integration -->
 
-    <!-- 5. Add Task Modal -->
+    <!-- =========================
+         4. ADD TASK MODAL
+         ========================= -->
     <div id="add-task-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="add-task-title" aria-describedby="add-task-body">
         <div class="modal-content">
             <!-- Close Button for Modal -->
@@ -729,72 +691,131 @@
                 @csrf
                 <div class="mb-3">
                     <label for="task-title" class="form-label">Title</label>
-                    <input type="text" id="task-title" name="title" class="form-control" required aria-required="true" data-bs-toggle="tooltip" data-bs-placement="right" title="Enter the task title">
+                    <input 
+                        type="text" 
+                        id="task-title" 
+                        name="title" 
+                        class="form-control" 
+                        required 
+                        aria-required="true"
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="right" 
+                        title="Enter the task title"
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="task-due-date" class="form-label">Due Date</label>
-                    <input type="date" id="task-due-date" name="due_date" class="form-control" required aria-required="true" data-bs-toggle="tooltip" data-bs-placement="right" title="Select the due date">
+                    <input 
+                        type="date" 
+                        id="task-due-date" 
+                        name="due_date" 
+                        class="form-control" 
+                        required 
+                        aria-required="true"
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="right" 
+                        title="Select the due date"
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="task-description" class="form-label">Description</label>
-                    <textarea id="task-description" name="description" class="form-control" aria-describedby="descriptionHelp" data-bs-toggle="tooltip" data-bs-placement="right" title="Provide a description for the task"></textarea>
+                    <textarea 
+                        id="task-description" 
+                        name="description" 
+                        class="form-control" 
+                        aria-describedby="descriptionHelp"
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="right" 
+                        title="Provide a description for the task"
+                    ></textarea>
                 </div>
-                <button type="submit" id="save-task-button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to save the task">Save Task</button>
+                <button 
+                    type="submit" 
+                    id="save-task-button" 
+                    class="btn btn-primary"
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="top" 
+                    title="Click to save the task"
+                >
+                    Save Task
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- 6. External Scripts -->
+    <!-- =========================
+         5. EXTERNAL SCRIPTS
+         ========================= -->
     <!-- FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Sidebar JS -->
-    <script src="{{ asset('js/sidebar.js') }}"></script>
+    <!-- Custom Loader JS (if used) -->
+    <script src="{{ asset('js/loader.js') }}"></script>
 
-    <!-- 7. Custom Scripts -->
+    <!-- =========================
+         6. CUSTOM SCRIPTS
+         ========================= -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Bootstrap Tooltips
+            // ---------------------------------------
+            // 1. BOOTSTRAP TOOLTIP INITIALIZATION
+            // ---------------------------------------
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
-            // Get references to DOM elements
+            // DOM Elements for Calendar
             var calendarEl = document.getElementById('calendar');
 
-            // Get Filter Elements
+            // DOM Elements for Filtering & Cards
             var filterSelect = document.getElementById('filter-select');
             var cardsContainer = document.getElementById('cards-container');
             var loadingSpinner = document.getElementById('loading-spinner');
             var errorMessage = document.getElementById('error-message');
 
-            // Initialize FullCalendar
+            // ---------------------------------------
+            // 2. FULLCALENDAR INITIALIZATION
+            // ---------------------------------------
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                /*
+                 * Dynamic initial view: 
+                 * Use listMonth on smaller screens 
+                 * and dayGridMonth on larger screens.
+                 */
                 initialView: getInitialView(),
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,listMonth'
                 },
-                dayMaxEvents: 5, // Limit to 5 events per day
-                moreLinkText: '...', // Display three dots when there are more events
+                /*
+                 * Limit events per day and set text 
+                 * for "more" link in day cells.
+                 */
+                dayMaxEvents: 5,
+                moreLinkText: '...',
+                
+                /*
+                 * Event Sources 
+                 * (Tasks, Debts, Expenses, Savings)
+                 */
                 eventSources: [
                     {
                         url: '{{ route("calendar.tasks") }}',
                         method: 'GET',
                         extraParams: function() {
                             return {
-                                filter: filterSelect.value // Dynamic filter parameter
+                                filter: filterSelect.value
                             };
                         },
                         failure: function() {
                             showToast('There was an error while fetching tasks!', 'danger');
                         },
-                        color: '#6c757d', // Gray color for tasks
+                        color: '#6c757d',  // Gray color
                         textColor: '#ffffff'
                     },
                     {
@@ -802,13 +823,13 @@
                         method: 'GET',
                         extraParams: function() {
                             return {
-                                filter: filterSelect.value // Dynamic filter parameter
+                                filter: filterSelect.value
                             };
                         },
                         failure: function() {
                             showToast('There was an error while fetching debts!', 'danger');
                         },
-                        color: '#495057', // Dark Gray color for debts
+                        color: '#495057',  // Dark Gray color
                         textColor: '#ffffff'
                     },
                     {
@@ -816,13 +837,13 @@
                         method: 'GET',
                         extraParams: function() {
                             return {
-                                filter: filterSelect.value // Dynamic filter parameter
+                                filter: filterSelect.value
                             };
                         },
                         failure: function() {
                             showToast('There was an error while fetching expenses!', 'danger');
                         },
-                        color: '#adb5bd', // Light Gray color for expenses
+                        color: '#adb5bd', // Light Gray color
                         textColor: '#ffffff'
                     },
                     {
@@ -830,21 +851,22 @@
                         method: 'GET',
                         extraParams: function() {
                             return {
-                                filter: filterSelect.value // Dynamic filter parameter
+                                filter: filterSelect.value
                             };
                         },
                         failure: function() {
                             showToast('There was an error while fetching savings!', 'danger');
                         },
-                        color: '#868e96', // Medium Gray color for savings
+                        color: '#868e96', // Medium Gray color
                         textColor: '#ffffff'
                     }
                 ],
+                /*
+                 * On event click, if it has a URL,
+                 * go to that URL. Otherwise, show a warning.
+                 */
                 eventClick: function(info) {
-                    // Prevent default behavior
                     info.jsEvent.preventDefault();
-
-                    // Redirect to the event's URL
                     if (info.event.url) {
                         window.location.href = info.event.url;
                     } else {
@@ -854,8 +876,13 @@
                 height: 'auto',
                 navLinks: true,
                 editable: false,
-                dayMaxEventRows: true, // Enable the "more" link
+                dayMaxEventRows: true,
                 selectable: false,
+
+                /*
+                 * Listen to window resize 
+                 * and switch view type if needed.
+                 */
                 windowResize: function(view) {
                     var newView = getInitialView();
                     if (calendar.view.type !== newView) {
@@ -864,23 +891,31 @@
                 }
             });
 
+            // Render the calendar
             calendar.render();
 
+            /*
+             * Decide which initial view to use
+             * based on the screen width.
+             */
             function getInitialView() {
                 return window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth';
             }
 
-            // Add Task Modal Logic
+            // ---------------------------------------
+            // 3. ADD TASK MODAL LOGIC
+            // ---------------------------------------
             var addTaskModal = document.getElementById('add-task-modal');
             var addTaskClose = document.getElementById('add-task-close');
             var addTaskForm = document.getElementById('add-task-form');
 
+            // Close the modal on close icon click
             addTaskClose.onclick = function() {
                 addTaskModal.style.display = 'none';
                 addTaskModal.setAttribute('aria-hidden', 'true');
             }
 
-            // Close modal when clicking outside the modal content
+            // Close the modal if user clicks outside the modal content
             window.onclick = function(event) {
                 if (event.target == addTaskModal) {
                     addTaskModal.style.display = 'none';
@@ -888,9 +923,9 @@
                 }
             }
 
+            // Handle form submission to add a new task
             addTaskForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-
                 var formData = new FormData(addTaskForm);
 
                 fetch('{{ route("tasks.store") }}', {
@@ -927,12 +962,19 @@
                     }
                 })
                 .then(data => {
+                    // Close modal on success
                     addTaskModal.style.display = 'none';
                     addTaskModal.setAttribute('aria-hidden', 'true');
                     addTaskForm.reset();
+
+                    // Show success message
                     showToast(data.message, 'success');
+
+                    // Refresh the calendar events
                     calendar.refetchEvents();
-                    loadCards(); // Refresh cards after adding a new task
+
+                    // Refresh the cards list
+                    loadCards();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -942,14 +984,20 @@
                 });
             });
 
-            // Load Cards Function
+            // ---------------------------------------
+            // 4. LOADING CARDS (TASKS/DEBTS/ETC.)
+            // ---------------------------------------
             function loadCards() {
                 var filter = filterSelect.value;
                 loadingSpinner.style.display = 'block';
                 errorMessage.textContent = '';
                 cardsContainer.innerHTML = '';
 
-                // Define the URLs for fetching each type of reminder
+                /*
+                 * We'll fetch data for tasks, debts, expenses,
+                 * and savings from separate endpoints, then
+                 * combine them into a single array.
+                 */
                 var urls = [
                     '{{ route("calendar.tasks") }}?filter=' + filter,
                     '{{ route("calendar.debts") }}?filter=' + filter,
@@ -957,27 +1005,27 @@
                     '{{ route("calendar.savings") }}?filter=' + filter
                 ];
 
-                // Create an array of fetch Promises
-                var fetchPromises = urls.map(url => fetch(url, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    credentials: 'same-origin',
-                }).then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok for ' + url);
-                    }
-                    return response.json();
-                }));
+                var fetchPromises = urls.map(url => 
+                    fetch(url, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        credentials: 'same-origin',
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok for ' + url);
+                        }
+                        return response.json();
+                    })
+                );
 
-                // Wait for all fetches to complete
                 Promise.all(fetchPromises)
                     .then(results => {
-                        // Combine all results into one array
+                        // Combine all data from each endpoint
                         var combinedData = [].concat(...results);
-                        // Sort the combined data by start date
+                        
+                        // Sort the data by start date (ascending)
                         combinedData.sort((a, b) => new Date(a.start) - new Date(b.start));
-                        // Render the combined cards
+
+                        // Hide the spinner and render the cards
                         loadingSpinner.style.display = 'none';
                         renderCards(combinedData);
                     })
@@ -988,13 +1036,17 @@
                     });
             }
 
-            // Render Cards Function
+            /*
+             * renderCards(data)
+             * Dynamically create card elements for each item.
+             */
             function renderCards(data) {
                 cardsContainer.innerHTML = '';
                 if (!Array.isArray(data) || data.length === 0) {
                     cardsContainer.innerHTML = '<p class="no-data-message">Nothing here.</p>';
                     return;
                 }
+
                 data.forEach(item => {
                     var card = document.createElement('div');
                     card.className = 'card';
@@ -1002,10 +1054,12 @@
                     var cardBody = document.createElement('div');
                     cardBody.className = 'card-body';
 
+                    // Badge to indicate type of item (task, debt, etc.)
                     var type = document.createElement('span');
                     type.className = 'badge mb-2';
                     type.textContent = capitalizeFirstLetter(item.type);
 
+                    // Switch color based on item type
                     switch (item.type) {
                         case 'task':
                             type.classList.add('bg-secondary');
@@ -1023,22 +1077,22 @@
                             type.classList.add('bg-secondary');
                     }
 
+                    // Title
                     var title = document.createElement('h5');
                     title.className = 'card-title';
                     title.textContent = item.title || 'Untitled';
 
+                    // Date
                     var date = document.createElement('p');
                     date.className = 'card-text';
-                    // Use the 'start' field for the date
                     var dueDate = item.start;
-
                     if (dueDate && !isNaN(new Date(dueDate))) {
                         date.textContent = 'Due Date: ' + formatDate(dueDate);
                     } else {
                         date.textContent = 'Due Date: N/A';
                     }
 
-                    // Optional: Add Description if available
+                    // Optional: Description
                     if (item.extendedProps && item.extendedProps.description) {
                         var description = document.createElement('p');
                         description.className = 'card-text';
@@ -1050,9 +1104,9 @@
                     cardBody.appendChild(title);
                     cardBody.appendChild(date);
 
-                    // Create a link that covers the entire card using the 'url' field directly
+                    // Link covering the entire card
                     var link = document.createElement('a');
-                    link.href = item.url; // Directly use the 'url' from event data
+                    link.href = item.url; // Directly use the 'url' from the event data
                     link.className = 'stretched-link';
                     link.setAttribute('aria-label', 'View ' + capitalizeFirstLetter(item.type));
                     link.setAttribute('title', 'View ' + capitalizeFirstLetter(item.type));
@@ -1062,25 +1116,28 @@
                     link.setAttribute('data-bs-placement', 'top');
                     link.setAttribute('title', 'View ' + capitalizeFirstLetter(item.type));
 
+                    // Add the body and the link to the card
                     card.appendChild(cardBody);
                     card.appendChild(link);
+
+                    // Append the card to the container
                     cardsContainer.appendChild(card);
                 });
 
-                // Re-initialize Bootstrap Tooltips for dynamically added elements
+                // Re-initialize Bootstrap Tooltips for new elements
                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
                 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                     return new bootstrap.Tooltip(tooltipTriggerEl);
                 });
             }
 
-            // Helper Function to Capitalize First Letter
+            // Helper function: Capitalize first letter
             function capitalizeFirstLetter(string) {
                 if (!string) return '';
                 return string.charAt(0).toUpperCase() + string.slice(1);
             }
 
-            // Helper Function to Format Date (YYYY-MM-DD to readable format)
+            // Helper function: Format date from YYYY-MM-DD
             function formatDate(dateString) {
                 var date = new Date(dateString);
                 if (isNaN(date)) {
@@ -1090,20 +1147,24 @@
                 return date.toLocaleDateString(undefined, options);
             }
 
-            // Event Listener for Filter Change
+            /*
+             * On change of filter (today, week, month),
+             * reload the cards and refresh the event sources.
+             */
             filterSelect.addEventListener('change', function() {
                 loadCards();
-                // Update FullCalendar event sources with the new filter
                 calendar.getEventSources().forEach(source => {
                     source.setParams({ filter: filterSelect.value });
                     source.refetch();
                 });
             });
 
-            // Initial Load
+            // Initial call to load cards when the page loads
             loadCards();
 
-            // Function to Show Bootstrap Toasts
+            // ---------------------------------------
+            // 5. BOOTSTRAP TOAST NOTIFICATION
+            // ---------------------------------------
             function showToast(message, type = 'primary') {
                 // Create toast container if it doesn't exist
                 if (!document.querySelector('.toast-container')) {
@@ -1135,7 +1196,7 @@
                 var toast = new bootstrap.Toast(toastEl);
                 toast.show();
 
-                // Remove the toast from DOM after it hides
+                // Remove the toast element once hidden
                 toastEl.addEventListener('hidden.bs.toast', function () {
                     toastEl.remove();
                 });

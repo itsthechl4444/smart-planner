@@ -5,6 +5,7 @@ body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
     background: linear-gradient(to right, #f9f9f9, #f5f5f5);
+    animation: backgroundShift 15s ease infinite;
     color: #808080;
     height: 100%;
     display: flex;
@@ -21,7 +22,7 @@ html {
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Maintains space between left and right if other elements are present */
+    justify-content: space-between;
     padding: 10px 20px;
     background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     position: fixed;
@@ -47,7 +48,7 @@ html {
 .header-right {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Added to push the header-right to the far right */
+    margin-left: auto;
 }
 
 .notification-icon {
@@ -76,7 +77,6 @@ html {
     display: block;
 }
 
-/* Ensure the profile icon maintains its styling */
 .profile-icon a {
     color: #808080;
     text-decoration: none;
@@ -242,11 +242,10 @@ html {
     }
 }
 
-/* Task-card style from Task Management */
 .task-card {
     position: relative;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     margin: 5px 0;
     overflow: hidden;
     cursor: pointer;
@@ -266,7 +265,6 @@ html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Overdue tasks */
 .task-card.overdue {
     border-left: 5px solid red;
 }
@@ -304,7 +302,6 @@ html {
     font-weight: bold;
 }
 
-/* The top-right checkbox */
 .task-checkbox {
     position: absolute;
     top: 15px;
@@ -352,7 +349,6 @@ html {
     box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.5);
 }
 
-/* No-data message for tasks */
 .no-data-message {
     display: flex;
     flex-direction: column;
@@ -367,33 +363,23 @@ html {
 /* =========================================
   6. Finance Management Styles
 ========================================= */
-.goals-list,
-.budget-list {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 20px;
-    padding-bottom: 10px;
-    align-items: center;
-}
-
-.illustration-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.illustration {
-    max-width: 100%;
-    height: auto;
-    max-height: 200px;
-}
-
 .finance-summary {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
     margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .finance-summary {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+    .finance-card {
+        flex: 0 0 auto;
+        min-width: 250px;
+        margin-right: 10px;
+    }
 }
 
 .finance-card {
@@ -443,10 +429,7 @@ html {
     outline: none;
 }
 
-.tracker-header select:focus {
-    border-color: #888;
-}
-
+/* Chart wrapper for Expense Distribution */
 .chart-wrapper {
     display: flex;
     align-items: center;
@@ -463,13 +446,45 @@ html {
     max-width: 100%;
     max-height: 100%;
 }
+@keyframes floatAnimation {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+/* Illustration Container: Always center the illustration */
+.illustration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    animation: floatAnimation 3s ease-in-out infinite;
+}
 
+/* =========================================
+  Adjust Illustration Size for Desktop
+========================================= */
+@media (min-width: 992px) {
+    .illustration {
+        max-width: 250px; /* Reduced size for desktop */
+    }
+}
+
+/* =========================================
+  Budget Planner Section
+========================================= */
 .budget-planner-section {
     margin-top: 20px;
 }
 
 .budget-planner-section h2 {
     color: #808080;
+    font-size: 1.25rem;
 }
 
 .white-container {
@@ -526,12 +541,16 @@ html {
     color: #333;
 }
 
+/* =========================================
+  Financial Goals Section
+========================================= */
 .financial-goals-section {
     margin-top: 20px;
 }
 
 .financial-goals-section h2 {
     color: #808080;
+    font-size: 1.25rem;
 }
 
 .goals-list {
@@ -738,20 +757,7 @@ html {
     z-index: 1003;
 }
 
-.loading-spinner {
-    width: 60px;
-    height: 60px;
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #808080;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
+/* Spinner styles removed per requirements */
 
 /* =========================================
   11. Responsive Adjustments
@@ -760,29 +766,30 @@ html {
     .chart-wrapper .chart-title {
         font-size: 1rem;
     }
-
     .no-data-illustration,
     .illustration {
         max-width: 200px;
     }
-
     .task-filter {
         margin-top: 25px;
         margin-bottom: 20px;
     }
-
     .tabs {
         padding: 5px 0;
     }
-
     .tab-link {
         padding: 8px 12px;
         font-size: 14px;
     }
-
-    .bottom-navbar {
-        width: calc(100% - 40px);
-        bottom: 20px;
+    .tabs {
+        overflow-x: auto;
+    }
+    .tabs::-webkit-scrollbar {
+        display: none;
+    }
+    .tabs {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }
 
@@ -792,45 +799,39 @@ html {
     .notification-icon i {
         font-size: 24px;
     }
-
     .chart-wrapper {
         height: 250px;
     }
-
     .no-data-illustration,
     .illustration {
         max-width: 180px;
     }
-
     .main-content {
         padding: 130px 10px 170px;
     }
-
     .tabs {
         flex-wrap: nowrap;
     }
-
     .tab-link {
         white-space: nowrap;
         padding: 8px 10px;
         font-size: 14px;
     }
-
     .tabs {
         overflow-x: auto;
     }
-
     .tabs::-webkit-scrollbar {
         display: none;
     }
-
     .tabs {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
 }
 
-/* Ensure sufficient color contrast */
+/* =========================================
+  12. Text Color Adjustments for Readability
+========================================= */
 .no-data-message p,
 .finance-summary h3,
 .finance-summary p,
@@ -847,7 +848,9 @@ html {
     color: #333;
 }
 
-/* Custom Tooltip Styling */
+/* =========================================
+  13. Custom Tooltip Styling
+========================================= */
 .tooltip-inner {
     background-color: #333 !important;
     color: #fff !important;
@@ -861,10 +864,20 @@ html {
 }
 
 /* =========================================
-  12. Enhanced Filter Button Active State
+  14. Enhanced Filter Button Active State
 ========================================= */
 button.filter-btn.active {
     background-color: #808080;
     color: #fff;
     border-color: #808080;
+}
+
+/* =========================================
+  15. Finance Title Styling
+      (Uniform styling for Expense Distribution, Budget Planner, and Financial Goals titles)
+========================================= */
+.finance-title {
+    color: #808080;
+    font-size: 1.25rem;
+    margin: 0;
 }

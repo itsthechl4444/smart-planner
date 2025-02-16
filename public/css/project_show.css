@@ -427,21 +427,17 @@ body {
 7. Floating Action Button (FAB) Styles
 ========================================= */
 
-/* Floating Action Button */
-.fab-container {
+/* Floating action button */
+.fab {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 1000;
-}
-
-.fab {
     background-color: #808080;
     color: #fff;
     width: 60px;
     height: 60px;
-    border-radius: 50%;
-    display: flex;
+    border-radius: 10px; /* Slightly rounded corners */
+    display: none; /* Hidden by default, shown only on mobile */
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -449,25 +445,29 @@ body {
     transition:
         background-color 0.3s ease,
         transform 0.3s ease;
-}
-
-.fab:hover {
-    background-color: #555;
+    z-index: 1000; /* Ensure FAB is above other elements */
 }
 
 .fab i {
     font-size: 24px;
 }
 
+/* Hover effect for FAB */
+.fab:hover {
+    background-color: #555;
+    transform: scale(1.1);
+}
+
+/* FAB options container */
 .fab-options {
     display: none;
-    position: absolute;
-    bottom: 80px; /* Positioned above the FAB */
-    right: 0;
-    background-color: #ffffff;
-    border-radius: 50px;
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    background-color: #ffffff; /* White background */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 999;
     transition:
         opacity 0.3s ease,
@@ -497,8 +497,8 @@ body {
     font-size: 16px; /* Consistent font size */
 }
 
-.fab-option span.material-icons-outlined {
-    font-size: 24px;
+.fab-option i {
+    font-size: 18px;
     margin-right: 10px;
 }
 

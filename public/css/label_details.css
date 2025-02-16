@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #F5F5F5;
+    font-family: "Open Sans", sans-serif;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     color: #808080;
     margin: 0;
     box-sizing: border-box;
@@ -14,7 +14,7 @@ body {
     justify-content: space-between;
     height: 56px;
     padding: 0 20px;
-    background-color: #F5F5F5;
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     position: fixed;
     top: 0;
     left: 0;
@@ -36,41 +36,46 @@ body {
 .dropdown-trigger {
     cursor: pointer;
     color: #555;
-    font-size: 24px;
+    font-size: 24px; /* Material icon size */
 }
 
 /* Dropdown Styles */
-.dropdown-trigger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .dropdown-content {
-    position: fixed;
-    top: 56px;
-    right: 20px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
     display: none;
     background-color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    border-radius: 4px;
-    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
     border: 1px solid #ddd;
+    border-radius: 10px;
+    min-width: 150px;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
-
 .dropdown-content.open {
     display: block;
 }
 
+/* Same left and right padding, minimal whitespace */
 .dropdown-content li {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
+    padding: 10px 20px;
     cursor: pointer;
     white-space: nowrap;
+    font-size: 14px;
+}
+/* Light divider between items */
+.dropdown-content li + li {
+    border-top: 1px solid #ddd;
 }
 
+/* No extra horizontal padding in link/button; 
+     the <li> handles the main spacing. */
 .dropdown-content li a,
 .dropdown-content li form button {
     color: #555;
@@ -81,29 +86,20 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
-    padding: 12px 16px;
-    justify-content: flex-start;
+    font-size: 14px;
+    padding: 0;
 }
-
-.dropdown-content li span {
-    margin-right: 8px;
+/* Icon margin for clarity */
+.dropdown-content li span.material-symbols-outlined {
+    margin-right: 6px;
+    font-size: 20px;
 }
 
 .dropdown-content li:hover {
     background-color: #f0f0f0;
 }
-
 .dropdown-content form {
     margin: 0;
-}
-
-.dropdown-content form button {
-    padding: 12px 16px;
-}
-
-.dropdown-content form button:hover {
-    background-color: #f0f0f0;
 }
 
 /* Main Content */

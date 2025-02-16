@@ -59,9 +59,9 @@ class ProjectInvitationNotification extends Notification
                 <p>Hello {$notifiable->name},</p>
                 <p>{$this->inviter->name} has invited you to collaborate on the project '{$this->project->name}'.</p>
                 <p>
-                    <a href='{$acceptUrl}' style='padding: 10px 15px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 5px;'>Accept Invitation</a>
+                    <a href='{$acceptUrl}' style='padding: 10px 15px; background-color:rgb(70, 70, 70); color: #fff; text-decoration: none; border-radius: 5px;'>Accept Invitation</a>
                     &nbsp;
-                    <a href='{$declineUrl}' style='padding: 10px 15px; background-color: #dc3545; color: #fff; text-decoration: none; border-radius: 5px;'>Decline Invitation</a>
+                    <a href='{$declineUrl}' style='padding: 10px 15px; background-color:rgb(147, 147, 147); color: #fff; text-decoration: none; border-radius: 5px;'>Decline Invitation</a>
                 </p>
                 <p>We look forward to your collaboration!</p>
             ",

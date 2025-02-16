@@ -73,8 +73,8 @@ class ProjectController extends Controller
         // Create the project associated with the authenticated user as the owner
         $project = $user->ownedProjects()->create($validated);
 
-        // Redirect to the Task Management page with the "projects" tab active
-        return redirect()->route('taskmanagement.index')
+        // Redirect to the Task Management page with the projects section active using a URL fragment
+        return redirect()->to(route('taskmanagement.index') . '#projects')
             ->with('activeTab', 'projects')
             ->with('success', 'Project created successfully.');
     }
@@ -123,7 +123,10 @@ class ProjectController extends Controller
         // Update the project
         $project->update($validated);
 
-        return redirect()->route('projects.show', $project)->with('success', 'Project updated successfully.');
+        // Redirect to the Task Management page with the projects section active using a URL fragment
+        return redirect()->to(route('taskmanagement.index') . '#projects')
+            ->with('activeTab', 'projects')
+            ->with('success', 'Project updated successfully.');
     }
 
     /**
@@ -136,8 +139,10 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        // Redirect to the Task Management index after deletion
-        return redirect()->route('taskmanagement.index')->with('success', 'Project deleted successfully.');
+        // Redirect to the Task Management page with the projects section active using a URL fragment
+        return redirect()->to(route('taskmanagement.index') . '#projects')
+            ->with('activeTab', 'projects')
+            ->with('success', 'Project deleted successfully.');
     }
 
     /**

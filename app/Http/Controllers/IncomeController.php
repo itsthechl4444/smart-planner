@@ -24,48 +24,53 @@ class IncomeController extends Controller
         $request->validate([
             'source_name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'amount' => 'required|numeric',
-            'date' => 'required|date',
+            'amount'      => 'required|numeric',
+            'date'        => 'required|date',
         ]);
 
         Auth::user()->incomes()->create($request->all());
 
-        return redirect()->route('financemanagement.index')->with('success', 'Income created successfully.');
+        // Redirect back to the Finance Management page with the Incomes section active.
+        return redirect(route('financemanagement.index') . '#income')
+            ->with('success', 'Income created successfully.');
     }
 
     public function show(Income $income)
     {
-        $this->authorize('view', $income); // Add authorization check
+        $this->authorize('view', $income); // Authorization check
         return view('incomes.show', compact('income'));
     }
 
     public function edit(Income $income)
     {
-        $this->authorize('update', $income); // Add authorization check
+        $this->authorize('update', $income); // Authorization check
         return view('incomes.edit', compact('income'));
     }
 
     public function update(Request $request, Income $income)
     {
-        $this->authorize('update', $income); // Add authorization check
+        $this->authorize('update', $income); // Authorization check
 
         $request->validate([
             'source_name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'amount' => 'required|numeric',
-            'date' => 'required|date',
+            'amount'      => 'required|numeric',
+            'date'        => 'required|date',
         ]);
 
         $income->update($request->all());
 
-        return redirect()->route('financemanagement.index')->with('success', 'Income updated successfully.');
+        // Redirect back to the Finance Management page with the Incomes section active.
+        return redirect(route('financemanagement.index') . '#income')
+            ->with('success', 'Income updated successfully.');
     }
 
     public function destroy(Income $income)
     {
-        $this->authorize('delete', $income); // Add authorization check
+        $this->authorize('delete', $income); // Authorization check
         $income->delete();
 
-        return redirect()->route('financemanagement.index')->with('success', 'Income deleted successfully.');
+        return redirect(route('financemanagement.index') . '#income')
+            ->with('success', 'Income deleted successfully.');
     }
 }

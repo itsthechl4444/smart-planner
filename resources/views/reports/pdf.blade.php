@@ -4,28 +4,24 @@
     <meta charset="UTF-8">
     <title>Reports PDF</title>
     <style>
-        /* Basic styling for PDF */
+        /* Basic styling for PDF with Open Sans font */
         body {
-            font-family: "DejaVu Sans", sans-serif;
+            font-family: "Open Sans", sans-serif;
             color: #333;
             font-size: 12px;
         }
-
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
-
         .header h1 {
             margin: 0;
             font-size: 24px;
             color: #808080;
         }
-
         .section {
             margin-bottom: 20px;
         }
-
         .section h2 {
             font-size: 18px;
             color: #555;
@@ -33,31 +29,25 @@
             padding-bottom: 5px;
             margin-bottom: 10px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 10px;
         }
-
         table, th, td {
             border: 1px solid #ddd;
         }
-
         th, td {
             padding: 8px;
             text-align: left;
         }
-
         th {
             background-color: #f5f5f5;
             color: #333;
         }
-
         .total-row td {
             font-weight: bold;
         }
-
         .chart-placeholder {
             width: 100%;
             height: 200px;
@@ -138,7 +128,7 @@
                     @foreach($expenseSummary as $item)
                         <tr>
                             <td>{{ $item['category'] }}</td>
-                            <td>${{ number_format($item['amount_spent'], 2) }}</td>
+                            <td>PHP {{ number_format($item['amount_spent'], 2) }}</td>
                             <td>
                                 @if($item['percentage_of_budget'] > 100)
                                     <span style="color: red;">{{ number_format($item['percentage_of_budget'], 2) }}%</span>
@@ -150,8 +140,8 @@
                     @endforeach
                 </tbody>
             </table>
-            <p><strong>Total Budget:</strong> ${{ number_format($totalBudget, 2) }}</p>
-            <p><strong>Total Spent:</strong> ${{ number_format($totalSpent, 2) }}</p>
+            <p><strong>Total Budget:</strong> PHP {{ number_format($totalBudget, 2) }}</p>
+            <p><strong>Total Spent:</strong> PHP {{ number_format($totalSpent, 2) }}</p>
         @else
             <p>No expenses found for the selected period.</p>
         @endif
@@ -172,12 +162,12 @@
                     @foreach($incomeSummary as $item)
                         <tr>
                             <td>{{ $item['source_name'] }}</td>
-                            <td>${{ number_format($item['amount_received'], 2) }}</td>
+                            <td>PHP {{ number_format($item['amount_received'], 2) }}</td>
                         </tr>
                     @endforeach
                     <tr class="total-row">
                         <td>Total Income</td>
-                        <td>${{ number_format($totalIncome, 2) }}</td>
+                        <td>PHP {{ number_format($totalIncome, 2) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -203,14 +193,15 @@
                     @foreach($budgetProgress as $item)
                         <tr>
                             <td>{{ $item['category'] }}</td>
-                            <td>${{ number_format($item['allocated_budget'], 2) }}</td>
-                            <td>${{ number_format($item['amount_spent'], 2) }}</td>
+                            <td>PHP {{ number_format($item['allocated_budget'], 2) }}</td>
+                            <td>PHP {{ number_format($item['amount_spent'], 2) }}</td>
                             <td>
-                                @if($item['remaining_budget'] <= 0)
-                                    <span style="color: red;">${{ number_format($item['remaining_budget'], 2) }}</span>
-                                @else
-                                    <span style="color: green;">${{ number_format($item['remaining_budget'], 2) }}</span>
-                                @endif
+                                @php
+                                    $remaining = max(0, $item['remaining_budget']);
+                                @endphp
+                                <span style="color: {{ $remaining <= 0 ? 'red' : 'green' }};">
+                                    PHP {{ number_format($remaining, 2) }}
+                                </span>
                             </td>
                         </tr>
                     @endforeach

@@ -15,6 +15,11 @@ class LabelController extends Controller
         return view('labels.index', compact('labels'));
     }
 
+    /**
+     * Display the form to create a new label.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('labels.create');
@@ -23,16 +28,16 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
+            'name'        => 'required|max:255',
             'description' => 'nullable',
-            'color' => 'nullable',
+            'color'       => 'nullable',
         ]);
 
         // Create the label with the associated user_id
         Auth::user()->labels()->create($request->all());
 
-        // Redirect to the task management page with the "labels" tab active
-        return redirect()->route('taskmanagement.index')
+        // Redirect to the task management index with the labels section active using the URL fragment
+        return redirect()->to(route('taskmanagement.index') . '#labels')
             ->with('activeTab', 'labels')
             ->with('success', 'Label created successfully.');
     }
@@ -56,9 +61,9 @@ class LabelController extends Controller
     public function update(Request $request, Label $label)
     {
         $request->validate([
-            'name' => 'required|max:255',
+            'name'        => 'required|max:255',
             'description' => 'nullable',
-            'color' => 'nullable',
+            'color'       => 'nullable',
         ]);
 
         // Ensure the label belongs to the logged-in user
@@ -66,7 +71,10 @@ class LabelController extends Controller
 
         $label->update($request->all());
 
-        return redirect()->route('labels.index')->with('success', 'Label updated successfully.');
+        // Redirect to the task management index with the labels section active using the URL fragment
+        return redirect()->to(route('taskmanagement.index') . '#labels')
+            ->with('activeTab', 'labels')
+            ->with('success', 'Label updated successfully.');
     }
 
     public function destroy(Label $label)
@@ -76,6 +84,9 @@ class LabelController extends Controller
 
         $label->delete();
 
-        return redirect()->route('labels.index')->with('success', 'Label deleted successfully.');
+        // Redirect to the task management index with the labels section active using the URL fragment
+        return redirect()->to(route('taskmanagement.index') . '#labels')
+            ->with('activeTab', 'labels')
+            ->with('success', 'Label deleted successfully.');
     }
 }

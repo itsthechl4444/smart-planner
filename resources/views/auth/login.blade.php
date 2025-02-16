@@ -6,15 +6,15 @@
     <!-- Ensure proper scaling on different devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 
-     <!-- Favicon -->
-     <link rel="icon" href="/images/LogoPNG.png" type="image/png">
+    <!-- Favicon -->
+    <link rel="icon" href="/images/LogoPNG.png" type="image/png">
     <title>Login</title>
     
     <!-- Google Fonts: Open Sans for text styling -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"> 
     <!-- Material Icons for password visibility toggle -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
-    
+
     <!-- Embedded CSS for Login Page -->
     <style>
         /* Body styles */
@@ -109,11 +109,20 @@
             margin-bottom: 10px; /* Spacing below heading */
         }
 
-        /* Illustration styles */
+        /* Illustration styles with added animation */
         .illustration {
             max-width: 70%; /* Enlarge illustration on mobile */
             height: auto; /* Maintain aspect ratio */
             margin: 15px 0; /* Spacing around illustration */
+            /* Floating animation */
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Keyframes for the floating animation */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
         }
 
         /* Form styles */
@@ -333,7 +342,7 @@
         <!-- Desktop layout: Left and Right sections -->
         <div class="left-section">
             <h1>Login</h1> <!-- Main heading -->
-            <img src="{{ asset('images/signin.png') }}" alt="Login Illustration" class="illustration"> <!-- Illustration for visual appeal -->
+            <img src="{{ asset('images/signin.png') }}" alt="Login Illustration" class="illustration"> <!-- Animated illustration for visual appeal -->
         </div>
         
         <div class="right-section">

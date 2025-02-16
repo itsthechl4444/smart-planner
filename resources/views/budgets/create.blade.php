@@ -98,6 +98,7 @@
                     @enderror
                 </div>
 
+                <!-- Account dropdown: Optional -->
                 <div class="form-group">
                     <select class="form-control" id="account_id" name="account_id">
                         <option value="">None</option>

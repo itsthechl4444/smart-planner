@@ -23,7 +23,7 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
-/* Back Icon Style */
+/* Back Icon and Save Button Styles */
 .back-icon,
 .save-btn {
     cursor: pointer;
@@ -51,7 +51,7 @@ main {
     text-align: center;
 }
 
-/* Enhanced Illustration Styles */
+/* Illustration Section */
 .illustration {
     margin-bottom: 30px;
     display: flex;
@@ -60,11 +60,11 @@ main {
 }
 
 .illustration img {
-    max-width: 100%; /* Increased from 90% to 100% */
+    max-width: 100%;
     height: auto;
-    max-height: 400px; /* Increased from 300px to 400px */
+    max-height: 400px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Form Group Styles */
@@ -109,6 +109,7 @@ main {
 }
 
 /* btn-get-started Styles */
+/* This class is used for the Send Invitation, Remove, and Cancel Invitation buttons */
 .btn-get-started {
     margin-top: 20px;
     background-color: #666;
@@ -132,77 +133,42 @@ main {
     color: white;
 }
 
-/* Other existing styles... */
+/* List Group Styles */
+.list-group {
+    margin: 20px 0;
+    padding-left: 0;
+}
 
-/* Media queries for responsiveness */
+.list-group-item {
+    display: flex;
+    flex-direction: column; /* Stack name and button vertically */
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Media Queries for Responsiveness */
 @media (max-width: 767px) {
-    /* Mobile styles */
-    .fixed-header h1 {
-        font-size: 1.5rem; /* Adjusted for smaller screens */
-    }
-
-    .fixed-header p.lead {
-        font-size: 0.8rem; /* Adjusted for smaller screens */
-    }
-
-    .onboarding p {
-        font-size: 0.9rem; /* Adjusted for smaller screens */
-    }
-
     .btn-get-started {
-        width: 200px; /* Adjusted for smaller screens */
-        font-size: 0.9rem; /* Adjusted for smaller screens */
-    }
-
-    .carousel-inner {
-        max-width: 250px; /* Adjusted for smaller screens */
+        width: 200px;
+        font-size: 1rem;
     }
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
-    /* Tablet styles */
-    .fixed-header h1 {
-        font-size: 1.8rem; /* Adjusted for tablets */
+@media (max-width: 480px) {
+    .app-bar {
+        padding: 0 10px;
     }
-
-    .fixed-header p.lead {
-        font-size: 0.9rem; /* Adjusted for tablets */
+    .app-bar-title {
+        font-size: 18px;
     }
-
-    .onboarding p {
-        font-size: 1rem; /* Adjusted for tablets */
+    .list-group-item {
+        flex-direction: column;
+        align-items: center;
     }
-
-    .btn-get-started {
-        width: 220px; /* Adjusted for tablets */
-        font-size: 1rem; /* Adjusted for tablets */
-    }
-
-    .carousel-inner {
-        max-width: 300px; /* Adjusted for tablets */
-    }
-}
-
-@media (min-width: 1025px) {
-    /* Desktop styles */
-    .fixed-header h1 {
-        font-size: 2rem; /* Reduced font size */
-    }
-
-    .fixed-header p.lead {
-        font-size: 1rem; /* Adjusted for desktop */
-    }
-
-    .onboarding p {
-        font-size: 1.1rem; /* Adjusted for desktop */
-    }
-
-    .btn-get-started {
-        width: 240px; /* Adjusted width */
-        font-size: 1rem; /* Adjusted for desktop */
-    }
-
-    .carousel-inner {
-        max-width: 350px; /* Adjusted for desktop */
+    .list-group-item form {
+        margin-top: 10px;
     }
 }

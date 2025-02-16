@@ -23,14 +23,17 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
-            'balance' => 'required|numeric',
-            'currency' => 'required|string|max:3',
+            'balance'     => 'required|numeric',
+            'currency'    => 'required|string|max:3',
         ]);
 
         Auth::user()->accounts()->create($request->all()); // Associate the account with the logged-in user
-        return redirect()->route('financemanagement.index')->with('success', 'Account created successfully.');
+
+        // Redirect back to the Finance Management page, ensuring the Accounts section is active.
+        return redirect()->route('financemanagement.index', ['tab' => 'accounts'])
+            ->with('success', 'Account created successfully.');
     }
 
     public function show(Account $account)
@@ -62,14 +65,17 @@ class AccountController extends Controller
         }
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
-            'balance' => 'required|numeric',
-            'currency' => 'required|string|max:3',
+            'balance'     => 'required|numeric',
+            'currency'    => 'required|string|max:3',
         ]);
 
         $account->update($request->all());
-        return redirect()->route('financemanagement.index')->with('success', 'Account updated successfully.');
+
+        // Redirect back to the Finance Management page, ensuring the Accounts section is active.
+        return redirect()->route('financemanagement.index', ['tab' => 'accounts'])
+            ->with('success', 'Account updated successfully.');
     }
 
     public function destroy(Account $account)
@@ -80,6 +86,9 @@ class AccountController extends Controller
         }
 
         $account->delete();
-        return redirect()->route('financemanagement.index')->with('success', 'Account deleted successfully.');
+
+        // Redirect back to the Finance Management page, ensuring the Accounts section is active.
+        return redirect()->route('financemanagement.index', ['tab' => 'accounts'])
+            ->with('success', 'Account deleted successfully.');
     }
 }

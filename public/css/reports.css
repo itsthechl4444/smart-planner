@@ -1,13 +1,16 @@
 /* =========================================
-  1. Global Styles
+   1. Global Styles
 ========================================= */
 
 /* Body and Container Styles */
 body {
     font-family: "Open Sans", sans-serif;
     margin: 0;
-    background-color: #f5f5f5; /* Matching the Reports section background */
+    background: linear-gradient(to right, #f9f9f9, #f5f5f5);
     color: #808080;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header Styles */
@@ -17,20 +20,13 @@ body {
     justify-content: space-between;
     padding: 10px 20px;
     background: linear-gradient(to right, #f9f9f9, #f5f5f5);
-    position: fixed; /* Fixed at the top */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    height: 65px; /* Set consistent height */
+    height: 70px;
 }
-
-.menu-icon {
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-}
-
 .title {
     font-size: 20px;
     font-weight: 500;
@@ -54,32 +50,31 @@ body {
 }
 
 /* =========================================
-  2. Tabs Styles
+   2. Tabs Styles
 ========================================= */
 
-/* Base Styles for Tabs */
 .tabs {
     display: flex;
-    justify-content: center; /* Center the tabs horizontally */
+    justify-content: center;
     margin-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
-    overflow-x: auto; /* Enables horizontal scrolling */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    padding: 0 10px; /* Adds horizontal padding for better spacing */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 10px;
     min-width: 0;
 }
 
 .tabs::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar for a cleaner look */
+    display: none;
 }
 
 .tabs {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .tab-link {
-    flex: 0 0 auto; /* Prevents tabs from stretching */
+    flex: 0 0 auto;
     background-color: transparent;
     border: none;
     outline: none;
@@ -110,12 +105,11 @@ body {
     display: block;
 }
 
-/* Responsive Design for Tabs */
+/* Responsive Tabs */
 @media (max-width: 600px) {
     .tabs {
         padding: 0 5px;
     }
-
     .tab-link {
         padding: 10px 15px;
         font-size: 14px;
@@ -128,7 +122,6 @@ body {
         gap: 8px;
         padding: 6px 0;
     }
-
     .tab-link {
         padding: 6px 12px;
         font-size: 14px;
@@ -136,42 +129,37 @@ body {
 }
 
 /* =========================================
-  3. Report Containers
+   3. Report Containers
 ========================================= */
 
-/* Report Container Styling */
 .report-container {
-    background-color: #fff; /* White background */
-    padding: 20px; /* Inner padding */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    margin-top: 20px; /* Space above the container */
-    position: relative; /* For positioning no-data illustrations */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    position: relative;
 }
 
-/* Chart Wrapper Styling */
 .chart-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    aspect-ratio: 1 / 1; /* Ensures a perfect square for the circle */
-    max-width: 400px; /* Maximum size on larger screens */
+    aspect-ratio: 1 / 1;
+    max-width: 400px;
     width: 100%;
     height: auto;
-    /* Removed background-color, padding, and box-shadow to eliminate extra white container */
-    margin: 20px auto 0 auto; /* Center the chart and add top margin */
+    margin: 20px auto 0 auto;
 }
 
-/* Task Distribution Chart Styling */
 .task-distribution.report-container .chart-wrapper canvas {
     width: 100% !important;
     height: 100% !important;
 }
 
-/* No Data Illustration Styling */
 .no-data-illustration-container {
-    display: none; /* Hidden by default */
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -193,42 +181,38 @@ body {
 }
 
 /* =========================================
-  4. Task Summary Cards
+   4. Task Summary Cards
 ========================================= */
 
-/* Task Summary Section */
 .task-summary {
     display: flex;
-    justify-content: flex-start; /* Align items to the start */
+    justify-content: flex-start;
     align-items: center;
-    flex-wrap: nowrap; /* Prevent wrapping */
+    flex-wrap: nowrap;
     gap: 20px;
     margin-bottom: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    scroll-behavior: smooth; /* Smooth scrolling behavior */
-    position: relative; /* For gradient overlays if needed */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    position: relative;
 }
 
-/* Hide scrollbar for a cleaner look */
 .task-summary::-webkit-scrollbar {
     display: none;
 }
-
 .task-summary {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-/* Task Report Cards */
 .task-summary .card {
-    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
-    width: 200px; /* Fixed width suitable for mobile screens */
-    background-color: #f0f0f0; /* Light gray background */
+    flex: 0 0 auto;
+    width: 200px;
+    background-color: #f0f0f0;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     text-align: center;
     transition:
         transform 0.2s ease,
@@ -238,20 +222,19 @@ body {
 
 .task-summary .card:hover {
     transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Slightly darker shadow on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Specific Styles for Each Card Type */
 .completed-card {
-    background-color: #e8e8e8; /* Light gray */
+    background-color: #e8e8e8;
 }
 
 .pending-card {
-    background-color: #e0e0e0; /* Slightly darker light gray */
+    background-color: #e0e0e0;
 }
 
 .overdue-card {
-    background-color: #d5d5d5; /* Even darker light gray */
+    background-color: #d5d5d5;
 }
 
 .task-summary .card h5 {
@@ -267,35 +250,31 @@ body {
     margin: 0;
 }
 
-/* Responsive Adjustments for Task Summary */
 @media (max-width: 768px) {
     .task-summary {
-        gap: 15px; /* Slightly smaller gap on tablets */
+        gap: 15px;
     }
-
     .task-summary .card {
-        width: 180px; /* Adjust width for tablets */
+        width: 180px;
         padding: 18px;
     }
 }
 
 @media (max-width: 480px) {
     .task-summary {
-        flex-direction: column; /* Stack cards vertically */
+        flex-direction: column;
         align-items: center;
     }
-
     .task-summary .card {
-        width: 90%; /* Almost full width on mobile */
+        width: 90%;
         padding: 15px;
     }
 }
 
 /* =========================================
-  5. Filter Buttons - Updated to Light Gray
+   5. Filter Buttons - Updated to Light Gray
 ========================================= */
 
-/* Filter buttons */
 .filter-options {
     display: flex;
     gap: 10px;
@@ -303,9 +282,9 @@ body {
 }
 
 .filter-options .btn {
-    background-color: #e0e0e0 !important; /* Light Gray */
-    color: #555 !important; /* Medium Gray Text */
-    border: 1px solid #ccc !important; /* Light Border */
+    background-color: #e0e0e0 !important;
+    color: #555 !important;
+    border: 1px solid #ccc !important;
     cursor: pointer;
     padding: 8px 16px;
     border-radius: 4px;
@@ -317,17 +296,16 @@ body {
 
 .filter-options .btn:hover,
 .filter-options .btn:focus {
-    background-color: #d5d5d5 !important; /* Slightly Darker Light Gray on Hover */
-    color: #333 !important; /* Darker Text on Hover */
+    background-color: #d5d5d5 !important;
+    color: #333 !important;
 }
 
 .filter-options .btn.active {
-    background-color: #c0c0c0 !important; /* Slightly Darker for Active State */
-    color: #333 !important; /* Darker Text */
-    border-color: #b3b3b3 !important; /* Slightly Darker Border */
+    background-color: #c0c0c0 !important;
+    color: #333 !important;
+    border-color: #b3b3b3 !important;
 }
 
-/* Responsive Adjustments for Filter Buttons */
 @media (max-width: 768px) {
     .filter-options .btn {
         padding: 6px 12px;
@@ -336,23 +314,24 @@ body {
 }
 
 @media (max-width: 480px) {
-    /* Removed flex-direction: column to keep buttons horizontal */
+    .filter-options {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
     .filter-options .btn {
-        width: auto; /* Let buttons adjust based on content */
-        margin-bottom: 0; /* Remove bottom margin */
+        margin-bottom: 0;
     }
 }
 
 /* =========================================
-  6. Tables (Finance Reports)
+   6. Tables (Finance Reports)
 ========================================= */
 
-/* Expense Summary Table, Income Overview Table, Budget Progress Table */
 table.highlight {
     background-color: #fff;
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     border-collapse: collapse;
 }
@@ -367,19 +346,18 @@ table.highlight td {
 }
 
 table.highlight th {
-    background-color: #e8e8e8; /* Light gray */
+    background-color: #e8e8e8;
     font-weight: bold;
 }
 
 table.highlight td {
-    background-color: #f9f9f9; /* Very light gray */
+    background-color: #f9f9f9;
 }
 
 table.highlight tr.total-row td {
     font-weight: bold;
 }
 
-/* Responsive Adjustments for Tables */
 @media (max-width: 768px) {
     table.highlight th,
     table.highlight td {
@@ -394,99 +372,59 @@ table.highlight tr.total-row td {
         padding: 8px;
         font-size: 12px;
     }
+    .report-container {
+        padding: 15px;
+    }
 }
 
 /* =========================================
-  7. Loading Spinners
+   7. Loading Spinners (Creative Ripple Spinner)
 ========================================= */
 
-/* Preloader Wrapper */
-.preloader-wrapper {
-    display: inline-block;
+.spinner {
     position: relative;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
 }
-
-.preloader-wrapper.active .spinner-layer {
-    animation: spin 1.4s linear infinite;
-}
-
-.spinner-layer {
+.spinner::before,
+.spinner::after {
+    content: "";
     position: absolute;
+    border: 4px solid #808080;
+    border-radius: 50%;
+    animation: ripple 1s linear infinite;
+}
+.spinner::before {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #808080; /* Gray color */
-}
-
-.spinner-layer.spinner-blue-only {
-    border-top-color: #a9a9a9; /* Dark gray */
-}
-
-.spinner-layer.spinner-green-only {
-    border-top-color: #bfbfbf; /* Light gray */
-}
-
-.spinner-layer.spinner-orange-only {
-    border-top-color: #c0c0c0; /* Silver */
-}
-
-.circle-clipper {
-    position: absolute;
     top: 0;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.circle-clipper.left {
     left: 0;
 }
-
-.circle-clipper.right {
-    right: 0;
-}
-
-.circle {
+.spinner::after {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: inherit;
+    top: 4px;
+    left: 4px;
+    border-color: transparent;
+    border-top-color: #808080;
+    animation-delay: 0.5s;
 }
-
-.gap-patch {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 0;
-    height: 100%;
-    overflow: hidden;
-}
-
-.gap-patch .circle {
-    width: 200%;
-    height: 100%;
-    border-left-color: inherit;
-}
-
-/* Spinner Animation */
-@keyframes spin {
+@keyframes ripple {
     0% {
-        transform: rotate(0deg);
+        transform: scale(0);
+        opacity: 1;
     }
     100% {
-        transform: rotate(360deg);
+        transform: scale(1.5);
+        opacity: 0;
     }
 }
 
 /* =========================================
-  8. More Options Dropdown
+   8. More Options Dropdown
 ========================================= */
 
-/* More Options Container */
 .more-options {
     position: relative;
 }
@@ -509,12 +447,12 @@ table.highlight tr.total-row td {
 .more-options-dropdown {
     display: none;
     position: absolute;
-    top: 40px; /* Adjust based on header height */
+    top: 40px;
     right: 0;
-    background-color: #f0f0f0; /* Light gray background */
+    background-color: #f0f0f0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
-    z-index: 1002; /* Above the header */
+    z-index: 1002;
     min-width: 160px;
 }
 
@@ -531,28 +469,27 @@ table.highlight tr.total-row td {
 }
 
 .more-options-dropdown .dropdown-item:hover {
-    background-color: #d5d5d5; /* Slightly darker gray on hover */
+    background-color: #d5d5d5;
 }
 
 /* =========================================
-  9. Bottom Navbar Styles
+   9. Bottom Navbar Styles
 ========================================= */
 
-/* Base styles for Bottom Navbar (Visible on both Desktop and Mobile) */
 .bottom-navbar {
     position: fixed;
-    bottom: 20px; /* 20px margin from bottom */
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #808080; /* Gray background */
+    background-color: #808080;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 10px 20px;
-    z-index: 999; /* Below FAB */
-    width: 300px; /* Default width for desktop */
+    z-index: 999;
+    width: 300px;
     transition:
         background-color 0.3s ease,
         box-shadow 0.3s ease;
@@ -562,12 +499,11 @@ body.dark-mode .bottom-navbar {
     background-color: #555555;
 }
 
-/* Adjust Navbar Items */
 .bottom-navbar .navbar-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #ffffff; /* White icon and text color */
+    color: #ffffff;
     text-decoration: none;
     font-size: 12px;
     transition:
@@ -577,23 +513,22 @@ body.dark-mode .bottom-navbar {
 
 .bottom-navbar .navbar-item i {
     font-size: 24px;
-    color: #ffffff; /* Ensure icons are white */
+    color: #ffffff;
     transition:
         color 0.3s ease,
         transform 0.2s ease;
 }
 
 .bottom-navbar .navbar-item:hover {
-    color: #dddddd; /* Lighten icon and text color on hover */
-    transform: translateY(-3px); /* Slight lift on hover */
+    color: #dddddd;
+    transform: translateY(-3px);
 }
 
 .bottom-navbar .navbar-item:hover i {
-    color: #ffffff; /* Keep icon color white on hover */
-    transform: scale(1.1); /* Slight scale-up on hover */
+    color: #ffffff;
+    transform: scale(1.1);
 }
 
-/* Dark mode adjustments for navbar items */
 body.dark-mode .bottom-navbar .navbar-item {
     color: #e0e0e0;
 }
@@ -602,152 +537,142 @@ body.dark-mode .bottom-navbar .navbar-item:hover {
     color: #ffffff;
 }
 
-/* Responsive Adjustments */
-
-/* Mobile Styles */
+/* Responsive Adjustments for Bottom Navbar */
 @media (max-width: 768px) {
     .bottom-navbar {
-        width: calc(100% - 40px); /* 20px margin on each side */
-        bottom: 20px; /* Maintain 20px margin from bottom */
+        width: calc(100% - 40px);
+        bottom: 20px;
     }
-
-    /* Adjust FAB position to be above the bottom navbar with 15px space */
     .fab {
-        bottom: calc(
-            20px + 15px
-        ); /* Navbar bottom (20px) + 15px space = 35px */
+        bottom: calc(20px + 15px);
     }
-
-    /* FAB Options Position Adjustment */
     .fab-options {
-        bottom: calc(35px + 10px); /* FAB bottom (35px) + 10px space = 45px */
+        bottom: calc(35px + 10px);
     }
 }
 
 @media (max-width: 480px) {
     .bottom-navbar {
-        width: calc(100% - 40px); /* Maintain margins */
-        bottom: 20px; /* Adjusted to 20px from the bottom */
+        width: calc(100% - 40px);
+        bottom: 20px;
     }
-
-    /* FAB Position Adjustment for Mobile */
     .fab {
         margin-bottom: 60px;
     }
-
-    /* FAB Options Position Adjustment */
     .fab-options {
         margin-bottom: 80px;
     }
 }
 
-/* Desktop Styles */
 @media (min-width: 769px) {
     .bottom-navbar {
-        width: 400px; /* Adjusted width for better aesthetics */
-        bottom: 20px; /* Maintain bottom spacing */
+        width: 400px;
+        bottom: 20px;
     }
-
-    /* FAB remains at bottom-right corner */
     .fab {
         bottom: 20px;
         right: 20px;
     }
-
-    /* Ensure icons have enough space */
     .bottom-navbar .navbar-item {
-        font-size: 14px; /* Increased font-size for desktop */
+        font-size: 14px;
     }
-
     .bottom-navbar .navbar-item i {
-        font-size: 26px; /* Increased icon size for desktop */
+        font-size: 26px;
     }
 }
 
 /* =========================================
-  10. No Data Illustration Styling
+   10. No Data Illustration Styling
 ========================================= */
 
-/* No Data Illustration for Task Distribution */
-/* Already defined above */
+.no-data-illustration-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #6c757d;
+}
+
+.no-data-illustration-container img {
+    max-width: 150px;
+    margin-bottom: 10px;
+}
+
+.no-data-illustration-container p {
+    font-size: 1rem;
+}
 
 /* =========================================
-  11. Responsive Design
+   11. Responsive Design
 ========================================= */
 
-/* Responsive Styles for Task Summary */
 @media (min-width: 992px) {
     .task-summary {
-        justify-content: center; /* Center on large screens */
+        justify-content: center;
     }
 }
 
 @media (max-width: 768px) {
     .task-summary {
-        gap: 15px; /* Slightly smaller gap on tablets */
+        gap: 15px;
     }
-
     .task-summary .card {
-        width: 180px; /* Adjust width for tablets */
+        width: 180px;
         padding: 18px;
     }
 }
 
 @media (max-width: 480px) {
     .task-summary {
-        flex-direction: column; /* Stack cards vertically */
+        flex-direction: column;
         align-items: center;
     }
-
     .task-summary .card {
-        width: 90%; /* Almost full width on mobile */
+        width: 90%;
         padding: 15px;
     }
 }
 
-/* Adjust Tabs Padding and Font Size on Small Screens */
 @media (max-width: 600px) {
     .tabs {
         padding: 0 5px;
     }
-
     .tab-link {
         padding: 10px 15px;
         font-size: 14px;
     }
 }
 
-/* Adjust Filter Options Alignment on Small Screens */
 @media (max-width: 480px) {
-    /* Removed flex-direction: column to keep buttons horizontal */
     .filter-options {
-        flex-wrap: wrap; /* Allow wrapping if necessary */
-        justify-content: center; /* Center buttons */
+        flex-wrap: wrap;
+        justify-content: center;
     }
-
     .filter-options .btn {
-        margin-bottom: 0; /* Remove bottom margin */
+        margin-bottom: 0;
     }
 }
 
-/* Adjust Tables for Mobile */
 @media (max-width: 480px) {
     table.highlight th,
     table.highlight td {
-        font-size: 12px;
         padding: 8px;
+        font-size: 12px;
     }
-
     .report-container {
-        padding: 15px; /* Reduce padding for smaller screens */
+        padding: 15px;
     }
 }
 
 /* =========================================
-  12. Accessibility Enhancements
+   12. Accessibility Enhancements
 ========================================= */
 
-/* Ensure sufficient color contrast */
 .no-data-message p,
 .finance-summary h3,
 .finance-summary p,
@@ -761,14 +686,13 @@ body.dark-mode .bottom-navbar .navbar-item:hover {
 .task-card p,
 .finance-card p,
 .goal-card h3 {
-    color: #333; /* Darker color for better contrast */
+    color: #333;
 }
 
 /* =========================================
-  13. Custom Tooltip Styles
+   13. Custom Tooltip Styles
 ========================================= */
 
-/* Custom tooltip styling */
 .tooltip-inner {
     background-color: #333 !important;
     color: #fff !important;
@@ -782,24 +706,23 @@ body.dark-mode .bottom-navbar .navbar-item:hover {
 }
 
 /* =========================================
-  14. Bottom Navbar Styles (Copied from Dashboard)
+   14. Bottom Navbar Styles (Copied from Dashboard)
 ========================================= */
 
-/* Base styles for Bottom Navbar (Visible on both Desktop and Mobile) */
 .bottom-navbar {
     position: fixed;
-    bottom: 20px; /* 20px margin from bottom */
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #808080; /* Gray background */
+    background-color: #808080;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 10px 20px;
-    z-index: 999; /* Below FAB */
-    width: 300px; /* Default width for desktop */
+    z-index: 999;
+    width: 300px;
     transition:
         background-color 0.3s ease,
         box-shadow 0.3s ease;
@@ -809,12 +732,11 @@ body.dark-mode .bottom-navbar {
     background-color: #555555;
 }
 
-/* Adjust Navbar Items */
 .bottom-navbar .navbar-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #ffffff; /* White icon and text color */
+    color: #ffffff;
     text-decoration: none;
     font-size: 12px;
     transition:
@@ -824,23 +746,22 @@ body.dark-mode .bottom-navbar {
 
 .bottom-navbar .navbar-item i {
     font-size: 24px;
-    color: #ffffff; /* Ensure icons are white */
+    color: #ffffff;
     transition:
         color 0.3s ease,
         transform 0.2s ease;
 }
 
 .bottom-navbar .navbar-item:hover {
-    color: #dddddd; /* Lighten icon and text color on hover */
-    transform: translateY(-3px); /* Slight lift on hover */
+    color: #dddddd;
+    transform: translateY(-3px);
 }
 
 .bottom-navbar .navbar-item:hover i {
-    color: #ffffff; /* Keep icon color white on hover */
-    transform: scale(1.1); /* Slight scale-up on hover */
+    color: #ffffff;
+    transform: scale(1.1);
 }
 
-/* Dark mode adjustments for navbar items */
 body.dark-mode .bottom-navbar .navbar-item {
     color: #e0e0e0;
 }
@@ -849,64 +770,45 @@ body.dark-mode .bottom-navbar .navbar-item:hover {
     color: #ffffff;
 }
 
-/* Responsive Adjustments */
-
-/* Mobile Styles */
 @media (max-width: 768px) {
     .bottom-navbar {
-        width: calc(100% - 40px); /* 20px margin on each side */
-        bottom: 20px; /* Maintain 20px margin from bottom */
+        width: calc(100% - 40px);
+        bottom: 20px;
     }
-
-    /* Adjust FAB position to be above the bottom navbar with 15px space */
     .fab {
-        bottom: calc(
-            20px + 15px
-        ); /* Navbar bottom (20px) + 15px space = 35px */
+        bottom: calc(20px + 15px);
     }
-
-    /* FAB Options Position Adjustment */
     .fab-options {
-        bottom: calc(35px + 10px); /* FAB bottom (35px) + 10px space = 45px */
+        bottom: calc(35px + 10px);
     }
 }
 
 @media (max-width: 480px) {
     .bottom-navbar {
-        width: calc(100% - 40px); /* Maintain margins */
-        bottom: 20px; /* Adjusted to 20px from the bottom */
+        width: calc(100% - 40px);
+        bottom: 20px;
     }
-
-    /* FAB Position Adjustment for Mobile */
     .fab {
         margin-bottom: 60px;
     }
-
-    /* FAB Options Position Adjustment */
     .fab-options {
         margin-bottom: 80px;
     }
 }
 
-/* Desktop Styles */
 @media (min-width: 769px) {
     .bottom-navbar {
-        width: 400px; /* Adjusted width for better aesthetics */
-        bottom: 20px; /* Maintain bottom spacing */
+        width: 400px;
+        bottom: 20px;
     }
-
-    /* FAB remains at bottom-right corner */
     .fab {
         bottom: 20px;
         right: 20px;
     }
-
-    /* Ensure icons have enough space */
     .bottom-navbar .navbar-item {
-        font-size: 14px; /* Increased font-size for desktop */
+        font-size: 14px;
     }
-
     .bottom-navbar .navbar-item i {
-        font-size: 26px; /* Increased icon size for desktop */
+        font-size: 26px;
     }
 }

@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #F5F5F5;
+    font-family: "Open Sans", sans-serif;
+    background-color: #f5f5f5;
     color: #808080;
     margin: 0;
     box-sizing: border-box;
@@ -14,7 +14,7 @@ body {
     justify-content: space-between;
     height: 56px;
     padding: 0 20px;
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     position: fixed;
     top: 0;
     left: 0;
@@ -110,17 +110,17 @@ body {
 .container {
     width: 90%;
     max-width: 800px;
-    margin: 70px auto 0;
-    /* Top margin to leave space for fixed app bar */
+    margin: 70px auto 0; /* Top margin to leave space for fixed app bar */
+    padding-bottom: 50px; /* Extra bottom space */
 }
 
+/* Do not change the image sizing below; they remain as in your original code */
 .saving-illustration {
     width: 100%;
     max-width: 400px;
     height: auto;
     display: block;
     margin: 0 auto 20px;
-    /* Center the illustration and add bottom margin */
 }
 
 .saving-details {
@@ -150,15 +150,21 @@ body {
 
 /* Save Amount Section Styles */
 .save-amount-section {
-    border: 1px solid #ddd; /* Light border for the section */
+    border: 1px solid #ddd; /* Light border */
     border-radius: 8px; /* Rounded corners */
-    padding: 20px; /* Padding around the content */
+    padding: 20px; /* Padding around content */
     background-color: #fff; /* White background */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .save-amount-section h5 {
-    margin-bottom: 20px; /* Space below the heading */
+    margin-bottom: 20px;
+}
+
+/* Center the Save Amount button */
+.save-amount-section button {
+    display: block;
+    margin: 0 auto;
 }
 
 /* Form Group Styles */
@@ -167,7 +173,7 @@ body {
     margin-bottom: 25px;
     text-align: left;
     width: 100%;
-    max-width: 500px; /* Adjust max-width as needed */
+    max-width: 500px; /* Adjust as needed */
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
@@ -182,7 +188,7 @@ body {
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     color: #555;
     margin-top: 5px;
 }
@@ -202,40 +208,31 @@ body {
     opacity: 1;
 }
 
-/* Button Styles (optional) */
-.btn-primary {
-    background-color: #007bff; /* Change as needed */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Match the border radius of inputs */
-    color: white; /* Text color */
-    padding: 12px 20px; /* Adjust padding */
-    font-size: 16px; /* Font size */
-    cursor: pointer; /* Pointer on hover */
-}
-
-/* Button Container */
-.button-container {
-    margin-top: 20px; /* Space above the button */
-}
-
 /* Button Styles */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .btn-gray {
-    background-color: #808080; /* Gray color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Match the border radius of inputs */
-    color: white; /* Text color */
-    padding: 12px 20px; /* Adjust padding */
-    font-size: 16px; /* Font size */
-    cursor: pointer; /* Pointer on hover */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    background-color: #808080;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .btn-gray:hover {
-    background-color: #6c757d; /* Darker shade on hover */
+    background-color: #6c757d;
 }
-
-
-
 
 /* Total Container Styles */
 .total-container {
@@ -244,30 +241,26 @@ body {
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center align the text */
+    text-align: center;
 }
-
-
-/* Responsive Design Adjustments */
-@media (max-width: 768px) {
-    .total-container {
-        margin: 10px; /* Reduce margins for smaller screens */
-        padding: 10px; /* Reduce padding for smaller screens */
-    }
-
-    .fab {
-        width: 48px; /* Smaller FAB for mobile */
-        height: 48px; /* Smaller FAB for mobile */
-    }
-}
-
 
 .divider {
     margin: 20px 0;
 }
 
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .total-container {
+        margin: 10px;
+        padding: 10px;
+    }
 
-/* Responsive Design */
+    .fab {
+        width: 48px;
+        height: 48px;
+    }
+}
+
 @media (max-width: 768px) {
     .app-bar-title {
         font-size: 18px;
@@ -296,3 +289,9 @@ body {
     }
 }
 
+/* Keep the attachment image styling as in your original code */
+.saving-attachment img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
